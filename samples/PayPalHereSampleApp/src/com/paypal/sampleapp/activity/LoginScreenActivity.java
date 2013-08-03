@@ -138,7 +138,7 @@ public class LoginScreenActivity extends Activity {
      */
     //TODO: need to remove this before shipping the app to public
     private void setUserCredentials() {
-        ((EditText) findViewById(R.id.username)).setText("sathya");
+        ((EditText) findViewById(R.id.username)).setText("merchants user name");
         ((EditText) findViewById(R.id.password)).setText("11111111");
     }
 
