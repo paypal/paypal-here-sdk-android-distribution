@@ -83,8 +83,8 @@ import java.util.List;
 public class OAuthLoginActivity extends MyActivity {
 
     private static final String LOG = "PayPalHere.OAuthLoginScreen";
-    private static final String MERCHANT_SERVICE_STAGE_URL = "http://morning-tundra-8515.herokuapp.com/";
-    private static final String MERCHANT_SERVICE_LIVE_URL = "http://stormy-hollows-1584.herokuapp.com/";
+    private static final String MERCHANT_SERVICE_STAGE_URL = "<link to your server to connect to a sandbox environment>";
+    private static final String MERCHANT_SERVICE_LIVE_URL = "<link to your server to connect to the live environment>";
     private String mMerchantServiceUrl;
     private String mTicket;
     private Merchant mMerchant;
@@ -435,7 +435,7 @@ public class OAuthLoginActivity extends MyActivity {
             //the refresh token is not URL encoded but before submitting the full refresh url to the SDK we need to
             //url encode the refresh token parts of it
             String encodedToken = URLEncoder.encode(refreshTokenRaw, "UTF-8");
-            String refreshUrlToUse = mMerchantServiceUrl + /*"http://morning-tundra-8515.herokuapp.com*/ "refresh/" +
+            String refreshUrlToUse = mMerchantServiceUrl + "refresh/" +
                     mUsername +
                     "/" + encodedToken;
             // Set the merchant credetials within the PayPalHere SDK.
