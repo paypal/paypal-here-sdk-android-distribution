@@ -11,8 +11,6 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,7 +49,7 @@ public class CreditCardManualActivity extends MyActivity {
                 public void onSuccess(PaymentResponse response) {
                     updateUIForPurchaseSuccess(response);
                     mAnotherTransButton.setVisibility(View.VISIBLE);
-                    purchaseButtonClicked(false);
+                    paymentCompleted(true);
                 }
 
                 @Override
@@ -59,8 +57,7 @@ public class CreditCardManualActivity extends MyActivity {
                     updateUIForPurchaseError(e);
                     mAnotherTransButton.setVisibility(View.VISIBLE);
                     mReUseShoppingCartButton.setVisibility(View.VISIBLE);
-                    purchaseButtonClicked(false);
-
+                    paymentCompleted(false);
                 }
             };
     private TextView mExpDate;
@@ -101,6 +98,8 @@ public class CreditCardManualActivity extends MyActivity {
                 // Check if the entered credit card information is valid.
                 if (isInputValid()) {
                     takePayment();
+                } else {
+                    CommonUtils.createToastMessage(CreditCardManualActivity.this, "Invalid card data.");
                 }
             }
 
@@ -129,6 +128,9 @@ public class CreditCardManualActivity extends MyActivity {
                 newFragment.show(CreditCardManualActivity.this.getFragmentManager(), "datePicker");
             }
         });
+
+        paymentCompleted(false);
+
 
     }
 
@@ -194,16 +196,16 @@ public class CreditCardManualActivity extends MyActivity {
      */
     private void takePayment() {
 
-        purchaseButtonClicked(true);
-
         // Create a ManualEntryCardData obj by providing the credit card into.
         ManualEntryCardData manualEntryCardData = DomainFactory.newManualEntryCardData(mCCInfo,
                 mExpDate.getText().toString(), mCCVInfo);
         // Set the Card Holder's name.
         manualEntryCardData.setCardHoldersName("John Doe");
 
-        // Hide the purchase button
+        // Hide the buttons
         mPurchaseButton.setVisibility(View.GONE);
+        mAnotherTransButton.setVisibility(View.GONE);
+        mReUseShoppingCartButton.setVisibility(View.GONE);
 
         displayPaymentState("Taking Payment...");
         // Call the SDK to take a payment.
@@ -277,6 +279,14 @@ public class CreditCardManualActivity extends MyActivity {
         Log.d(LOG, "Peforming another transaction");
         Intent intent = new Intent(CreditCardManualActivity.this, BillingTypeTabActivity.class);
         startActivity(intent);
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (PayPalHereSDK.getTransactionManager().isProcessingAPayment() || isPaymentCompleted())
+            mPurchaseButton.setVisibility(View.GONE);
     }
 
     /**
@@ -324,16 +334,15 @@ public class CreditCardManualActivity extends MyActivity {
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            CreditCardManualActivity.this.mExpDate.setText(String.format("%d%d", (month + 1), year));
-        }
-    }
+            month += 1;
+            String date = "";
+            if (month < 10) {
+                date = String.format("0%d%d", month, year);
+            } else {
+                date = String.format("%d%d", month, year);
+            }
 
-    @Override
-    protected void onResume() {
-       super.onResume();
-        if(isPurchaseClicked()) {
-            mPurchaseButton.setVisibility(View.GONE);
-            mAnotherTransButton.setVisibility(View.GONE);
+            CreditCardManualActivity.this.mExpDate.setText(date);
         }
     }
 }

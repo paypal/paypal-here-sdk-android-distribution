@@ -60,8 +60,8 @@ public class PayPalMerchantCheckinActivity extends MyActivity {
 
                     mSearchForCheckedInClientsButton.setVisibility(View.GONE);
                     mAnotherTransactionButton.setVisibility(View.VISIBLE);
+                    paymentCompleted(true);
 
-                    purchaseButtonClicked(false);
                 }
 
                 @Override
@@ -69,9 +69,7 @@ public class PayPalMerchantCheckinActivity extends MyActivity {
                     updateUIForPurchaseError(e);
                     mAnotherTransactionButton.setVisibility(View.VISIBLE);
                     mReUseShoppingCartButton.setVisibility(View.VISIBLE);
-
-                    purchaseButtonClicked(false);
-
+                    paymentCompleted(false);
                 }
             };
     private ProgressDialog mProgressDialog;
@@ -116,8 +114,7 @@ public class PayPalMerchantCheckinActivity extends MyActivity {
         mAnotherTransactionButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PayPalMerchantCheckinActivity.this, BillingTypeTabActivity.class);
-                startActivity(intent);
+                performAnotherTransaction();
             }
         });
         mAnotherTransactionButton.setVisibility(View.GONE);
@@ -130,6 +127,8 @@ public class PayPalMerchantCheckinActivity extends MyActivity {
             }
         });
         mReUseShoppingCartButton.setVisibility(View.GONE);
+
+        paymentCompleted(false);
     }
 
     private void showProgressDialog(String msg) {
@@ -140,6 +139,16 @@ public class PayPalMerchantCheckinActivity extends MyActivity {
     private void hideProgressDialog() {
         if (mProgressDialog.isShowing())
             mProgressDialog.dismiss();
+    }
+
+    /**
+     * This method is called in order to perform another transaction after the completion of the current one.
+     */
+    private void performAnotherTransaction() {
+        Log.d(LOG, "Performing another transaction");
+        Intent intent = new Intent(PayPalMerchantCheckinActivity.this, BillingTypeTabActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     /**
@@ -204,7 +213,8 @@ public class PayPalMerchantCheckinActivity extends MyActivity {
      */
     private void takePaymentWithCheckedInClient(CheckedInClient client) {
 
-        purchaseButtonClicked(true);
+        mAnotherTransactionButton.setVisibility(View.VISIBLE);
+        mReUseShoppingCartButton.setVisibility(View.VISIBLE);
 
         displayPaymentState("Taking payment... ");
         // Invoke the API with the checked in customer to take the payment.
@@ -256,10 +266,10 @@ public class PayPalMerchantCheckinActivity extends MyActivity {
     protected void onResume() {
         super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
 
-        if (isPurchaseClicked()) {
+        if(PayPalHereSDK.getTransactionManager().isProcessingAPayment() || isPaymentCompleted()) {
             mClientGridView.setVisibility(View.GONE);
             mSearchForCheckedInClientsButton.setVisibility(View.GONE);
-            mAnotherTransactionButton.setVisibility(View.GONE);
+
         }
     }
 }

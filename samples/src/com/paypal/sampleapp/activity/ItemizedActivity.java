@@ -94,7 +94,7 @@ public class ItemizedActivity extends MyActivity implements PeripheralsListener 
             @Override
             public void onClick(View v) {
 
-                if (mShoppingCart == null || mShoppingCart.getCartItems().size() <= 0) {
+                if (isShoppingCartNullOrEmpty()) {
                     CommonUtils.createToastMessage(ItemizedActivity.this, "Cannot proceed with an empty shopping cart" +
                             ".");
                     return;
@@ -120,6 +120,9 @@ public class ItemizedActivity extends MyActivity implements PeripheralsListener 
 
         // Registering the peripherals listener with the SDK that would help us listen to card swipes.
         PayPalHereSDK.getPeripheralsManager().registerPeripheralsListener(this);
+
+        // Creating a new empty shopping cart.
+        mShoppingCart = DomainFactory.newEmptyShoppingCart();
 
     }
 
@@ -164,11 +167,12 @@ public class ItemizedActivity extends MyActivity implements PeripheralsListener 
         // When a card swipe is detected, a SecureCreditCard object is also returned back by the SDK,
         // which the apps can choose to store.
 
-        // Once the itemized payment is initialized in the SDK, get the Shopping
-        // cart obj created by the SDK and add items to the same.
+        // Once the itemized payment is initialized in the SDK.
 
-        mShoppingCart = PayPalHereSDK.getTransactionManager().beginPayment();
+        PayPalHereSDK.getTransactionManager().beginPayment();
+    }
 
+    private void initListAdapter() {
         // Setting up the adapter to display all the items in our shopping cart.
         mAdapter = new ShoppingCartListViewAdapter(ItemizedActivity.this, mShoppingCart);
         mListView = (ListView) findViewById(R.id.item_list);
@@ -199,8 +203,10 @@ public class ItemizedActivity extends MyActivity implements PeripheralsListener 
         // Get the CartItem object for the fruit.
         CartItem ci = mStoreItems.get(name);
 
-        if (mShoppingCart == null)
+        if (isShoppingCartNullOrEmpty()) {
             initShoppingCart();
+            initListAdapter();
+        }
 
         // Add the item into the shopping cart, with the quantity 1.
         // NOTE: the quantity would keep getting updated as we keep addding or removing items.
@@ -261,6 +267,20 @@ public class ItemizedActivity extends MyActivity implements PeripheralsListener 
         super.onResume();
         // Register for payment and peripheral (Bond, triangle, etc) events.
         PayPalHereSDK.getPeripheralsManager().registerPeripheralsListener(this);
+
+        // If the back button is pressed, we are handling in 2 scenarios:
+        // 1. If the shopping cart has some items added to it and then, if we head to the payment page and for some
+        // reason, if we decide to come back to this screen to add more items, we get back the already available
+        // shopping cart.
+        // 2. If the transaction is complete for a shopping cart and then, if the user hits the back button and we
+        // land on this screen again, since the transaction is complete, no shopping cart would be available in the
+        // transaction manager and hence, we create a new shopping cart.
+        mShoppingCart = PayPalHereSDK.getTransactionManager().getShoppingCart();
+        if (isShoppingCartNullOrEmpty()) {
+            mShoppingCart = DomainFactory.newEmptyShoppingCart();
+        }
+        initListAdapter();
+
     }
 
     @Override
@@ -268,6 +288,10 @@ public class ItemizedActivity extends MyActivity implements PeripheralsListener 
         super.onPause();
         // Unregister for payment and peripheral (Bond, triangle, etc) events.
         PayPalHereSDK.getPeripheralsManager().unregisterPeripheralsListener(this);
+    }
+
+    private boolean isShoppingCartNullOrEmpty() {
+        return (mShoppingCart == null || mShoppingCart.getCartItems().size() <= 0);
     }
 
     private enum FruitTypeEnum {

@@ -25,9 +25,14 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import com.paypal.merchant.sdk.MerchantManager;
 import com.paypal.merchant.sdk.PayPalHereSDK;
-import com.paypal.merchant.sdk.domain.*;
+import com.paypal.merchant.sdk.domain.Address;
+import com.paypal.merchant.sdk.domain.DefaultResponseHandler;
+import com.paypal.merchant.sdk.domain.Merchant;
 import com.paypal.merchant.sdk.domain.Merchant.AvailabilityTypeEnum;
 import com.paypal.merchant.sdk.domain.Merchant.MobilityTypeEnum;
+import com.paypal.merchant.sdk.domain.PPError;
+import com.paypal.merchant.sdk.domain.credentials.Credentials;
+import com.paypal.merchant.sdk.domain.credentials.OauthCredentials;
 import com.paypal.sampleapp.R;
 import com.paypal.sampleapp.util.CommonUtils;
 import com.paypal.sampleapp.util.ProgressDialogFragment;
@@ -531,14 +536,7 @@ public class OAuthLoginActivity extends MyActivity {
     private void setMerchantAndCheckIn(String accessToken) {
         // Create a credentials obj based off of the decrypted access token.
         // Should also implement a callback listener in case the access token is expired.
-        Credentials credentials = new Credentials(accessToken,
-                new Credentials.ExpiredAccessTokenHandler() {
-
-                    @Override
-                    public void accessTokenExpired(String oldAccessToken) {
-                        // TODO: refresh the token
-                    }
-                });
+        Credentials credentials = new OauthCredentials(accessToken);
         // Display a message that indicates the merchant is being setup.
         showInitializingMerchantDialog();
         Log.d("Access Token", accessToken);

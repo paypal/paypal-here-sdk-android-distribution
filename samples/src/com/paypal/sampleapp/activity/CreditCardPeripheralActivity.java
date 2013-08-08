@@ -62,6 +62,9 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
             DefaultResponseHandler<PaymentResponse, PPError<TransactionManager.PaymentErrors>>() {
                 // If the transaction went through successfully.
                 public void onSuccess(PaymentResponse response) {
+
+                    paymentCompleted(true);
+
                     // Displaying a success message on the UI.
                     updateUIForPurchaseSuccess(response);
                     // We can now enable the refund option as well.
@@ -71,19 +74,19 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
                     // Hide the cancel button.
                     mCancelButton.setVisibility(View.GONE);
 
-                    purchaseButtonClicked(false);
-
                 }
 
                 // If an error occurred while completing the transaction.
                 @Override
                 public void onError(PPError<PaymentErrors> e) {
+
+                    paymentCompleted(false);
+
                     // Display the error message onto the UI.
                     updateUIForPurchaseError(e);
                     mAnotherTransButton.setVisibility(View.VISIBLE);
                     mReuseShoppingCartButton.setVisibility(View.VISIBLE);
 
-                    purchaseButtonClicked(false);
                 }
             };
     /**
@@ -242,6 +245,8 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
         // Display the amount such as the grand total, tax and tip on the screen.
         updateUIAmount();
 
+        paymentCompleted(false);
+
     }
 
     private void openTipDialog() {
@@ -295,9 +300,9 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
             mSignButton.setVisibility(View.GONE);
             mCreditCardLayout.setVisibility(View.GONE);
         }
-        mAnotherTransButton.setVisibility(View.GONE);
-        mReuseShoppingCartButton.setVisibility(View.GONE);
+
     }
+
 
     /**
      * This method updates the UI screen in case of any errors during the
@@ -378,9 +383,8 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
         // Register for payment and peripheral (Bond, triangle, etc) events.
         registerTransactionAndPeripheralsListener(true);
 
-        if (isPurchaseClicked()) {
+        if(PayPalHereSDK.getTransactionManager().isProcessingAPayment() || isPaymentCompleted())
             showButtons(false);
-        }
     }
 
     @Override
@@ -422,8 +426,6 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
      */
     private void takePaymentViaSelectedCard(SecureCreditCard selectedCard) {
 
-        purchaseButtonClicked(true);
-
         // Check if a transaction or payment is currently under process. If so,
         // do not allow for another transaction. Simply return.
         if (PayPalHereSDK.getTransactionManager().isProcessingAPayment()) {
@@ -434,6 +436,9 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
         }
         // Hide the transaction related buttons.
         showButtons(false);
+        mAnotherTransButton.setVisibility(View.GONE);
+        mReuseShoppingCartButton.setVisibility(View.GONE);
+
         displayPaymentState("Taking payment with Card ... ");
 
 
@@ -457,8 +462,6 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
      */
     private void peripheralPurchaseClicked() {
 
-        purchaseButtonClicked(true);
-
         // Check if a transaction or payment is currently under process. If so,
         // do not allow for another transaction. Simply return.
         if (PayPalHereSDK.getTransactionManager().isProcessingAPayment()) {
@@ -468,6 +471,9 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
             return;
         }
         showButtons(false);
+        mAnotherTransButton.setVisibility(View.GONE);
+        mReuseShoppingCartButton.setVisibility(View.GONE);
+
 
         displayPaymentState("Taking payment with Card ... ");
 
@@ -533,6 +539,7 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
         Log.d(LOG, "Performing another transaction");
         Intent intent = new Intent(CreditCardPeripheralActivity.this, BillingTypeTabActivity.class);
         startActivity(intent);
+        finish();
     }
 
     /**

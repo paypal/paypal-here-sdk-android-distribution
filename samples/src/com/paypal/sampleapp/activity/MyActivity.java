@@ -16,7 +16,6 @@ import com.paypal.merchant.sdk.PayPalHereSDK;
 import com.paypal.merchant.sdk.domain.CheckedInMerchantLocation;
 import com.paypal.merchant.sdk.domain.Merchant;
 import com.paypal.merchant.sdk.domain.shopping.ShoppingCart;
-import com.paypal.merchant.sdk.internal.CheckedInMerchantLocationImpl;
 import com.paypal.sampleapp.util.CommonUtils;
 
 
@@ -29,7 +28,7 @@ public class MyActivity extends Activity {
     private static MerchantManager sMerchantManager = PayPalHereSDK.getMerchantManager();
     private static SharedPreferences settings;
     private static ShoppingCart sShoppingCart;
-    private static boolean sPurchaseButton;
+    private static boolean sIsPaymentCompleted;
 
     public static Bitmap getBitmap() {
         return sBitmap;
@@ -179,12 +178,12 @@ public class MyActivity extends Activity {
         return settings.getString(LOCATION_ID, null);
     }
 
-    protected boolean isPurchaseClicked() {
-        return sPurchaseButton;
+    protected boolean isPaymentCompleted() {
+        return sIsPaymentCompleted;
     }
 
-    protected void purchaseButtonClicked(boolean state) {
-        sPurchaseButton = state;
+    protected void paymentCompleted(boolean state) {
+        sIsPaymentCompleted = state;
     }
 
     @Override

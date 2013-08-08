@@ -64,7 +64,8 @@ public class LoginScreenActivity extends Activity {
                 }
 
                 // Set the list of servers within the SDK so that we can choose to work with any one of them.
-                PayPalHereSDK.setOptionalServerList(getServerList());
+                //PayPalHereSDK.setOptionalServerList(getServerList());
+
                 // Initialize the PayPalHereSDK with the application context and the server env name.
                 // This init is NECESSARY as the SDK needs the app context to init a few underlying objects.
                 // The 2 options available are "Live" and "Sandbox"

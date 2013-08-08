@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:ems="12"
-                android:text="4217661450985097"
+                android:hint="@string/title_credit_card_number"
                 android:inputType="number">
             <requestFocus/>
         </EditText>
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:ems="3"
-                android:text="831"
+                android:hint="@string/title_ccv"
                 android:inputType="number"/>
 
         <LinearLayout
@@ -54,7 +54,7 @@
                     android:id="@+id/exp_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="122015"/>
+                    android:hint="@string/title_exp_date"/>
 
             <Button
                     android:id="@+id/exp_date_button"
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:ems="10"
-                android:text="95126"
+                android:hint="@string/title_zip"
                 android:inputType="number"/>
 
         <Button
