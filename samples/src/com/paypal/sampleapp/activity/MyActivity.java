@@ -28,7 +28,7 @@ public class MyActivity extends Activity {
     private static MerchantManager sMerchantManager = PayPalHereSDK.getMerchantManager();
     private static SharedPreferences settings;
     private static ShoppingCart sShoppingCart;
-    private static boolean sIsPaymentCompleted;
+    private static volatile boolean sIsPaymentCompleted;
 
     public static Bitmap getBitmap() {
         return sBitmap;

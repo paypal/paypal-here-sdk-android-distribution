@@ -254,7 +254,7 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
         tipDialog.setTitle("Tip amount");
         final EditText vi = new EditText(this);
         vi.setHint("$0");
-        vi.setInputType(InputType.TYPE_CLASS_NUMBER);
+        vi.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
         tipDialog.setView(vi);
         tipDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
@@ -262,13 +262,20 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
             public void onClick(DialogInterface dialog, int which) {
                 String tip = vi.getText().toString();
                 if (CommonUtils.isNullOrEmpty(tip)) {
-                    CommonUtils.createToastMessage(CreditCardPeripheralActivity.this, "Invalid tip!");
+                    sendInvalidTipMessage();
+                    return;
+                }
+                BigDecimal tipVal = BigDecimal.ZERO;
+                try {
+                    tipVal = new BigDecimal(tip);
+
+                } catch(Exception e) {
+                    sendInvalidTipMessage();
                     return;
                 }
 
-                BigDecimal tipVal = new BigDecimal(tip);
                 if (tipVal.doubleValue() <= BigDecimal.ZERO.doubleValue()) {
-                    CommonUtils.createToastMessage(CreditCardPeripheralActivity.this, "Invalid tip!");
+                    sendInvalidTipMessage();
                     return;
                 }
                 addTip(tipVal);
@@ -284,6 +291,10 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
         });
 
         tipDialog.show();
+    }
+
+    private void sendInvalidTipMessage() {
+        CommonUtils.createToastMessage(CreditCardPeripheralActivity.this, "Invalid tip!");
     }
 
     private void showButtons(boolean show) {

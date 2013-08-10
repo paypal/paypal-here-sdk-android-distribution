@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">PayPalHere</string>
+    <string name="app_name">PPH Sample App</string>
     <string name="login_screen">Login</string>
     <string name="billing_type">Order Type</string>
     <string name="payment_type">Payment Method</string>

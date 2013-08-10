@@ -41,9 +41,7 @@
                 android:id="@+id/username"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/username_hint" >
-
-                <requestFocus />
+                android:hint="@string/username_hint">
             </EditText>
 
             <EditText

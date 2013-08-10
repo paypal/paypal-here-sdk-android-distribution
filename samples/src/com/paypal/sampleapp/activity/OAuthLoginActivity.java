@@ -25,12 +25,9 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import com.paypal.merchant.sdk.MerchantManager;
 import com.paypal.merchant.sdk.PayPalHereSDK;
-import com.paypal.merchant.sdk.domain.Address;
-import com.paypal.merchant.sdk.domain.DefaultResponseHandler;
-import com.paypal.merchant.sdk.domain.Merchant;
+import com.paypal.merchant.sdk.domain.*;
 import com.paypal.merchant.sdk.domain.Merchant.AvailabilityTypeEnum;
 import com.paypal.merchant.sdk.domain.Merchant.MobilityTypeEnum;
-import com.paypal.merchant.sdk.domain.PPError;
 import com.paypal.merchant.sdk.domain.credentials.Credentials;
 import com.paypal.merchant.sdk.domain.credentials.OauthCredentials;
 import com.paypal.sampleapp.R;
@@ -125,10 +122,30 @@ public class OAuthLoginActivity extends MyActivity {
         mUsername = getIntent().getStringExtra("username");
         mPassword = getIntent().getStringExtra("password");
         mUseLive = getIntent().getBooleanExtra("useLive", false);
-
+        // Based on the parameter set in the previous screen
         mMerchantServiceUrl = (mUseLive) ? MERCHANT_SERVICE_LIVE_URL : MERCHANT_SERVICE_STAGE_URL;
-        performOAuthLogin();
+        // Checking to see if the server urls are set above.
+        // NOTE: This check is looking for a url that has the domain "herokuapp.com". If the 3rd apps are using any
+        // other server url, PLEASE REMOVE THIS CHECK.
+        if (isHerokuUrlsSet()) {
+            performOAuthLogin();
+        } else {
+            herokuUrlsNotSetErrorMessage();
+        }
 
+    }
+
+    /**
+     * Method to check if the server urls are provided.
+     * If they arent, dont allow the application to proceed.
+     *
+     * @return
+     */
+    private boolean isHerokuUrlsSet() {
+        if (CommonUtils.isNullOrEmpty(mMerchantServiceUrl) || !mMerchantServiceUrl.contains("herokuapp.com"))
+            return false;
+
+        return true;
     }
 
     /**
@@ -279,6 +296,19 @@ public class OAuthLoginActivity extends MyActivity {
         asyncTask.execute();
     }
 
+
+    /**
+     * If the PayPal login failed, inform the user of the same.
+     */
+    private void loginPayPalFailed() {
+        Log.d(LOG, "doneWithLoginPayPal. Login Failed");
+        CommonUtils.createToastMessage(OAuthLoginActivity.this,
+                "Login failed!");
+
+        hideProgressDialog();
+        goBackToLoginScreen();
+    }
+
     /**
      * If the PayPal login failed, inform the user of the same.
      */
@@ -288,6 +318,15 @@ public class OAuthLoginActivity extends MyActivity {
                 "Login failed!");
         hideProgressDialog();
 
+    }
+
+    private void herokuUrlsNotSetErrorMessage() {
+        Log.d(LOG, "Heroku urls are not set.");
+        CommonUtils.createToastMessage(OAuthLoginActivity.this,
+                "Heroku server urls are not set! Please provide the urls to continue.");
+
+        hideProgressDialog();
+        goBackToLoginScreen();
     }
 
     /**
@@ -330,6 +369,7 @@ public class OAuthLoginActivity extends MyActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        finish();
                     }
                 });
         AlertDialog alert = builder.create();
@@ -506,25 +546,6 @@ public class OAuthLoginActivity extends MyActivity {
         dcipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
         byte[] utf8 = dcipher.doFinal(cipherText);
         return new String(utf8, "UTF8");
-    }
-
-    /**
-     * This decryption method for the access token would first url decode the value and then perform a base 64 decode.
-     * <p/>
-     * We would need to perform this type of decode methodology for all the access tokens obtained after logging in
-     * via the PayPal access web view.
-     *
-     * @param base64EncryptedRawDataString2
-     * @param password
-     * @return
-     * @throws Exception
-     */
-    public String urlDecodeAndBase64Decode(String base64EncryptedRawDataString2, String password) throws Exception {
-
-        String base64EncryptedRawDataString = URLDecoder.decode(
-                base64EncryptedRawDataString2, "UTF-8");
-
-        return base64Decode(base64EncryptedRawDataString, password);
     }
 
     /**
@@ -757,12 +778,7 @@ public class OAuthLoginActivity extends MyActivity {
         protected void onPostExecute(final ArrayList<String> arrayList) {
             if (isFailed()) {
                 // Message the user that their login failed
-                CommonUtils.createToastMessage(OAuthLoginActivity.this,
-                        "Login failed!");
-
-                hideProgressDialog();
-
-                goBackToLoginScreen();
+                loginPayPalFailed();
 
             } else {
                 // Let's now attempt to login to Paypal Access
