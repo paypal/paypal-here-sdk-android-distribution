@@ -5,7 +5,7 @@ Android PayPal Here SDK
 
 This repository contains the distrbutable artifacts of the Android PayPalHereSDK. Here are some quick tips to help you get started:
 
-Gettting Started Guide:
+Getting Started Guide:
 =======================
 1. The folder named docs contains a getting started guide that gives a comprehensive overview what it means to develop apps using the PayPal Here SDK.
 2. The folder named sample_server has a doc that explains the setup procedure and also contains tips on getting started with the sample server. Setting up your own autthentication server is a one time step and we highly encourage setting up the server before getting started with anything else.
