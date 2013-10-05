@@ -120,6 +120,7 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
     private List<SecureCreditCard> mCreditCardList;
     private ListView mCreditCardListView;
     private LinearLayout mCreditCardLayout;
+    private  CheckBox mCheckbox;
 
     /**
      * Initialize the elements in the layout.
@@ -214,8 +215,8 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
             }
         });
 
-        CheckBox c = (CheckBox) findViewById(R.id.handledByApp);
-        c.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mCheckbox = (CheckBox) findViewById(R.id.handledByApp);
+        mCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -248,6 +249,15 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
         paymentCompleted(false);
 
     }
+
+    private void validateCheckbox() {
+        if(mCheckbox.isChecked()) {
+            handledByApp(true);
+        } else {
+            handledByApp(false);
+        }
+    }
+
 
     /**
      * Method to open a tip dialog for the customer to enter a tip amount.
@@ -468,6 +478,8 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
 
         displayPaymentState("Taking payment with Card ... ");
 
+        validateCheckbox();
+
 
         // Call the authorizePayment method to charge the credit card.
         // The SDK would automatically decide whether to make a fixed price
@@ -503,6 +515,8 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
 
 
         displayPaymentState("Taking payment with Card ... ");
+
+        validateCheckbox();
 
         // Call the authorizePayment method to charge the credit card.
         // The SDK would automatically decide whether to make a fixed price
