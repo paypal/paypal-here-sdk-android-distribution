@@ -85,8 +85,8 @@ import java.util.List;
 public class OAuthLoginActivity extends MyActivity {
 
     private static final String LOG = "PayPalHere.OAuthLoginScreen";
-    private static final String MERCHANT_SERVICE_STAGE_URL = "http://morning-tundra-8515.herokuapp.com/";
-    private static final String MERCHANT_SERVICE_LIVE_URL = "http://stormy-hollows-1584.herokuapp.com/";
+    private static final String MERCHANT_SERVICE_STAGE_URL = "";
+    private static final String MERCHANT_SERVICE_LIVE_URL = "/";
     private String mMerchantServiceUrl;
     private String mTicket;
     private Merchant mMerchant;
