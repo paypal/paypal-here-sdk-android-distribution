@@ -1,0 +1,3 @@
+user1	{"username":"user1","password":"a642a77abd7d4f51bf9226ceaf891fcbb5b299b8","client_key":"5fcd6fef-45ce-4c7d-892f-e31a415ea0ab","server_secret":"fa637c37-5071-458b-8161-db6e3bbaba61"}
+user2	{"username":"user2","password":"a642a77abd7d4f51bf9226ceaf891fcbb5b299b8","client_key":"0fbf28c7-90dc-4997-8fe0-560f280055ec","server_secret":"a2a3f12d-08a8-46e9-8695-a9b75a29b4de"}
+user3	{"username":"user3","password":"a642a77abd7d4f51bf9226ceaf891fcbb5b299b8","client_key":"ccb5fc0a-25af-483d-99c9-fc084214b1b6","server_secret":"7b388943-f059-4a06-829b-4878893e99c9"}
