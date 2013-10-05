@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:ems="12"
-                android:text="4217661450985097"
+                android:text="credit card number"
                 android:inputType="number">
             <requestFocus/>
         </EditText>
