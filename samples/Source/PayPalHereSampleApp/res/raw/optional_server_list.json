@@ -1,0 +1,35 @@
+{servers:[
+   {
+      name:"stage2cp13",
+      url:"https://api.stage2cp13.stage.paypal.com"
+   },
+   {
+      name:"stage2md029",
+      url:"https://www.stage2md029.stage.paypal.com"
+   },
+   {
+      name:"stage2md030",
+      url:"https://www.stage2md030.stage.paypal.com"
+   },
+   {
+      name:"stage2pph31",
+      url:"https://www.stage2pph31.stage.paypal.com"
+   },
+   {
+      name:"stage2pph32",
+      url:"https://www.stage2pph32.stage.paypal.com"
+   },
+   {
+      name:"stage2pph03",
+      url:"https://www.stage2pph03.stage.paypal.com"
+   },
+   {
+      name:"stage2pph07",
+      url:"https://www.stage2pph07.stage.paypal.com"
+   },
+   {
+      name:"stage2pph10",
+      url:"https://www.stage2pph10.stage.paypal.com"
+   }
+   ]
+}
