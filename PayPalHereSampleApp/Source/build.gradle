@@ -1,0 +1,60 @@
+buildscript {
+    repositories {
+        mavenCentral()
+
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.8+'
+    }
+}
+
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 17
+    buildToolsVersion "19.0.0"
+
+    defaultConfig {
+        minSdkVersion 10
+        targetSdkVersion 15
+    }
+
+    sourceSets {
+
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs file('src')
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        lintOptions {
+            abortOnError false
+        }
+
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+
+    repositories{
+        mavenCentral()
+        mavenLocal()
+    }
+
+    dependencies {
+        compile fileTree(dir: 'libs', include: '*.jar')
+        compile('com.paypal.merchant.sdk:paypal-sdk:1.2@aar')
+    }
+
+    packagingOptions {
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+}
