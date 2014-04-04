@@ -23,18 +23,24 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
+
 import com.paypal.merchant.sdk.CardReaderListener;
 import com.paypal.merchant.sdk.MerchantManager;
 import com.paypal.merchant.sdk.PayPalHereSDK;
-import com.paypal.merchant.sdk.domain.*;
+import com.paypal.merchant.sdk.domain.Address;
+import com.paypal.merchant.sdk.domain.DefaultResponseHandler;
+import com.paypal.merchant.sdk.domain.DomainFactory;
+import com.paypal.merchant.sdk.domain.Merchant;
 import com.paypal.merchant.sdk.domain.Merchant.AvailabilityTypeEnum;
 import com.paypal.merchant.sdk.domain.Merchant.MobilityTypeEnum;
+import com.paypal.merchant.sdk.domain.PPError;
 import com.paypal.merchant.sdk.domain.credentials.Credentials;
 import com.paypal.merchant.sdk.domain.credentials.OauthCredentials;
 import com.paypal.sampleapp.R;
 import com.paypal.sampleapp.util.AddressUtil;
 import com.paypal.sampleapp.util.CommonUtils;
 import com.paypal.sampleapp.util.ProgressDialogFragment;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -46,12 +52,6 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.AlgorithmParameters;
@@ -60,6 +60,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Currency;
 import java.util.List;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * This activity displays an PayPal login web view dialog for OAuth based login.
@@ -138,10 +145,10 @@ public class OAuthLoginActivity extends MyActivity {
 
     private void setMerchantServiceUrl() {
         String currentServer = PayPalHereSDK.getCurrentServer();
-        if(currentServer.equalsIgnoreCase(PayPalHereSDK.Live)) {
+        if (currentServer.equalsIgnoreCase(PayPalHereSDK.Live)) {
             mUseLive = true;
             mMerchantServiceUrl = MERCHANT_SERVICE_LIVE_URL;
-        } else if(currentServer.equalsIgnoreCase(PayPalHereSDK.Sandbox)) {
+        } else if (currentServer.equalsIgnoreCase(PayPalHereSDK.Sandbox)) {
             mMerchantServiceUrl = MERCHANT_SERVICE_SANDBOX_URL;
         } else {
             mMerchantServiceUrl = MERCHANT_SERVICE_STAGE_URL;
@@ -282,7 +289,7 @@ public class OAuthLoginActivity extends MyActivity {
         Address address = null;
         Merchant m = PayPalHereSDK.getMerchantManager().getActiveMerchant();
 
-        if(m.getEmail().contains("uk") || m.getEmail().contains("UK")) {
+        if (m.getEmail().contains("uk") || m.getEmail().contains("UK")) {
 
             address = AddressUtil.getDefaultUKMerchantAddress();
             m.setMerchantCurrency(Currency.getInstance("GBP"));
@@ -391,14 +398,16 @@ public class OAuthLoginActivity extends MyActivity {
                         dialog.dismiss();
                         getURL(url);
                     }
-                });
+                }
+        );
         builder.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                });
+                }
+        );
         AlertDialog alert = builder.create();
         alert.show();
         hideProgressDialog();
@@ -594,7 +603,7 @@ public class OAuthLoginActivity extends MyActivity {
         Log.d("Access Token", accessToken);
         // Init the SDK with the current merchant credentials.
         PayPalHereSDK.setCredentials(credentials, new DefaultResponseHandler<Merchant,
-                PPError<MerchantManager.MerchantErrors>>() {
+                        PPError<MerchantManager.MerchantErrors>>() {
             @SuppressLint("NewApi")
             @Override
             public void onSuccess(Merchant merchant) {
@@ -618,7 +627,8 @@ public class OAuthLoginActivity extends MyActivity {
             public void onError(PPError<MerchantManager.MerchantErrors> arg0) {
                 Log.e(LOG,
                         "Merchant init failed : "
-                                + arg0.getDetailedMessage());
+                                + arg0.getDetailedMessage()
+                );
 
                 loginPayPalFailed(arg0.getDetailedMessage());
             }
@@ -648,7 +658,8 @@ public class OAuthLoginActivity extends MyActivity {
 
                         Log.e(LOG, "checkin unsuccessful. " + error.getDetailedMessage());
                     }
-                });
+                }
+        );
 
     }
 

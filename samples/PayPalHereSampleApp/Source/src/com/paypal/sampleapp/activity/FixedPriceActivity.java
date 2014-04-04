@@ -15,9 +15,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+
 import com.paypal.merchant.sdk.CardReaderListener;
 import com.paypal.merchant.sdk.PayPalHereSDK;
-import com.paypal.merchant.sdk.domain.*;
+import com.paypal.merchant.sdk.domain.ChipAndPinDecisionEvent;
+import com.paypal.merchant.sdk.domain.Invoice;
+import com.paypal.merchant.sdk.domain.PPError;
+import com.paypal.merchant.sdk.domain.SecureCreditCard;
 import com.paypal.sampleapp.R;
 import com.paypal.sampleapp.util.CommonUtils;
 
@@ -91,7 +95,7 @@ public class FixedPriceActivity extends MyActivity implements CardReaderListener
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == REQ_CODE) {
+        if (requestCode == REQ_CODE) {
             mFixedPrice.setText("");
             mFixedPriceVal = BigDecimal.ZERO;
         }

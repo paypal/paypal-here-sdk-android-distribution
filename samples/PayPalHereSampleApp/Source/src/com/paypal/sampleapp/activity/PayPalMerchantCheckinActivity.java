@@ -6,9 +6,7 @@
  */
 package com.paypal.sampleapp.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+
 import com.paypal.merchant.sdk.MerchantManager;
 import com.paypal.merchant.sdk.PayPalHereSDK;
 import com.paypal.merchant.sdk.TransactionManager;
@@ -203,7 +202,6 @@ public class PayPalMerchantCheckinActivity extends MyActivity {
     private void takePaymentWithCheckedInClient(CheckedInClient client) {
 
 
-
         displayPaymentState("Taking payment... ");
         // Invoke the API with the checked in customer to take the payment.
 
@@ -212,7 +210,7 @@ public class PayPalMerchantCheckinActivity extends MyActivity {
         // payment goes through successfully or if it returns back with a failure,
         // all the above mentioned objects are removed and the app would need to call beginPayment once again to
         // re-init, set the invoice back and try again.
-        PayPalHereSDK.getTransactionManager().authorizePayment(client, null, mPaymentResponseHandler);
+        PayPalHereSDK.getTransactionManager().processPayment(client, null, mPaymentResponseHandler);
     }
 
     private void updateUIForPurchaseError(PPError<TransactionManager.PaymentErrors> e) {

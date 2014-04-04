@@ -16,9 +16,15 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+
 import com.paypal.merchant.sdk.CardReaderListener;
 import com.paypal.merchant.sdk.PayPalHereSDK;
-import com.paypal.merchant.sdk.domain.*;
+import com.paypal.merchant.sdk.domain.ChipAndPinDecisionEvent;
+import com.paypal.merchant.sdk.domain.DomainFactory;
+import com.paypal.merchant.sdk.domain.Invoice;
+import com.paypal.merchant.sdk.domain.InvoiceItem;
+import com.paypal.merchant.sdk.domain.PPError;
+import com.paypal.merchant.sdk.domain.SecureCreditCard;
 import com.paypal.sampleapp.R;
 import com.paypal.sampleapp.adapter.InvoiceItemListViewAdapter;
 import com.paypal.sampleapp.util.CommonUtils;
@@ -205,7 +211,7 @@ public class ItemizedActivity extends MyActivity implements CardReaderListener {
         // Add the item into the invoice, with the quantity 1.
         // NOTE: the quantity would get updated as we keep adding or removing items.
         // In order to remove an item, use : mInvoice.addItem(i, new Long(-1));
-        mInvoice.addItem(i, new Long(1));
+        mInvoice.addItem(i, BigDecimal.ONE);
         // To update the UI with the new list of items in the invoice.
         mAdapter.notifyDataSetChanged();
     }
@@ -239,7 +245,7 @@ public class ItemizedActivity extends MyActivity implements CardReaderListener {
         // Display a message stating that the card swipe was successful.
         // NOTE: Once the card has been successfully swiped or read, the SDK holds on to it as well as returns the
         // same in this method (paymentCard) for the app to hold the same if they want or need to.
-        // So, when we do a authorizePayment in the next screen to take the payment and complete the transaction,
+        // So, when we do a processPayment in the next screen to take the payment and complete the transaction,
         // this card data (that is held by the SDK) is used and charged against.
         CommonUtils.createToastMessage(ItemizedActivity.this, "Card read successful!!!");
     }

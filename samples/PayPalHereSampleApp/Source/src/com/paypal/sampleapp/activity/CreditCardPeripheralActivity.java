@@ -17,7 +17,15 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import com.paypal.merchant.sdk.CardReaderListener;
 import com.paypal.merchant.sdk.PayPalHereSDK;
 import com.paypal.merchant.sdk.TransactionListener;
@@ -26,7 +34,13 @@ import com.paypal.merchant.sdk.TransactionManager.CancelPaymentErrors;
 import com.paypal.merchant.sdk.TransactionManager.PaymentErrors;
 import com.paypal.merchant.sdk.TransactionManager.PaymentResponse;
 import com.paypal.merchant.sdk.TransactionManager.PaymentType;
-import com.paypal.merchant.sdk.domain.*;
+import com.paypal.merchant.sdk.domain.ChipAndPinDecisionEvent;
+import com.paypal.merchant.sdk.domain.Currency;
+import com.paypal.merchant.sdk.domain.DefaultResponseHandler;
+import com.paypal.merchant.sdk.domain.Invoice;
+import com.paypal.merchant.sdk.domain.PPError;
+import com.paypal.merchant.sdk.domain.SecureCreditCard;
+import com.paypal.merchant.sdk.domain.TransactionRecord;
 import com.paypal.merchant.sdk.domain.shopping.Tip;
 import com.paypal.sampleapp.R;
 import com.paypal.sampleapp.adapter.ChipAndPinDecisionListAdapter;
@@ -56,8 +70,8 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
      * Implementing a PaymentResponseHandler to handle the response status of a
      * transaction.
      */
-    DefaultResponseHandler<PaymentResponse, PPError<TransactionManager.PaymentErrors>> mPaymentResponseHandler = new
-            DefaultResponseHandler<PaymentResponse, PPError<TransactionManager.PaymentErrors>>() {
+    DefaultResponseHandler<PaymentResponse, PPError<PaymentErrors>> mPaymentResponseHandler = new
+            DefaultResponseHandler<PaymentResponse, PPError<PaymentErrors>>() {
                 // If the transaction went through successfully.
                 public void onSuccess(PaymentResponse response) {
 
@@ -413,8 +427,9 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
             if (!CommonUtils.isNullOrEmpty(response.getTransactionRecord().getTransactionId()))
                 displayPaymentState("Payment completed successfully!  TransactionId: " + response.getTransactionRecord()
                         .getTransactionId());
-            else displayPaymentState("Payment completed successfully!  Invoice Id: " + response.getTransactionRecord()
-                    .getPayPalInvoiceId());
+            else
+                displayPaymentState("Payment completed successfully!  Invoice Id: " + response.getTransactionRecord()
+                        .getPayPalInvoiceId());
 
             if (mCardData.getDataSourceType() == SecureCreditCard.DataSourceType.MAGTEK
                     || mCardData.getDataSourceType() == SecureCreditCard.DataSourceType.ROAM) {
@@ -514,7 +529,8 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
         if (PayPalHereSDK.getTransactionManager().isProcessingAPayment()) {
             CommonUtils.createToastMessage(CreditCardPeripheralActivity.this,
                     "Please wait until the current purchase" +
-                            " is completed.");
+                            " is completed."
+            );
             return;
         }
         // Hide the transaction related buttons.
@@ -526,7 +542,7 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
         validateCheckbox();
 
 
-        // Call the authorizePayment method to charge the credit card.
+        // Call the processPayment method to charge the credit card.
         // The SDK would automatically decide whether to make a fixed price
         // transaction or an itemized transaction based on the
         // "BeginPayment" type selected by the app.
@@ -537,7 +553,7 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
         // all the above mentioned objects are removed and the app would need to call beginPayment once again to
         // re-init, set the invoice back and try again.
 
-        PayPalHereSDK.getTransactionManager().authorizePayment(selectedCard, mTransactionController,
+        PayPalHereSDK.getTransactionManager().processPayment(selectedCard, mTransactionController,
                 mPaymentResponseHandler);
     }
 
@@ -552,7 +568,8 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
         if (PayPalHereSDK.getTransactionManager().isProcessingAPayment()) {
             CommonUtils.createToastMessage(CreditCardPeripheralActivity.this,
                     "Please wait until the current purchase" +
-                            " is completed.");
+                            " is completed."
+            );
             return;
         }
         showButtons(false);
@@ -563,7 +580,7 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
 
         validateCheckbox();
 
-        // Call the authorizePayment method to charge the credit card.
+        // Call the processPayment method to charge the credit card.
         // The SDK would automatically decide whether to make a fixed price
         // transaction or an itemized transaction based on the
         // "BeginTransaction" type selected by the app.
@@ -573,7 +590,7 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
         // payment goes through successfully or if it returns back with a failure,
         // all the above mentioned objects are removed and the app would need to call beginPayment once again to
         // re-init, set the invoice back and try again.
-        PayPalHereSDK.getTransactionManager().authorizePayment(PaymentType.CardReader, mTransactionController,
+        PayPalHereSDK.getTransactionManager().processPayment(PaymentType.CardReader, mTransactionController,
                 mPaymentResponseHandler);
 
     }
@@ -603,8 +620,8 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
         displayPaymentState("Cancelling Payment...");
 
         // Meant to cancel any on-going transaction.
-        // NOTE: This method should NOT be called once the authorizePayment has been invoked as there isnt a way to
-        // cancel an on-going payment with the back end service. authorizePayment should be invoked once we know
+        // NOTE: This method should NOT be called once the processPayment has been invoked as there isnt a way to
+        // cancel an on-going payment with the back end service. processPayment should be invoked once we know
         // the customer is willing to pay the said amount and if, for some reason,
         // after the authorize payment is called, if the customer wants to cancel the payment,
         // they would need to ask for a refund.
@@ -639,14 +656,14 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
     private void finalizePayment() {
         displayPaymentState("Finalizing the payment...");
         // In order invoke this api, we would need to save and use the transaction record that was obtained from the
-        // previous authorizePayment API. The transaction record would have the invoice ID which is needed by the
+        // previous processPayment API. The transaction record would have the invoice ID which is needed by the
         // finalizePayment API to complete the transaction.
         PayPalHereSDK.getTransactionManager().finalizePayment(mTransactionRecord, MyActivity.getBitmap(),
                 new DefaultResponseHandler<PaymentResponse, PPError<PaymentErrors>>() {
                     @Override
                     public void onSuccess(PaymentResponse paymentResponse) {
                         if (!CommonUtils.isNullOrEmpty(mTransactionRecord.getTransactionId()))
-                            displayPaymentState("Payment completed successfully!  TransactionId: " +mTransactionRecord
+                            displayPaymentState("Payment completed successfully!  TransactionId: " + mTransactionRecord
                                     .getTransactionId());
                         else
                             displayPaymentState("Payment completed successfully!  Invoice Id: " + mTransactionRecord
@@ -658,7 +675,8 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
 
                         displayPaymentState(paymentErrorsPPError.getDetailedMessage());
                     }
-                });
+                }
+        );
     }
 
     private void sendReceipt() {
@@ -824,16 +842,10 @@ public class CreditCardPeripheralActivity extends MyActivity implements Transact
         String msg = "";
         switch (type) {
             case CardInserted:
-                Log.d(LOG,"Card Inserted. Calling InitiateEMVTransaction");
-                String code = PayPalHereSDK.getMerchantManager().getActiveMerchant().getMerchantCurrency().getCurrencyCode();
-                Currency c = Currency.BRITISH_POUND;
-                if("USD".equals(code)){
-                    c = Currency.UNITED_STATES_DOLLAR;
-                }else if("GBP".equals(code)){
-                    c = Currency.BRITISH_POUND;
-                }
-                PayPalHereSDK.getCardReaderManager().initiateEmvSaleTransaction((long)PayPalHereSDK.getTransactionManager().getActiveInvoice().getGrandTotal().doubleValue()*100, c);
-
+                Log.d(LOG, "Card Inserted. Calling InitiateEMVTransaction");
+                msg = "Card inserted.";
+                PayPalHereSDK.getTransactionManager().initiateEMVTransaction(mInvoice.getGrandTotal(), Currency.BRITISH_POUND, TransactionManager.InitiateTransactionEnum.Sale);
+                break;
             case CardBlocked:
                 msg = "Card blocked!  Please use another card.";
                 break;
