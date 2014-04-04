@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.paypal.merchant.sdk.domain.CheckedInClient;
 import com.paypal.sampleapp.R;
 import com.paypal.sampleapp.util.CommonUtils;

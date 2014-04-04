@@ -18,10 +18,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.paypal.merchant.sdk.CardReaderListener;
 import com.paypal.merchant.sdk.CardReaderManager;
 import com.paypal.merchant.sdk.PayPalHereSDK;
-import com.paypal.merchant.sdk.domain.*;
+import com.paypal.merchant.sdk.domain.ChipAndPinDecisionEvent;
+import com.paypal.merchant.sdk.domain.ChipAndPinStatusUpdateHandler;
+import com.paypal.merchant.sdk.domain.EMVDeviceData;
+import com.paypal.merchant.sdk.domain.PPError;
+import com.paypal.merchant.sdk.domain.SecureCreditCard;
 import com.paypal.sampleapp.R;
 import com.paypal.sampleapp.util.CommonUtils;
 
@@ -30,29 +35,13 @@ import java.util.List;
 
 public class EMVOnlyActivity extends MyActivity implements CardReaderListener {
     private static final String LOG = "EMVOnlyAcitivity";
-    private static final int BT_REQ_CODE = 1234;
-    private BluetoothDevice mEMVDevice;
-    private BluetoothAdapter mBTAdapter;
-    private CardReaderManager mPeripheralsManager;
-    private ProgressDialog mProgressDialog;
-    private AlertDialog mAlertDialog;
-    private Button mDisconnectBTDeviceButton;
-    private Button mGetBatteryLevelButton;
-    private Button mGetEmvDeviceDataButton;
-    private TextView mDeviceName;
-    private TextView mSerialNumber;
-    private TextView mFirmwareVersion;
-    private TextView mOSVersion;
-    private TextView mLastKnowBatteryLevel;
-    private TextView mConnectionStatus;
-
     /**
      * Connection handler implementation.
      * This handler receives events while the device is trying to connect to the terminal and checks with the backend
      * if a software update on the terminal is required or not.
      */
     private ChipAndPinStatusUpdateHandler<CardReaderManager.ChipAndPinStatusResponse,
-            PPError<CardReaderManager.ChipAndPinConnectionStatus>> mConnectionHandler
+                PPError<CardReaderManager.ChipAndPinConnectionStatus>> mConnectionHandler
             = new ChipAndPinStatusUpdateHandler<CardReaderManager.ChipAndPinStatusResponse,
             PPError<CardReaderManager.ChipAndPinConnectionStatus>>() {
         @Override
@@ -185,6 +174,21 @@ public class EMVOnlyActivity extends MyActivity implements CardReaderListener {
             }
         }
     };
+    private static final int BT_REQ_CODE = 1234;
+    private BluetoothDevice mEMVDevice;
+    private BluetoothAdapter mBTAdapter;
+    private CardReaderManager mPeripheralsManager;
+    private ProgressDialog mProgressDialog;
+    private AlertDialog mAlertDialog;
+    private Button mDisconnectBTDeviceButton;
+    private Button mGetBatteryLevelButton;
+    private Button mGetEmvDeviceDataButton;
+    private TextView mDeviceName;
+    private TextView mSerialNumber;
+    private TextView mFirmwareVersion;
+    private TextView mOSVersion;
+    private TextView mLastKnowBatteryLevel;
+    private TextView mConnectionStatus;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -326,7 +330,7 @@ public class EMVOnlyActivity extends MyActivity implements CardReaderListener {
 
         mLastKnowBatteryLevel.setText(data.getLastKnownBatteryLevel() + "");
 
-        mConnectionStatus.setText(data.getConnectionStatus() == null ? ""  : data
+        mConnectionStatus.setText(data.getConnectionStatus() == null ? "" : data
                 .getConnectionStatus().toString());
     }
 

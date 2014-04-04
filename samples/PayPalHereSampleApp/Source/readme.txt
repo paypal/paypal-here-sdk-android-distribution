@@ -12,7 +12,7 @@ IMPORTANT STEP TO BE FOLLOWED BEFORE COMPILING THE SAMPLE APP
 Android Gradle build system doesn't allow referencing the .aar files locally by keeping them in libs folder. Instead they have to be referenced as remote maven artifacts. 
 For that first we will install the PayPalHereSDK-X.X.aar file in local Maven repositories and reference it as local maven artifact.
 Command for installing PayPalHereSDK-X.X.aar as local maven artifact
-mvn install:install-file -Dfile=[location where the PayPalHereSDK.aar files exists ex. sdk/PayPalHereSDK-X.X.aar] -DgroupId=com.paypal.merchant.sdk -DartifactId=paypal-sdk -Dversion=1.2 -Dpackaging=aar
+mvn install:install-file -Dfile=[location where the PayPalHereSDK.aar files exists ex. sdk/PayPalHereSDK-X.X.aar] -DgroupId=com.paypal.merchant.sdk -DartifactId=paypal-sdk -Dversion=[X.X] -Dpackaging=aar
 
 
 STEPS TO IMPORT AND COMPILE THE PayPalHereSampleApp

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PayPal Here EMV Sample App</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- String related to -->
+    <string name="action_connect_to_device">Connect To Device</string>
+    <string name="action_disconnect_device">Disconnect the Device</string>
+
+    <!-- Strings related to LoginScreenActivity -->
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="title_login">Login</string>
+    <string name="title_env">Connected To:</string>
+    <string name="invalid_user_credentials">Please enter both the user credentials.</string>
+    <string name="title_address_1">Address 1</string>
+    <string name="title_address_2">Address 2</string>
+    <string name="title_city">City</string>
+    <string name="title_state">State</string>
+    <string name="title_country">Country</string>
+    <string name="title_zip">Zip</string>
+    <string name="invalid_login">Invalid Credentials. Please login again..</string>
+    <string name="credentials_refreshed">Credentials refreshed..</string>
+
+    <!-- String related to Main Activity -->
+    <string name="button_charge">Charge</string>
+    <string name="amount_hint">Enter the Amount</string>
+    <string name="reader_status_msg">Reader Status:</string>
+    <string name="reader_connect">Connect to Reader</string>
+    <string name="reader_disconnect">Disconnect the Reader</string>
+    <string name="reader_connected">Connected</string>
+    <string name="reader_not_connected">Not Connected</string>
+    <string name="reader_connect_success_toast_msg">Successfully able to connect the reader
+        device!!
+    </string>
+    <string name="reader_connect_fail_toast_msg">Failed to connect to the reader device!!</string>
+    <string name="reader_connected_toast_msg">Card Reader Device Connected</string>
+    <string name="reader_disconnected_toast_msg">Card Reader Device Disconnected</string>
+    <string name="no_charge_because_reader_not_connected">Currently there is no reader device
+        connected. Hence can\'t take any payments at ths time..
+    </string>
+    <string name="no_charge_because_amount_not_valid">Please enter the valid amount..</string>
+    <string name="payment_succesful">Successfully charged %s to your credit card!!</string>
+    <string name="payment_failure">Failed to charge %s to your credit card... Please try again..
+    </string>
+    <string name="exit_dialog_title">Exit</string>
+    <string name="exit_dialog_msg">Do you want to Exit out of EMV Sample App?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <!-- Activity Label Strings -->
+    <string name="login_activity_name">Login</string>
+    <string name="oauth_login_activity_name">Login</string>
+    <string name="stage_select_activity_name">Server Selection</string>
+    <string name="main_activity_name">EMV Sample App</string>
+
+    <!-- SDK Related Strings-->
+    <string name="merchant_banner_message">Joe\'s Pizza</string>
+    <string name="merchant_checkin_succesful">Merchant Check-in Successful...</string>
+    <string name="merchant_checkin_unsuccesful">Merchant Check-in Unsuccessful.</string>
+</resources>

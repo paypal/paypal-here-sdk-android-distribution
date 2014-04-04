@@ -8,7 +8,6 @@
 package com.paypal.sampleapp.activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -20,6 +19,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.paypal.merchant.sdk.PayPalHereSDK;
 import com.paypal.merchant.sdk.TransactionManager;
 import com.paypal.merchant.sdk.TransactionManager.PaymentResponse;
@@ -201,7 +201,7 @@ public class CreditCardManualActivity extends MyActivity {
         // payment goes through successfully or if it returns back with a failure,
         // all the above mentioned objects are removed and the app would need to call beginPayment once again to
         // re-init, set the invoice and try again.
-        PayPalHereSDK.getTransactionManager().authorizePayment(manualEntryCardData, null, mPaymentResponseHandler);
+        PayPalHereSDK.getTransactionManager().processPayment(manualEntryCardData, null, mPaymentResponseHandler);
 
     }
 

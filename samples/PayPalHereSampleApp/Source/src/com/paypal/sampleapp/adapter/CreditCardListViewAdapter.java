@@ -10,9 +10,9 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.paypal.merchant.sdk.domain.SecureCreditCard;
 import com.paypal.sampleapp.R;
-import com.paypal.sampleapp.util.CommonUtils;
 
 import java.util.List;
 

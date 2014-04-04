@@ -8,11 +8,11 @@ package com.paypal.sampleapp.activity;
 
 import android.app.TabActivity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import com.paypal.merchant.sdk.MerchantManager;
 import com.paypal.merchant.sdk.PayPalHereSDK;
 import com.paypal.merchant.sdk.domain.DefaultResponseHandler;
@@ -69,7 +69,8 @@ public class OptionsMenuBaseActivity extends TabActivity {
 
                                 Log.e(LOG, "Checkin unsuccessful. " + error.getDetailedMessage());
                             }
-                        });
+                        }
+                );
 
                 returnValue = true;
 

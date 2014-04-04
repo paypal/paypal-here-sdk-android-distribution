@@ -1,31 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:paddingBottom="@dimen/activity_vertical_margin"
-              android:paddingLeft="@dimen/activity_horizontal_margin"
-              android:paddingRight="@dimen/activity_horizontal_margin"
-              android:paddingTop="@dimen/activity_vertical_margin">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
 
-    <EditText
-            android:id="@+id/bn_code"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:hint="@string/title_bn_code"/>
+    <EditText android:id="@+id/bn_code" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:hint="@string/title_bn_code" />
 
-    <EditText
-            android:id="@+id/cashier_id"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:hint="@string/title_cashier_id"
-            android:layout_marginTop="10dp"/>
+    <EditText android:id="@+id/cashier_id" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_marginTop="10dp"
+        android:hint="@string/title_cashier_id" />
 
-    <Button
-            android:id="@+id/sdk_settings_button"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="@string/title_sdk_settings_button"
-            android:layout_marginTop="10dp"/>
+    <Button android:id="@+id/sdk_settings_button" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_marginTop="10dp"
+        android:text="@string/title_sdk_settings_button" />
 </LinearLayout>

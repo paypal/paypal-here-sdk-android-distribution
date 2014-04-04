@@ -15,12 +15,22 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.paypal.merchant.sdk.PayPalHereSDK;
 import com.paypal.sampleapp.R;
 import com.paypal.sampleapp.util.CommonUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
 
 /**
  * This activity acts as the login screen that enables users to log in to the app. Steps to login include:

@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+
 import com.paypal.merchant.sdk.AuthenticationListener;
 import com.paypal.merchant.sdk.MerchantManager;
 import com.paypal.merchant.sdk.PayPalHereSDK;
@@ -29,6 +30,7 @@ import com.paypal.merchant.sdk.domain.PPError;
 import com.paypal.merchant.sdk.domain.credentials.Credentials;
 import com.paypal.merchant.sdk.domain.credentials.OauthCredentials;
 import com.paypal.sampleapp.util.CommonUtils;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -56,27 +58,6 @@ public class MyActivity extends Activity {
     private static BluetoothDevice sEmvDevice;
     private static String sAccessToken;
     private static boolean sIsHandledByApp = false;
-    private static String sBNCode;
-    private static String sCashierId;
-    /**
-     * An authentication listener that is registered with the SDK and would be called when the access token of the
-     * merchant expires.
-     */
-    protected AuthenticationListener authenticationListener = new AuthenticationListener() {
-        @Override
-        public void onInvalidToken() {
-
-            String refreshUrl = getRefreshUrl();
-            if (CommonUtils.isNullOrEmpty(refreshUrl)) {
-                sHandler.sendEmptyMessage(0);
-                return;
-            }
-
-            RefreshTokenTask refreshAccessTokenTask = new RefreshTokenTask();
-            refreshAccessTokenTask.execute(refreshUrl);
-
-        }
-    };
     /**
      * Implementing the transaction controller that acts as an interceptor for pre and post authorize events.
      */
@@ -96,9 +77,29 @@ public class MyActivity extends Activity {
         }
 
         @Override
-        public Bitmap onPostAuthorize(boolean b, boolean b2) {
+        public void onPostAuthorize(boolean didFail) {
             CommonUtils.createToastMessage(MyActivity.this, "OnPostAuthorize!!!");
-            return null;
+        }
+    };
+    private static String sBNCode;
+    private static String sCashierId;
+    /**
+     * An authentication listener that is registered with the SDK and would be called when the access token of the
+     * merchant expires.
+     */
+    protected AuthenticationListener authenticationListener = new AuthenticationListener() {
+        @Override
+        public void onInvalidToken() {
+
+            String refreshUrl = getRefreshUrl();
+            if (CommonUtils.isNullOrEmpty(refreshUrl)) {
+                sHandler.sendEmptyMessage(0);
+                return;
+            }
+
+            RefreshTokenTask refreshAccessTokenTask = new RefreshTokenTask();
+            refreshAccessTokenTask.execute(refreshUrl);
+
         }
     };
     /**
@@ -370,7 +371,8 @@ public class MyActivity extends Activity {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                         }
-                    });
+                    }
+            );
             d.show();
         }
     }
