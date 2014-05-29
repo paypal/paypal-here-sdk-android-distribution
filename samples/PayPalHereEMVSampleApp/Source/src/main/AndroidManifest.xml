@@ -22,11 +22,11 @@
         <activity android:name="com.paypal.emv.sampleapp.DeviceConnectActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/main_activity_name"
-            android:theme="@style/Theme.transparent" />
+            android:theme="@style/SDK.Theme.transparent" />
         <activity android:name="com.paypal.merchant.sdk.internal.activities.EMVPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/sdk_app_name"
-            android:theme="@style/Theme.transparent" />
+            android:theme="@style/SDK.Theme.transparent" />
         <activity android:name="com.paypal.merchant.sdk.internal.activities.EMVSignatureActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:label="@string/sdk_app_name" android:screenOrientation="landscape"></activity>

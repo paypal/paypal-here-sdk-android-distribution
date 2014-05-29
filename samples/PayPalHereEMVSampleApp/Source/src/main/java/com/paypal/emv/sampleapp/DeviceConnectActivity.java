@@ -41,7 +41,7 @@ public class DeviceConnectActivity extends Activity {
         Log.d(LOG_TAG, "onCreate IN");
         setContentView(R.layout.sdk_empy_layout);
         LinearLayout layout = (LinearLayout) findViewById(R.id.main_layout);
-        mAlertDialogTheme = new ContextThemeWrapper(this, R.style.Theme_AlertDialog);
+        mAlertDialogTheme = new ContextThemeWrapper(this, R.style.SDK_Theme_AlertDialog);
     }
 
     @Override
