@@ -102,7 +102,7 @@ public class MainActivity extends Activity {
                 }
                 BigDecimal amount = new BigDecimal(mAmount);
                 mTransactionManager.beginPayment(amount);
-                mTransactionManager.authorizePayment(MainActivity.this, new CallbackHandler());
+                mTransactionManager.processPayment(MainActivity.this, new CallbackHandler());
             }
         });
     }

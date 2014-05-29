@@ -120,8 +120,8 @@ public class OAuthLoginActivity extends Activity {
                 return;
             }
 
-            RefreshTokenTask refreshAccessTokenTask = new RefreshTokenTask();
-            refreshAccessTokenTask.execute(refreshUrl);
+            //RefreshTokenTask refreshAccessTokenTask = new RefreshTokenTask();
+            //refreshAccessTokenTask.execute(refreshUrl);
 
         }
     };
@@ -518,7 +518,7 @@ public class OAuthLoginActivity extends Activity {
 
 
                         // Set the merchant credentials within the PayPalHere SDK.
-                        setMerchantAndCheckIn(decryptedAccessToken, refreshUrlToUse);
+                        setMerchantAndCheckIn(decryptedAccessToken, refreshUrlToUse,expiry);
 
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -553,7 +553,7 @@ public class OAuthLoginActivity extends Activity {
                     mUsername +
                     "/" + encodedToken;
             // Set the merchant credetials within the PayPalHere SDK.
-            setMerchantAndCheckIn(decryptedAccessToken, refreshUrlToUse);
+            setMerchantAndCheckIn(decryptedAccessToken, refreshUrlToUse,expiry);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -613,12 +613,12 @@ public class OAuthLoginActivity extends Activity {
      *
      * @param accessToken
      */
-    private void setMerchantAndCheckIn(String accessToken, String refreshUrl) {
+    private void setMerchantAndCheckIn(String accessToken, String refreshUrl,String expiry) {
         saveRefreshUrl(refreshUrl);
         saveAccessToken(accessToken);
         /* Create a credentials obj based off of the decrypted access token.
            Should also implement a callback listener in case the access token is expired. */
-        Credentials credentials = new OauthCredentials(accessToken);
+        Credentials credentials = new OauthCredentials(accessToken,refreshUrl,expiry);
         Log.d("Access Token", accessToken);
         // Init the SDK with the current merchant credentials.
         PayPalHereSDK.setCredentials(credentials, new DefaultResponseHandler<Merchant,
@@ -1001,68 +1001,6 @@ public class OAuthLoginActivity extends Activity {
                             getRefreshUrl(), getExpiry());
 
             }
-        }
-    }
-
-    /**
-     * This async task is meant to invoke the refresh url and fetch a new access token via http.
-     */
-    private class RefreshTokenTask extends AsyncTask<String, String, String> {
-
-        private String accessToken;
-        private String refreshUrl;
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            try {
-                HttpClient client = new DefaultHttpClient();
-                HttpGet get = new HttpGet(params[0]);
-                HttpResponse resp = client.execute(get);
-                if (resp.getStatusLine().getStatusCode() != 200) {
-
-                    String responseBody = EntityUtils.toString(resp.getEntity());
-                    JSONObject json = new JSONObject(responseBody);
-                    // Extract the ticket from the JSON response.
-                    this.accessToken = json.getString("access_token");
-                    this.refreshUrl = json.getString("refresh_url");
-                }
-            } catch (Exception e) {
-                Log.e(LOG, e.getMessage());
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-
-            if (null == this.accessToken || this.accessToken.length() <= 0 || null == this.refreshUrl || this.refreshUrl.length() <= 0) {
-                mHandler.sendEmptyMessage(HANDLER_MESSAGE_INVALID_CREDENTIALS);
-                return;
-            }
-            // Save the new refresh url.
-            saveRefreshUrl(this.refreshUrl);
-            saveAccessToken(this.accessToken);
-            // Create a new Credentials object with the newly obtained access token.
-            Credentials cred = new OauthCredentials(this.accessToken);
-            // Set the credentials object within the SDK.
-            PayPalHereSDK.setCredentials(cred, new DefaultResponseHandler<Merchant,
-                                PPError<MerchantManager.MerchantErrors>>() {
-
-                @Override
-                public void onSuccess(Merchant merchant) {
-                    // If a success, just send a toast message via the handler.
-                    mHandler.sendEmptyMessage(HANDELR_MESSAGE_TOKEN_REFRESH_SUCCESS);
-                }
-
-                @Override
-                public void onError(PPError<MerchantManager.MerchantErrors> merchantErrorsPPError) {
-                    // In case of a failure, logout the merchant and ask them to login back again.
-                    mHandler.sendEmptyMessage(HANDLER_MESSAGE_INVALID_CREDENTIALS);
-                }
-            });
-
-
         }
     }
 }
