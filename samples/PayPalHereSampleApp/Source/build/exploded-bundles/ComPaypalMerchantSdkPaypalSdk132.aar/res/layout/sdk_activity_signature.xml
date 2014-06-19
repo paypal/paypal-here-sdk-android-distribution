@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/signature_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/clear_sig"
+            android:layout_width="@dimen/signature_image_button_width"
+            android:layout_height="@dimen/signature_image_button_height"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/signature_image_button_padding_left"
+            android:layout_marginRight="@dimen/signature_image_button_padding_right"
+            android:scaleType="fitXY"
+            android:src="@drawable/wrong" />
+
+        <ImageButton
+            android:id="@+id/use_sig"
+            android:layout_width="@dimen/signature_image_button_width"
+            android:layout_height="@dimen/signature_image_button_height"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/signature_image_button_padding_left"
+            android:layout_marginRight="@dimen/signature_image_button_padding_right"
+            android:scaleType="fitXY"
+            android:src="@drawable/right" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/signature_image_button_height"
+            android:layout_toLeftOf="@id/use_sig"
+            android:layout_toRightOf="@id/clear_sig"
+            android:text="@string/sdk_signature_msg"
+            android:textSize="@dimen/signature_msg_test_size" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/signature"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/nav_bar"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/signature_view_padding_bottom" />
+
+</RelativeLayout><!-- From: file:/Users/Shared/Jenkins/Home/workspace/Android_SDK_1.X_Release/sdk/res/layout/sdk_activity_signature.xml -->

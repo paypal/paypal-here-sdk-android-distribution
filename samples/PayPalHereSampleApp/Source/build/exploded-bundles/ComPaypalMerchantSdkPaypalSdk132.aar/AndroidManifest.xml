@@ -1,0 +1,21 @@
+<!-- From: file:/Users/Shared/Jenkins/Home/workspace/Android_SDK_1.X_Release/sdk/AndroidManifest.xml --><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.paypal.merchant.sdk">
+    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="15"/>
+
+    <uses-permission android:name="android.permission.ACCESS_GPS"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <application android:label="@string/sdk_app_name">
+    <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:label="@string/sdk_app_name" android:name="com.paypal.merchant.sdk.internal.activities.EMVDeviceConnectActivity" android:theme="@style/SDK.Theme.transparent"/>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:label="@string/sdk_app_name" android:name="com.paypal.merchant.sdk.internal.activities.EMVPaymentActivity" android:theme="@style/SDK.Theme.transparent"/>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize|screenLayout" android:label="@string/sdk_app_name" android:name="com.paypal.merchant.sdk.internal.activities.EMVSignatureActivity" android:screenOrientation="landscape"/>
+    </application>
+</manifest>

@@ -1,0 +1,12 @@
+{
+    "servers": [
+        {
+            "name": "Sandbox",
+            "url": "https://www.sandbox.paypal.com"
+        },
+        {
+            "name": "Live",
+            "url": "https://www.paypal.com"
+        }
+    ]
+}

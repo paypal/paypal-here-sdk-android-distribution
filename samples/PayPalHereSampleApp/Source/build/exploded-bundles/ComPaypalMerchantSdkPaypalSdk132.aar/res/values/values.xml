@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/Users/Shared/Jenkins/Home/workspace/Android_SDK_1.X_Release/sdk/res/values/dimens.xml -->
+    <eat-comment />
+
+    <dimen name="sdk_activity_horizontal_margin">16dp</dimen>
+    <dimen name="sdk_activity_vertical_margin">16dp</dimen>
+    <dimen name="signature_image_button_height">50dp</dimen>
+    <dimen name="signature_image_button_padding_left">10dp</dimen>
+    <dimen name="signature_image_button_padding_right">10dp</dimen>
+    <dimen name="signature_image_button_width">75dp</dimen>
+    <dimen name="signature_msg_test_size">18sp</dimen>
+    <dimen name="signature_view_padding_bottom">5dp</dimen>
+    <!-- From: file:/Users/Shared/Jenkins/Home/workspace/Android_SDK_1.X_Release/sdk/res/values/strings.xml -->
+    <eat-comment />
+
+    <string name="sdk_OK">OK</string>
+    <string name="sdk_amount_confirmation_alert_dialog_msg">%s is going to be charged to your credit card.\n\nIs this the correct amount?</string>
+    <string name="sdk_amount_confirmation_alert_dialog_title">Amount Confirmation</string>
+    <string name="sdk_app_name">PayPal Here SDK</string>
+    <string name="sdk_bt_paired_devices_alert_dialog_title">Connect To</string>
+    <string name="sdk_cancel">Cancel</string>
+    <string name="sdk_card_blocked_informational_alert_dialog_msg">Card blocked.\nPlease use another card...</string>
+    <string name="sdk_card_broken_informational_alert_dialog_msg">Chip on the current card is broken.\nPlease use another card...</string>
+    <string name="sdk_card_invalid_informational_alert_dialog_msg">Invalid card.\nPlease use another card...</string>
+    <string name="sdk_card_swipe_not_allowed_informational_alert_dialog_msg">Swipe is not allowed.\nPlease insert the card in to the card reader</string>
+    <string name="sdk_enter_pin_informational_alert_dialog_msg">Please enter the PIN on device</string>
+    <string name="sdk_enter_your_email_hint">Enter your Email</string>
+    <string name="sdk_enter_your_mobile_number_hint">Enter your Mobile No</string>
+    <string name="sdk_insert_card_informational_alert_dialog_msg"><b>Please insert the card</b></string>
+    <string name="sdk_invalid_email">Entered email is invalid. Please enter the correct email...</string>
+    <string name="sdk_invalid_mobile">Entered mobile number is invalid. Please enter the correct mobile number...</string>
+    <string name="sdk_invalid_pin_informational_alert_dialog_msg">Invalid PIN. Please try again</string>
+    <string name="sdk_no_bt_paired_devices_msg">No valid PayPal devices paired to this phone right now. \n\nPlease go to Settings->Bluetooth and pair with one of the PayPal EMV device</string>
+    <string name="sdk_progress_dialog_device_connect_msg_configuring">Configuring the card reader...</string>
+    <string name="sdk_progress_dialog_device_connect_msg_connecting">Connecting to card reader...</string>
+    <string name="sdk_progress_dialog_device_connect_msg_detecting">Detecting the card reader...</string>
+    <string name="sdk_progress_dialog_device_connect_title">Connecting to </string>
+    <string name="sdk_progress_dialog_software_update_msg_download_complete">Downloading of the current file completed...</string>
+    <string name="sdk_progress_dialog_software_update_msg_download_in_progress">Download in progress...</string>
+    <string name="sdk_progress_dialog_software_update_msg_initiating">Initiating the software update...</string>
+    <string name="sdk_progress_dialog_software_update_msg_install_in_progress">Installation in progress...</string>
+    <string name="sdk_progress_dialog_software_update_msg_key_fetching">Fetching the terminal keys...</string>
+    <string name="sdk_progress_dialog_software_update_msg_key_injection">Injecting the keys to terminal...</string>
+    <string name="sdk_progress_dialog_software_update_msg_software_in_progress">Software update in progress...</string>
+    <string name="sdk_progress_dialog_software_update_msg_terminal_restart">Restarting the terminal...</string>
+    <string name="sdk_progress_dialog_software_update_title">Updating the software</string>
+    <string name="sdk_reader_disconnected_informational_alert_dialog_msg">Failed to complete the transaction.\n\nReason:\nDevice got disconnected. Hence can not proceed with the transaction.</string>
+    <string name="sdk_select_application_alert_dialog_title">Select  Application</string>
+    <string name="sdk_send_receipt_alert_dialog_title">Send Invoice To</string>
+    <string name="sdk_send_receipt_by_email">Email</string>
+    <string name="sdk_send_receipt_by_sms">SMS</string>
+    <string name="sdk_send_receipt_complete">Your Invoice has been sent to %s</string>
+    <string name="sdk_send_receipt_complete_alert_dialog_title">Send Invoice</string>
+    <string name="sdk_send_receipt_enter_email_alert_dialog_title">Email</string>
+    <string name="sdk_send_receipt_enter_mobile_alert_dialog_title">Mobile</string>
+    <string name="sdk_send_receipt_error">Failed to send the receipt. Sorry!</string>
+    <string name="sdk_send_receipt_not_needed">No Thanks</string>
+    <string name="sdk_send_receipt_processing_dialog">Sending Invoice...</string>
+    <string name="sdk_signature_msg">I agree to pay the above amount according to the card issuer agreement.</string>
+    <string name="sdk_software_update_recommended_alert_dialog_msg">It\'s highly recommended to update the software on EMV device. \n\nWith out this you can still take the payments. But it is highly recommended to update</string>
+    <string name="sdk_software_update_recommended_alert_dialog_title">Software update recommended</string>
+    <string name="sdk_software_update_required_alert_dialog_msg">Software on the EMV device needs to be updated.\n\nWith out this device can\'t be used for taking the payments.</string>
+    <string name="sdk_software_update_required_alert_dialog_title">Software Update Required</string>
+    <string name="sdk_transaction_cancelled_informational_alert_dialog_msg">Failed to complete the transaction.\n\nReason:\nTransaction Declined by the User.</string>
+    <string name="sdk_transaction_declined_by_terminal_informational_alert_dialog_msg">Cancelling the Transaction.</string>
+    <string name="sdk_transaction_declined_by_user_informational_alert_dialog_msg">Cancelling the Transaction.</string>
+    <string name="sdk_transaction_declined_informational_alert_dialog_msg">Failed to complete the transaction.\n\nReason:\nTransaction Declined by the terminal.</string>
+    <string name="sdk_transaction_failure_informational_alert_dialog_msg">Failed to complete the transaction.\n\nNothing was charged to the credit card.</string>
+    <string name="sdk_transaction_failure_informational_alert_dialog_title">Transaction Failed</string>
+    <string name="sdk_transaction_progress_bar_authorizing_msg">Authorizing the Transaction....</string>
+    <string name="sdk_transaction_progress_bar_finalizing_msg">Finalizing the Transaction....</string>
+    <string name="sdk_transaction_progress_bar_processing_msg">Processing the Transaction....</string>
+    <string name="sdk_transaction_successful_informational_alert_dialog_msg">Successfully completed the transaction.\n\n%s has been charged to the credit card.</string>
+    <string name="sdk_transaction_successful_informational_alert_dialog_title">Transaction Successful</string>
+    <!-- From: file:/Users/Shared/Jenkins/Home/workspace/Android_SDK_1.X_Release/sdk/res/values/style.xml -->
+    <eat-comment />
+
+    <style name="SDK.Theme.AlertDialog" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">#659F26</item>
+        <item name="android:windowTitleStyle">@android:style/TextAppearance.DialogWindowTitle</item>
+    </style>
+
+    <style name="SDK.Theme.transparent" parent="android:style/Theme.Translucent">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+</resources>

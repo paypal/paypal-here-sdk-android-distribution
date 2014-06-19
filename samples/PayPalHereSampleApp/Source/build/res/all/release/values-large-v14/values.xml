@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/Users/schandrashekar/Documents/Android_test/release-1.3.2-android-here-sdk-dist/PayPalHereSampleApp/Source/build/exploded-bundles/ComAndroidSupportAppcompatV71910.aar/res/values-large-v14/values.xml -->
+    <eat-comment />
+
+    <style name="Theme.Base.AppCompat.DialogWhenLarge" parent="Theme.Base.AppCompat.DialogWhenLarge.Base" />
+
+    <style name="Theme.Base.AppCompat.Light.DialogWhenLarge" parent="Theme.Base.AppCompat.Light.DialogWhenLarge.Base" />
+
+</resources>

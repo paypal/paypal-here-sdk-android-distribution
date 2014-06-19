@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/Users/schandrashekar/Documents/Android_test/release-1.3.2-android-here-sdk-dist/PayPalHereSampleApp/Source/build/exploded-bundles/ComAndroidSupportAppcompatV71910.aar/res/values-w720dp/values.xml -->
+    <eat-comment />
+
+    <bool name="abc_action_bar_expanded_action_views_exclusive">false</bool>
+
+</resources>
