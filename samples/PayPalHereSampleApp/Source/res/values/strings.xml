@@ -14,14 +14,15 @@
     <string name="hello_world">Hello world!</string>
     <string name="checkin">Checkin</string>
     <string name="checkout">Checkout</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">OK</string>
+
+    <!-- Activity Descriptions.. -->
+    <string name="settings_activity">Settings</string>
 
     <!-- UI related strings -->
     <string name="title_username">Username:</string>
-    <string name="username_hint">Username</string>
-    <string name="title_password">Password:</string>
-    <string name="password_hint">Password</string>
-    <string name="title_login">Login</string>
-    <string name="title_env">Connected To:</string>
     <string name="selected_stage_default_text">No stage selected yet!</string>
     <string name="title_select_stage">Select a stage to connect</string>
     <string name="title_billing_itemized">Itemized billing</string>
@@ -29,7 +30,10 @@
     <string name="title_apple">Apple</string>
     <string name="title_banana">Banana</string>
     <string name="title_orange">Orange</string>
-    <string name="title_checkout_button">Purchase!</string>
+    <string name="title_purchase_button">Purchase</string>
+    <string name="title_authorize_button">Authorize</string>
+    <string name="title_authorized_transactions">Authorized Transactions</string>
+    <string name="title_completed_transaction">Sales History</string>
     <string name="title_subtotal">Subtotal:</string>
     <string name="title_tax">Tax:</string>
     <string name="title_tip">Tip:</string>
@@ -39,7 +43,7 @@
     <string name="purchase_status_text">Purchase status:</string>
     <string name="purchase_status_default_text">Idle. Connect/pair a device!</string>
     <string name="purchase_status_checkin_default_text">Idle.</string>
-    <string name="title_purchase">Charge!</string>
+    <string name="title_purchase">Charge</string>
     <string name="title_add_tip">Add Tip</string>
     <string name="title_sign">Sign</string>
     <string name="title_cancel">Cancel Payment</string>
@@ -52,6 +56,14 @@
     <string name="title_other_devices">Other Available Devices</string>
     <string name="title_bluetooth_finder">Find Bluetooth Devices</string>
     <string name="title_sdk_settings">SDK Settings</string>
+    <string name="title_emv_transaction">EMV Transaction</string>
+    <string name="title_swipe_transaction">Swipe Transaction</string>
+    <string name="title_authorization_complete">Authorization Completed</string>
+    <string name="title_authorized_activity">Authorized Transactions</string>
+    <string name="title_capture_authorized_activity">Capture Payment Options</string>
+    <string name="title_sales_activity">Completed Transactions</string>
+    <string name="title_send_receipt_activity">Send Receipt</string>
+    <string name="title_emv_device_connect">Device Connection</string>
     <string name="title_disconnect_bluetooth_device">Disconnect Bluetooth Device</string>
     <string name="no_bluetooth_device_paired">No Bluetooth Device Paired!</string>
     <string name="curent_bluetooth_device_paired">Currently connected to:</string>
@@ -77,22 +89,117 @@
     <string name="title_remove_merchant_logo">Remove Merchant Logo</string>
     <string name="title_select_cards">Swipe cards and select one from the list:</string>
     <string name="title_add_shopping_cart">Generate a shopping cart!</string>
+    <string name="title_isLive">Use Live Servers</string>
+    <string name="title_finalize_payment">Finalize Payment</string>
+    <string name="title_send_receipt">Send Receipt</string>
+    <string name="select_device">select a device to connect</string>
+    <string name="title_sdk_settings_button">Update SDK Settings</string>
+
+    <!-- String related to Settings Activity -->
+    <string name="update_button_text">Update</string>
+    <string name="title_bn_code">BN Code</string>
+    <string name="title_cashier_id">Cashier ID</string>
+    <string name="title_capture_tolerance">Capture Limit</string>
+
+    <!-- Strings related to LoginScreenActivity -->
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="title_login">Login</string>
+    <string name="title_env">Connected To:</string>
+    <string name="invalid_user_credentials">Please enter both the user credentials.</string>
+    <string name="no_network">No Network connection available. Please check and try again..</string>
     <string name="title_address_1">Address 1</string>
     <string name="title_address_2">Address 2</string>
     <string name="title_city">City</string>
     <string name="title_state">State</string>
     <string name="title_country">Country</string>
     <string name="title_zip">Zip</string>
-    <string name="title_isLive">Use Live Servers</string>
-    <string name="title_finalize_payment">Finalize Payment</string>
-    <string name="title_send_receipt">Send Receipt</string>
-    <string name="select_device">select a device to connect</string>
-    <string name="title_bn_code">Partner BN Code</string>
-    <string name="title_cashier_id">Cashier ID</string>
-    <string name="title_sdk_settings_button">Update SDK Settings</string>
+    <string name="invalid_login">Invalid Credentials. Please login again..</string>
+    <string name="credentials_refreshed">Credentials refreshed..</string>
 
-    <!-- Constants used in code -->
-    <string name="invalid_user_credentials">Please enter both the user credentials.</string>
+    <!-- Strings related to EMCTransactionActivity -->
+    <string name="emv_trasaction_title">EMV Transaction</string>
+    <string name="emv_transaction_connect_to_emv_device">Connect to EMV Device</string>
+    <string name="emv_transaction_disconnect_emv_device">Disconnect the EMV Device</string>
+    <string name="emv_transaction_refund_failed_toast_msg">Failed to process refund...</string>
+    <string name="emv_transaction_another_transaction">Another Transaction</string>
+    <string name="emv_transaction_success_connect">Successfully connected to EMV Device..</string>
+    <string name="emv_transaction_failed_to_connect">Failed to Connect to EMV Device. Please try again...</string>
+    <string name="emv_transaction_reader_status_msg_base">Device Status:</string>
+    <string name="emv_transaction_reader_status_msg_connected">Connected</string>
+    <string name="emv_transaction_reader_status_msg_not_connected">Not Connected</string>
+    <string name="emv_transaction_invalid_tip_amount">Entered tip amount is not valid.. Please enter again...</string>
+    <string name="emv_transaction_no_invoice_found">No Invoice found. Hence not able to proceed..</string>
+    <string name="emv_transaction_status_base_msg">Transaction Status:</string>
+    <string name="emv_transaction_status_in_progress_msg">In Progress</string>
+    <string name="emv_transaction_status_completed_msg">Success</string>
+    <string name="emv_transaction_status_failed_msg">Failure</string>
+    <string name="emv_transaction_refund_title">Refund</string>
+    <string name="exit_dialog_title">Exiting</string>
+    <string name="exit_dialog_msg">Do you want to cancel the current transaction?</string>
+    <string name="device_connect_fail">Failed to connect to device. Please try again...</string>
+
+    <!-- Strings related to SwipeTransactionActivity -->
+    <string name="swipe_trasaction_title">Swipe Transaction</string>
+    <string name="swiper_connect">Please plug-in the swiper</string>
+    <string name="swiper_sale_msg">Please swipe the card to start sale transaction</string>
+    <string name="swiper_authorize_msg">Please swipe the card to do the Authorization for the specified amount</string>
+    <string name="process_dialog_processing_payment_title">Processing</string>
+    <string name="process_dialog_processing_payment_msg">Processing Payment...</string>
+    <string name="process_dialog_authorizing_payment_msg">Authorizing Payment...</string>
+    <string name="process_dialog_finalizing_payment_msg">Finalizing Payment...</string>
+    <string name="transaction_complete_title">Would you like a receipt?</string>
+    <string name="transaction_complete_success">Transaction Success</string>
+    <string name="transaction_complete_failure">Transaction Failed</string>
+    <string name="transaction_failure_msg">Failed to complete the transaction. Can not proceed further..</string>
+    <string name="send_receipt_alert_dialog_title">Send Invoice To</string>
+    <string name="send_receipt_by_email">Email</string>
+    <string name="send_receipt_by_sms">Text</string>
+    <string name="send_receipt_not_needed">No Thanks</string>
+    <string name="enter_your_email_hint">Enter your Email</string>
+    <string name="enter_your_mobile_number_hint">Enter your Mobile No</string>
+    <string name="send_receipt_complete_alert_dialog_title">Send Invoice</string>
+    <string name="send_receipt_complete">Your Invoice has been sent successfully!</string>
+    <string name="send_receipt_error">Failed to send the receipt. Sorry!</string>
+    <string name="send_receipt_enter_email_alert_dialog_title">Email</string>
+    <string name="send_receipt_enter_mobile_alert_dialog_title">Mobile</string>
+    <string name="invalid_email">Entered email is invalid. Please enter the correct email...</string>
+    <string name="invalid_mobile">Entered mobile number is invalid. Please enter the correct mobile number...</string>
+    <string name="send_receipt_processing_dialog">Sending Invoice...</string>
+    <string name="send_receipt_header_msg_success">%s Successful</string>
+    <string name="send_receipt_header_msg_failure">%s Failed</string>
+    <string name="send_receipt_header_msg_transaction">Transaction</string>
+    <string name="send_receipt_header_msg_authorization">Authorization</string>
+    <string name="send_receipt_header_msg_capture">Capture</string>
+    <string name="send_receipt_header_msg_void">Void</string>
+
+    <!-- Strings related to PaymentTypeTabActivity -->
+    <string name="payment_type_tab_emv_title">EMV</string>
+    <string name="payment_type_tab_swipe_title">Swipe</string>
+
+    <!-- Strings related to ItemizedActivity -->
+    <string name="itemized_header_name">Name</string>
+    <string name="itemized_header_price">Price</string>
+    <string name="itemized_header_quantity">Quantity</string>
+
+    <!-- Strings related to AuthorizationCompleteActivity -->
+    <string name="authorization_success_message">Authorization Successful for %s Dollars</string>
+    <string name="authorization_complete_what_next">What do you want to do next?</string>
+    <string name="authorization_complete_capture_payment">Capture Payment</string>
+    <string name="authorization_complete_void_payment">Void Authorization</string>
+    <string name="authorization_complete_new_transaction">Start New Transaction</string>
+    <string name="authorization_complete_capture_for_different_amount">Capture with Tip</string>
+    <string name="capture_payment_failure_title">Capture Payment</string>
+    <string name="capture_payment_failure_msg">Failed to capture the payment..</string>
+    <string name="process_dialog_capturing_payment_msg">Capturing Payment...</string>
+    <string name="process_dialog_voiding_payment_msg">Voiding Payment...</string>
+
+    <!-- Strings related to CaptureAuthorizedTransactionActivity -->
+    <string name="capture_authorize_activity_invoice_id">Invoice ID: %s</string>
+    <string name="capture_authorize_activity_amount">Invoice Grand Total: %s</string>
+    <string name="capture_authorize_activity_date">Transaction Date: %s</string>
+    <string name="capture_autorize_activity_wrong_amount_toast">Entered amount not valid...</string>
+    <string name="no_items_in_list_view_msg">No Items</string>
 
     <!-- Error codes -->
     <string name="unknown_error">Unknown!</string>
@@ -101,11 +208,11 @@
     <string name="invalid_amount_entered">Please enter a valid amount!</string>
 
     <string-array name="payment_options">
-        <item>Card Reader</item>
-        <item>Key-In</item>
-        <item>Checkin</item>
-        <item>Cash</item>
-        <item>Check</item>
+ <item>Card Reader</item>
+ <item>Key-In</item>
+ <item>Checkin</item>
+ <item>Cash</item>
+ <item>Check</item>
     </string-array>
 
 </resources>

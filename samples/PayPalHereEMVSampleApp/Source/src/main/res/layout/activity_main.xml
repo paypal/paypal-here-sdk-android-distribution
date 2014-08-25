@@ -20,7 +20,7 @@
         android:text="@string/button_charge" />
 
     <Button android:id="@+id/reader_connect" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content" android:layout_above="@+id/id_sales_history"
         android:layout_marginBottom="@dimen/main_activity_bottom_margin"
         android:layout_marginLeft="@dimen/main_activity_reader_text_left_margin"
         android:layout_marginRight="@dimen/main_activity_reader_text_right_margin"
@@ -34,5 +34,13 @@
         android:text="@string/reader_status_msg"
         android:textAlignment="center"
         android:textSize="16sp" />
+
+    <Button android:id="@+id/id_sales_history" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/main_activity_bottom_margin"
+        android:layout_marginLeft="@dimen/main_activity_reader_text_left_margin"
+        android:layout_marginRight="@dimen/main_activity_reader_text_right_margin"
+        android:singleLine="true"
+        android:text="@string/sales_history" />
 
 </RelativeLayout>

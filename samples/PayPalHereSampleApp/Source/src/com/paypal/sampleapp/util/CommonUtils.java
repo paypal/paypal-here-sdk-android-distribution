@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 public class CommonUtils {
 
     /**
@@ -84,4 +86,34 @@ public class CommonUtils {
         return (isNullOrEmpty(s) ? 0.0 : Double.valueOf(s));
     }
 
+    public static String getMonthString(int month) {
+        switch (month) {
+            case Calendar.JANUARY:
+                return "Jan";
+            case Calendar.FEBRUARY:
+                return "Feb";
+            case Calendar.MARCH:
+                return "Mar";
+            case Calendar.APRIL:
+                return "Apr";
+            case Calendar.MAY:
+                return "May";
+            case Calendar.JUNE:
+                return "Jun";
+            case Calendar.JULY:
+                return "Jul";
+            case Calendar.AUGUST:
+                return "Aug";
+            case Calendar.SEPTEMBER:
+                return "Sep";
+            case Calendar.OCTOBER:
+                return "Oct";
+            case Calendar.NOVEMBER:
+                return "Nov";
+            case Calendar.DECEMBER:
+                return "Dec";
+            default:
+                return "";
+        }
+    }
 }

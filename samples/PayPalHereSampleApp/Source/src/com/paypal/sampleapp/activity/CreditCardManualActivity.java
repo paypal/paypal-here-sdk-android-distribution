@@ -215,7 +215,7 @@ public class CreditCardManualActivity extends MyActivity {
         TransactionManager.PaymentErrors error_type = e.getErrorCode();
 
         if (TransactionManager.PaymentErrors.PaymentDeclined == error_type) {
-            displayPaymentState("Payment declined!  Payment cycle complete.  Please start again");
+            displayPaymentState(e.getDetailedMessage());
         } else if (TransactionManager.PaymentErrors.NetworkTimeout == error_type) {
             displayPaymentState("Payment timed out at network level.");
         } else if (TransactionManager.PaymentErrors.NoDeviceForCardPresentPayment == error_type) {
@@ -229,7 +229,7 @@ public class CreditCardManualActivity extends MyActivity {
         } else if (TransactionManager.PaymentErrors.EmptyShoppingCart == error_type) {
             displayPaymentState("You've got an empty invoice, or an invoice with zero value.  Can't process payment");
         } else if (TransactionManager.PaymentErrors.NetworkError == error_type) {
-            displayPaymentState("No network availability.  Can't process anything");
+            displayPaymentState(e.getDetailedMessage());
         } else {
             displayPaymentState("Unhandled error: " + e.getDetailedMessage());
         }

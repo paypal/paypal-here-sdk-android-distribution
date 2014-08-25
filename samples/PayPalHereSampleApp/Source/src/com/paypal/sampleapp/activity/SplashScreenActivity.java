@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.paypal.sampleapp.R;
+import com.paypal.sampleapp.login.LoginScreenActivity;
 
 /**
  * This class displays the splash screen of the application.

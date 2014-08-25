@@ -2,19 +2,92 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:orientation="vertical">
 
-    <EditText android:id="@+id/bn_code" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:hint="@string/title_bn_code" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/gap_between_columns">
 
-    <EditText android:id="@+id/cashier_id" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:layout_marginTop="10dp"
-        android:hint="@string/title_cashier_id" />
+        <Button
+            android:id="@+id/update_bncode_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/update_button_text"
+            android:layout_alignParentRight="true"/>
 
-    <Button android:id="@+id/sdk_settings_button" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:layout_marginTop="10dp"
-        android:text="@string/title_sdk_settings_button" />
+        <EditText android:id="@+id/bn_code" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:hint="@string/title_bn_code"
+            android:layout_toLeftOf="@+id/update_bncode_button"
+            android:layout_alignParentBottom="@+id/update_bncode_button"/>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/gap_between_columns">
+
+        <Button
+            android:id="@+id/update_casierid_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/update_button_text"
+            android:layout_alignParentRight="true"/>
+
+        <EditText android:id="@+id/cashier_id" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:hint="@string/title_bn_code"
+            android:layout_toLeftOf="@+id/update_casierid_button"
+            android:layout_alignParentBottom="@+id/update_casierid_button"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/gap_between_columns">
+
+        <TextView
+            android:id="@+id/id_authorize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Authorize Payments(Instead of Sale)"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="@+id/id_authorize_button"/>
+
+        <ToggleButton
+            android:id="@+id/id_authorize_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="ON"
+            android:textOff="OFF"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="@+id/id_authorize"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/capture_tolerance_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/gap_between_columns">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:text="@string/title_capture_tolerance"/>
+
+        <TextView
+            android:id="@+id/capture_tolerance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 </LinearLayout>

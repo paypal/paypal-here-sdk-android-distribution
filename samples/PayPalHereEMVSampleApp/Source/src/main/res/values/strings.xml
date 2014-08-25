@@ -5,15 +5,18 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <!-- String related to -->
-    <string name="action_connect_to_device">Connect To Device</string>
-    <string name="action_disconnect_device">Disconnect the Device</string>
+    <!-- Strings used commonly across different layouts -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <!-- String related to menu options-->
+    <string name="action_device_details">Device Details</string>
 
     <!-- Strings related to LoginScreenActivity -->
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="title_login">Login</string>
-    <string name="title_env">Connected To:</string>
+    <string name="title_env">Selected server to connect:</string>
+    <string name="title_emv_sw_repo">Selected EMV Config Repo to connect:</string>
     <string name="invalid_user_credentials">Please enter both the user credentials.</string>
     <string name="title_address_1">Address 1</string>
     <string name="title_address_2">Address 2</string>
@@ -24,11 +27,28 @@
     <string name="invalid_login">Invalid Credentials. Please login again..</string>
     <string name="credentials_refreshed">Credentials refreshed..</string>
 
+    <!-- Strings related to stage_selection -->
+    <string name="update_sw_repo_txt">Update Software Repo</string>
+    <string name="update_sw_repo_hint">Software Repo Name</string>
+    <string name="update_stage_txt">Stage Selection</string>
+    <string name="update_stage_hint">stage2pph10</string>
+    <string name="update_txt">Update</string>
+
+    <!-- Strings related to Sales Activity -->
+    <string name="refund_title">Refund</string>
+    <string name="refund_amount_txt">Enter refund amount</string>
+    <string name="options_refund_full_amount">Refund full amount</string>
+    <string name="options_refund_partial_amount">Refund partial amount</string>
+    <string name="refund_success_msg">Successfully refunded the amount.</string>
+    <string name="refund_failure_msg">Failed to refund the amount</string>
+    <string name="refund_processing">Processing Refund...</string>
+
     <!-- String related to Main Activity -->
     <string name="button_charge">Charge</string>
     <string name="amount_hint">Enter the Amount</string>
     <string name="reader_status_msg">Reader Status:</string>
     <string name="reader_connect">Connect to Reader</string>
+    <string name="sales_history">Sales History</string>
     <string name="reader_disconnect">Disconnect the Reader</string>
     <string name="reader_connected">Connected</string>
     <string name="reader_not_connected">Not Connected</string>
@@ -49,6 +69,11 @@
     <string name="exit_dialog_msg">Do you want to Exit out of EMV Sample App?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="merchant_error_title">Error</string>
+    <string name="merchant_not_supported_msg">This Merchant did not have the permissions to take the payments using EMV Device. Hence you can not use this application.</string>
+    <string name="merchant_amount_too_low">Entered Amount is too low and is less than your specified minimum amount. Please try after changing the amount</string>
+    <string name="merchant_amount_too_high">Entered Amount is too high and is greater than your specified minimum amount. Please try after changing the amount</string>
+    <string name="merchant_battery_too_low">Connected EMV Reader battery is too low. Can not take payment now. Please try after charging the reader</string>
 
     <!-- Activity Label Strings -->
     <string name="login_activity_name">Login</string>
@@ -60,4 +85,17 @@
     <string name="merchant_banner_message">Joe\'s Pizza</string>
     <string name="merchant_checkin_succesful">Merchant Check-in Successful...</string>
     <string name="merchant_checkin_unsuccesful">Merchant Check-in Unsuccessful.</string>
+
+    <!-- Strings related to no_items_view.xml -->
+    <string name="no_items_in_list_view_msg">No Items</string>
+    
+    <!-- Strings related to device_details.xml -->
+    <string name="device_details_device_name">Device Name : </string>
+    <string name="device_details_os_version">OS Version : </string>
+    <string name="device_details_firmware_version">Firmware Version : </string>
+    <string name="device_details_serial_number">Serial Number : </string>
+    <string name="device_details_battery_level">Battery Level : </string>
+
+    <!-- Strings related to SalesActivity -->
+    <string name="refund_amount_invalid">Entered amount is more than sale amount. Can not proceed..</string>
 </resources>

@@ -29,8 +29,8 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.paypal.emv.sampleapp.MainActivity;
 import com.paypal.emv.sampleapp.R;
+import com.paypal.emv.sampleapp.activity.MainActivity;
 import com.paypal.emv.sampleapp.utils.AddressUtil;
 import com.paypal.merchant.sdk.AuthenticationListener;
 import com.paypal.merchant.sdk.MerchantManager;
@@ -44,12 +44,12 @@ import com.paypal.merchant.sdk.domain.Merchant.MobilityTypeEnum;
 import com.paypal.merchant.sdk.domain.PPError;
 import com.paypal.merchant.sdk.domain.credentials.Credentials;
 import com.paypal.merchant.sdk.domain.credentials.OauthCredentials;
+import com.paypal.merchant.sdk.internal.domain.Country;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -100,6 +100,8 @@ public class OAuthLoginActivity extends Activity {
 
     public static final String PREFS_NAME = "MerchantPrefs";
     public static final String REFRESH_URL = "refreshUrl";
+    public static final String PREFS_LAST_GOOD_USERNAME = "PREFS_LAST_GOOD_USERNAME";
+    public static final String PREFS_LAST_GOOD_SERVER = "PREFS_LAST_GOOD_SERVER";
     private static final String LOG = OAuthLoginActivity.class.getSimpleName();
     private static final String MERCHANT_SERVICE_STAGE_URL = "http://morning-tundra-8515.herokuapp.com/";
     private static final String MERCHANT_SERVICE_SANDBOX_URL = "http://desolate-wave-3684.herokuapp.com/";
@@ -325,14 +327,16 @@ public class OAuthLoginActivity extends Activity {
         Address address = null;
         Merchant m = PayPalHereSDK.getMerchantManager().getActiveMerchant();
 
-        if (m.getEmail().contains("uk") || m.getEmail().contains("UK")) {
+        if (m.getEmail().contains("uk") || m.getEmail().contains("UK") || m.getEmail().contains("gb") || m.getEmail().contains("GB")) {
 
             address = AddressUtil.getDefaultUKMerchantAddress();
             m.setMerchantCurrency(Currency.getInstance("GBP"));
+            m.setUserCountry(new Country("GB"));
             //PayPalHereSDK.getCardReaderManager().beginMonitoring(CardReaderListener.ReaderConnectionTypes.Bluetooth);
         } else {
             address = AddressUtil.getDefaultUSMerchantAddress();
             m.setMerchantCurrency(Currency.getInstance("USD"));
+            m.setUserCountry(new Country("US"));
             //  PayPalHereSDK.getCardReaderManager().beginMonitoring(CardReaderListener.ReaderConnectionTypes.AudioJack);
         }
 
@@ -518,7 +522,7 @@ public class OAuthLoginActivity extends Activity {
 
 
                         // Set the merchant credentials within the PayPalHere SDK.
-                        setMerchantAndCheckIn(decryptedAccessToken, refreshUrlToUse,expiry);
+                        setMerchantAndCheckIn(decryptedAccessToken, refreshUrlToUse, expiry);
 
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -553,7 +557,7 @@ public class OAuthLoginActivity extends Activity {
                     mUsername +
                     "/" + encodedToken;
             // Set the merchant credetials within the PayPalHere SDK.
-            setMerchantAndCheckIn(decryptedAccessToken, refreshUrlToUse,expiry);
+            setMerchantAndCheckIn(decryptedAccessToken, refreshUrlToUse, expiry);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -613,13 +617,17 @@ public class OAuthLoginActivity extends Activity {
      *
      * @param accessToken
      */
-    private void setMerchantAndCheckIn(String accessToken, String refreshUrl,String expiry) {
+    private void setMerchantAndCheckIn(String accessToken, String refreshUrl, String expiry) {
         saveRefreshUrl(refreshUrl);
+        saveLastGoodServer();
+        saveLastGoodUsername();
+
         saveAccessToken(accessToken);
         /* Create a credentials obj based off of the decrypted access token.
            Should also implement a callback listener in case the access token is expired. */
-        Credentials credentials = new OauthCredentials(accessToken,refreshUrl,expiry);
+        Credentials credentials = new OauthCredentials(accessToken, refreshUrl, expiry);
         Log.d("Access Token", accessToken);
+        showProgressDialog();
         // Init the SDK with the current merchant credentials.
         PayPalHereSDK.setCredentials(credentials, new DefaultResponseHandler<Merchant,
                 PPError<MerchantManager.MerchantErrors>>() {
@@ -629,9 +637,7 @@ public class OAuthLoginActivity extends Activity {
                    invalid credentials callbacks sent by the SDK. */
                 PayPalHereSDK.registerAuthenticationListener(authenticationListener);
                 hideProgressDialog();
-                /* Ask the merchant to fill in the address information, which would be set in the SDK and would be
-                   used for merchant payments. */
-                openAddressDialog();
+                proceedToMainActivity();
             }
 
             @Override
@@ -661,6 +667,24 @@ public class OAuthLoginActivity extends Activity {
         Log.d("saveRefreshUrl", "Saving the refresh url: " + refreshUrl);
     }
 
+    private void saveLastGoodServer() {
+        String successfulServer = PayPalHereSDK.getCurrentServer();
+
+        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = mSharedPrefs.edit();
+        editor.putString(PREFS_LAST_GOOD_SERVER, successfulServer);
+        editor.commit();
+        Log.d("saveRefreshUrl", "Saving the last good server: " + successfulServer);
+    }
+
+    private void saveLastGoodUsername() {
+        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = mSharedPrefs.edit();
+        editor.putString(PREFS_LAST_GOOD_USERNAME, mUsername);
+        editor.commit();
+        Log.d("saveRefreshUrl", "Saving the last good username: " + mUsername);
+    }
+
     public void saveAccessToken(String accessToken) {
         mAccessToken = accessToken;
     }
@@ -673,6 +697,16 @@ public class OAuthLoginActivity extends Activity {
     public String getRefreshUrl() {
         mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
         return mSharedPrefs.getString(REFRESH_URL, null);
+    }
+
+    private String getLastGoodServer() {
+        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
+        return mSharedPrefs.getString(PREFS_LAST_GOOD_SERVER, null);
+    }
+
+    private String getLastGoodUsername() {
+        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
+        return mSharedPrefs.getString(PREFS_LAST_GOOD_USERNAME, null);
     }
 
     /**

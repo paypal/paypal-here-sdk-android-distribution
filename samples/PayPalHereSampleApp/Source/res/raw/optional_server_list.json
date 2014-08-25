@@ -30,6 +30,14 @@
    {
       name:"stage2pph10",
       url:"https://www.stage2pph10.stage.paypal.com"
+   },
+   {
+      name:"stage2p1833",
+      url:"https://www.stage2p1833.stage.paypal.com"
+   },
+   {
+      name:"stage2p1809",
+      url:"https://www.stage2p1809.stage.paypal.com"
    }
    ]
 }
