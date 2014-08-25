@@ -17,4 +17,10 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="Theme.AlertDialog" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">#659F26</item>
+        <item name="android:windowTitleStyle">@android:style/TextAppearance.DialogWindowTitle</item>
+    </style>
+
 </resources>

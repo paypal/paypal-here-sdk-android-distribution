@@ -13,7 +13,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.TabHost;
 
+import com.paypal.merchant.sdk.PayPalHereSDK;
 import com.paypal.sampleapp.R;
+import com.paypal.sampleapp.emv.EMVTransactionActivity;
+import com.paypal.sampleapp.swipe.SwipeTransactionActivity;
 
 /**
  * A tab-activity that shows different methods of payment options.
@@ -54,10 +57,27 @@ public class PaymentTypeTabActivity extends OptionsMenuBaseActivity {
         TabHost tabHost = getTabHost();
         TabHost.TabSpec spec;
 
-        Intent intent = new Intent().setClass(this, CreditCardPeripheralActivity.class);
-        spec = tabHost.newTabSpec("Swipe").setIndicator("Swipe", getResources().getDrawable(R.drawable
-                .ic_launcher)).setContent(intent);
-        tabHost.addTab(spec);
+        Intent intent = null;
+        Boolean emvPayment = false;
+
+        if(PayPalHereSDK.getMerchantManager().getActiveMerchant().getMerchantCurrency().getCurrencyCode().equalsIgnoreCase("GBP")
+            || PayPalHereSDK.getMerchantManager().getActiveMerchant().getMerchantCurrency().getCurrencyCode().equalsIgnoreCase("AUD")){
+
+            emvPayment = true;
+        }else{
+            emvPayment = false;
+        }
+
+        if(emvPayment){
+            intent = new Intent().setClass(this, EMVTransactionActivity.class);
+            spec = tabHost.newTabSpec(getString(R.string.payment_type_tab_emv_title)).setIndicator(getString(R.string.payment_type_tab_emv_title), getResources().getDrawable(R.drawable.emv_device)).setContent(intent);
+            tabHost.addTab(spec);
+        }else {
+            intent = new Intent().setClass(this, SwipeTransactionActivity.class);
+            spec = tabHost.newTabSpec(getString(R.string.payment_type_tab_swipe_title)).setIndicator(getString(R.string.payment_type_tab_swipe_title), getResources().getDrawable(R.drawable.ic_launcher)).setContent(intent);
+            tabHost.addTab(spec);
+        }
+
 
         intent = new Intent().setClass(this, CreditCardManualActivity.class);
         spec = tabHost.newTabSpec("Key-in").setIndicator("Key-in", getResources().getDrawable(R.drawable

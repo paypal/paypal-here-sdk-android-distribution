@@ -16,22 +16,21 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
-import com.paypal.merchant.sdk.CardReaderListener;
 import com.paypal.merchant.sdk.PayPalHereSDK;
-import com.paypal.merchant.sdk.domain.ChipAndPinDecisionEvent;
 import com.paypal.merchant.sdk.domain.DomainFactory;
 import com.paypal.merchant.sdk.domain.Invoice;
 import com.paypal.merchant.sdk.domain.InvoiceItem;
-import com.paypal.merchant.sdk.domain.PPError;
-import com.paypal.merchant.sdk.domain.SecureCreditCard;
 import com.paypal.sampleapp.R;
-import com.paypal.sampleapp.adapter.InvoiceItemListViewAdapter;
+import com.paypal.sampleapp.adapter.InvoiceItemAdapter;
+import com.paypal.sampleapp.swipe.AuthorizedActivity;
+import com.paypal.sampleapp.swipe.SalesActivity;
 import com.paypal.sampleapp.util.CommonUtils;
+import com.paypal.sampleapp.util.LocalPreferences;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,14 +38,22 @@ import java.util.Map;
  * <p/>
  * In this activity, we also implement the peripheral listener so that we can listen to card swipes.
  */
-public class ItemizedActivity extends MyActivity implements CardReaderListener {
+public class ItemizedActivity extends MyActivity {
 
     private static final String LOG = "PayPalHere.ItemizedActivity";
     private static final int REQ_CODE = 4567;
     private Invoice mInvoice = null;
     private ListView mListView;
-    private InvoiceItemListViewAdapter mAdapter;
+    private InvoiceItemAdapter mAdapter;
     private Map<String, InvoiceItem> mStoreItems;
+    private RelativeLayout mHeaderLayout;
+    private Button mPurchaseButton;
+    private Button mAuthorizedTransactionsButton;
+    private Button mSalesHistoryButton;
+
+    private enum FruitTypeEnum {
+        APPLE, BANANA, ORANGE, STRAWBERRY
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +61,8 @@ public class ItemizedActivity extends MyActivity implements CardReaderListener {
 
         // Setting the layout for this activity.
         setContentView(R.layout.activity_itemized_tab_type);
-
+        mHeaderLayout = (RelativeLayout) findViewById(R.id.header);
+        mHeaderLayout.setVisibility(View.GONE);
         // Here we init all the items that are present in the store.
         // This way, we can access those items and update the quantity.
         initStoreItems();
@@ -92,38 +100,53 @@ public class ItemizedActivity extends MyActivity implements CardReaderListener {
         });
 
 
-        Button b = (Button) findViewById(R.id.itemized_checkout_button);
-        b.setOnClickListener(new OnClickListener() {
+        mPurchaseButton = (Button) findViewById(R.id.id_purchase_button);
+        mPurchaseButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
                 if (mInvoice == null || mInvoice.getItems().size() <= 0) {
                     CommonUtils.createToastMessage(ItemizedActivity.this, "Cannot proceed with an empty items list.");
                     return;
                 }
-
-                // Set the cashier id (if present) within the invoice to indicate which cashier within the store
-                // created this invoice.
-                mInvoice.setCashierId(getCashierId());
-                // Set the partner attribution (BN) code (if present) also within the invoice to indicate which
-                // partner it came from.
-                mInvoice.setReferrerCode(getBNCode());
-                // Insert the invoice containing the items back the SDK.
-                // We need to do this coz the invoice object that we get while calling the beginPayment would return
-                // us a copy of the invoice that is created in the SDK.
-                // Hence, after we have filled in our invoice with some items,
-                // we need to manually set it back into the SDK.
-                PayPalHereSDK.getTransactionManager().setActiveInvoice(mInvoice);
+                // Set the cashier id (if present) within the invoice to indicate which cashier within the store created this invoice.
+                mInvoice.setCashierId(LocalPreferences.getCashierID());
+                // Set the partner attribution (BN) code (if present) also within the invoice to indicate which partner it came from.
+                mInvoice.setReferrerCode(LocalPreferences.getBNCode());
 
                 Intent intent = new Intent(ItemizedActivity.this, PaymentTypeTabActivity.class);
                 startActivityForResult(intent, REQ_CODE);
             }
         });
+        mPurchaseButton.setVisibility(View.GONE);
 
-        // Creating a new empty invoice.
-        mInvoice = DomainFactory.newEmptyInvoice();
+        mAuthorizedTransactionsButton = (Button)findViewById(R.id.id_authorized_transactions_button);
+        mAuthorizedTransactionsButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(LOG,"Authorized Transaction Button onClick");
+                Intent intent = new Intent(ItemizedActivity.this, AuthorizedActivity.class);
+                ItemizedActivity.this.startActivity(intent);
+            }
+        });
 
+        mSalesHistoryButton = (Button)findViewById(R.id.id_completed_transactions_button);
+        mSalesHistoryButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(LOG,"Sales History Button onClick");
+                Intent intent = new Intent(ItemizedActivity.this, SalesActivity.class);
+                ItemizedActivity.this.startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (REQ_CODE == requestCode) {
+            clearListAdapter();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
@@ -154,29 +177,24 @@ public class ItemizedActivity extends MyActivity implements CardReaderListener {
         mStoreItems.put("Strawberry", DomainFactory.newInvoiceItem(("Strawberry"), "4", new BigDecimal("3.98")));
     }
 
-    /**
-     * This method is meant to init the SDK after the customer tries to add the first item.
-     */
-    private void initInvoice() {
-        // For the itemized payment, call the beginPayment() method to
-        // indicate the SDK of an itemized payment.
-        // NOTE: Once the beginPayment method is invoked, the SDK would listen for any card swipes and hence, the
-        // customer is allowed to swipe in their card at point in time.
-        // This card data would be held by the SDK and would be used during the payment.
-        // This feature is mainly aimed to offer flexibility as to when the card could be swiped.
-        // When a card swipe is detected, a SecureCreditCard object is also returned back by the SDK,
-        // which the apps can choose to store.
+    private void initListAdapter() {
+        // Setting up the adapter to display all the items in our invoice.
+        mAdapter = new InvoiceItemAdapter(ItemizedActivity.this);
+        mListView = (ListView) findViewById(R.id.item_list);
+        mListView.setAdapter(mAdapter);
 
-        // Once the itemized payment is initialized in the SDK.
-
+        mHeaderLayout.setVisibility(View.VISIBLE);
+        mPurchaseButton.setVisibility(View.VISIBLE);
         mInvoice = PayPalHereSDK.getTransactionManager().beginPayment();
     }
 
-    private void initListAdapter() {
-        // Setting up the adapter to display all the items in our invoice.
-        mAdapter = new InvoiceItemListViewAdapter(ItemizedActivity.this, mInvoice);
-        mListView = (ListView) findViewById(R.id.item_list);
-        mListView.setAdapter(mAdapter);
+    private void clearListAdapter() {
+        if (null != mAdapter && null != mListView) {
+            mAdapter.clearAllItems();
+        }
+        mHeaderLayout.setVisibility(View.GONE);
+        mPurchaseButton.setVisibility(View.GONE);
+        mInvoice = null;
     }
 
     /**
@@ -203,17 +221,12 @@ public class ItemizedActivity extends MyActivity implements CardReaderListener {
         // Get the InvoiceItem object for the fruit.
         InvoiceItem i = mStoreItems.get(name);
 
-        if (isInvoiceEmpty()) {
-            initInvoice();
+        if (null == mInvoice) {
             initListAdapter();
         }
 
-        // Add the item into the invoice, with the quantity 1.
-        // NOTE: the quantity would get updated as we keep adding or removing items.
-        // In order to remove an item, use : mInvoice.addItem(i, new Long(-1));
         mInvoice.addItem(i, BigDecimal.ONE);
-        // To update the UI with the new list of items in the invoice.
-        mAdapter.notifyDataSetChanged();
+        mAdapter.addItem(i);
     }
 
     /**
@@ -223,88 +236,17 @@ public class ItemizedActivity extends MyActivity implements CardReaderListener {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
-    }
-
-    /**
-     * Below are the implementation for the CardReaderListener.
-     */
-
-    @Override
-    public void onPaymentReaderConnected(ReaderTypes readerType, ReaderConnectionTypes transport) {
-
-    }
-
-    @Override
-    public void onPaymentReaderDisconnected(ReaderTypes readerType) {
-
-    }
-
-    @Override
-    public void onCardReadSuccess(SecureCreditCard paymentCard) {
-        // Display a message stating that the card swipe was successful.
-        // NOTE: Once the card has been successfully swiped or read, the SDK holds on to it as well as returns the
-        // same in this method (paymentCard) for the app to hold the same if they want or need to.
-        // So, when we do a processPayment in the next screen to take the payment and complete the transaction,
-        // this card data (that is held by the SDK) is used and charged against.
-        CommonUtils.createToastMessage(ItemizedActivity.this, "Card read successful!!!");
-    }
-
-    @Override
-    public void onCardReadFailed(PPError<CardErrors> error) {
-        // Display a message stating that the card swipe had a failure.
-        CommonUtils.createToastMessage(ItemizedActivity.this, "Card read failed");
-    }
-
-    @Override
-    public void onCardReaderEvent(PPError<CardReaderEvents> peripheralEventsPPError) {
-
-    }
-
-    @Override
-    public void onSelectPaymentDecision(List<ChipAndPinDecisionEvent> eventList) {
-
-    }
-
-    @Override
-    public void onInvalidListeningPort() {
-        CommonUtils.createToastMessage(this, "No valid listening port.");
     }
 
     @Override
     public void onResume() {
         Log.d(LOG, "on Resume");
         super.onResume();
-        // Register for payment and peripheral (Bond, triangle, etc) events.
-        PayPalHereSDK.getCardReaderManager().registerCardReaderListener(this);
-
-        // If the back button is pressed, we are handling in 2 scenarios:
-        // 1. If the invoice has some items added to it and then, if we head to the payment page and for some
-        // reason, if we decide to come back to this screen to add more items, we get back the already available
-        // invoice.
-        // 2. If the transaction is complete for a invoice and then, if the user hits the back button and we
-        // land on this screen again, since the transaction is complete, no invoice would be available in the
-        // transaction manager and hence, we create a new invoice.
-        mInvoice = PayPalHereSDK.getTransactionManager().getActiveInvoice();
-        if (isInvoiceEmpty()) {
-            mInvoice = DomainFactory.newEmptyInvoice();
-        }
-        initListAdapter();
-
     }
 
     @Override
     public void onPause() {
+        Log.d(LOG, "onPause");
         super.onPause();
-        // Unregister for payment and peripheral (Bond, triangle, etc) events.
-        PayPalHereSDK.getCardReaderManager().unregisterCardReaderListener(this);
-    }
-
-    private boolean isInvoiceEmpty() {
-        return (mInvoice == null || mInvoice.getItems().size() <= 0);
-    }
-
-    private enum FruitTypeEnum {
-        APPLE, BANANA, ORANGE, STRAWBERRY
     }
 }

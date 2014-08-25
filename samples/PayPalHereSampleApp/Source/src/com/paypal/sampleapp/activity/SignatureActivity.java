@@ -39,7 +39,7 @@ public class SignatureActivity extends Activity {
     private static final String LOG = "PayPalHere.SignatureActivity";
     LinearLayout mLayout;
     View mView;
-    Bitmap mBitmap;
+    private static Bitmap mBitmap;
     Signature mSignature;
     Button mClearSign;
     Button mUseSign;
@@ -71,11 +71,7 @@ public class SignatureActivity extends Activity {
                 // Save the view in a bitmap image.
                 mView.setDrawingCacheEnabled(true);
                 mSignature.save(mView);
-                // Store the bitmap into a common variable, which could be accessed later
-                // by the CreditCardPeripheralActivity.
-                MyActivity.setBitmap(mBitmap);
-                Intent intent = new Intent(SignatureActivity.this, CreditCardPeripheralActivity.class);
-                setResult(RESULT_OK, intent);
+                setResult(RESULT_OK);
                 finish();
             }
         });
@@ -91,6 +87,10 @@ public class SignatureActivity extends Activity {
             }
         });
 
+    }
+
+    public static Bitmap getSignatureBitmap(){
+        return mBitmap;
     }
 
     /**

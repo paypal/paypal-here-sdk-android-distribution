@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:paddingBottom="@dimen/activity_vertical_margin"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:paddingTop="@dimen/activity_vertical_margin"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/swipe_trasaction_title"
+                android:layout_centerHorizontal="true"
+                android:paddingBottom="@dimen/emv_transaction_title_padding_botton"
+                android:paddingTop="@dimen/emv_transaction_title_padding_top"
+                android:textSize="@dimen/emv_title_size"
+                android:textStyle="bold"
+                android:layout_alignParentTop="true"/>
+
+            <RelativeLayout
+                    android:id="@+id/subtotalSection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_below="@id/title"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/emv_transaction_charge_detail_section_padding_right"
+                    android:layout_marginTop="@dimen/emv_transaction_charge_detail_section_padding_top"
+                    android:layout_marginBottom="@dimen/emv_transaction_charge_detail_section_padding_bottom">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_subtotal"
+                        />
+
+                <TextView
+                        android:id="@+id/subTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/price_hint"
+                        android:layout_marginLeft="@dimen/emv_transaction_charge_detail_section_padding_left"/>
+            </RelativeLayout>
+            <RelativeLayout
+                    android:id="@+id/taxSection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_below="@id/subtotalSection"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/emv_transaction_charge_detail_section_padding_right"
+                    android:layout_marginTop="@dimen/emv_transaction_charge_detail_section_padding_top"
+                    android:layout_marginBottom="@dimen/emv_transaction_charge_detail_section_padding_bottom">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_tax"
+                        />
+
+                <TextView
+                        android:id="@+id/taxAmount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/price_hint"
+                        android:layout_marginLeft="@dimen/emv_transaction_charge_detail_section_padding_left"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:id="@+id/tipSection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:layout_below="@+id/taxSection"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/emv_transaction_charge_detail_section_padding_right"
+                    android:layout_marginTop="@dimen/emv_transaction_charge_detail_section_padding_top"
+                    android:layout_marginBottom="@dimen/emv_transaction_charge_detail_section_padding_bottom">
+
+                <TextView
+                    android:id="@+id/tip_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/title_tip"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/tipAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/price_hint"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/emv_transaction_charge_detail_section_padding_left"/>
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/tipButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/title_add_tip"
+                android:layout_marginLeft="@dimen/emv_transaction_charge_detail_section_padding_left"
+                android:layout_toLeftOf="@+id/tipSection"
+                android:layout_alignTop="@+id/tipSection"
+                android:layout_alignBottom="@+id/tipSection"/>
+
+            <RelativeLayout
+                    android:id="@+id/totalSection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_below="@+id/tipSection"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/emv_transaction_charge_detail_section_padding_right"
+                    android:layout_marginTop="@dimen/emv_transaction_charge_detail_section_padding_top"
+                    android:layout_marginBottom="@dimen/emv_transaction_charge_detail_section_padding_bottom">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_total"
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+                <TextView
+                        android:id="@+id/totalAmount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/price_hint"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:layout_marginLeft="70dp"
+                        />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/swiper_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/emv_charge_button_margin_top"
+                android:gravity="center"
+                android:text="@string/swiper_connect"
+                android:textSize="@dimen/swiper_status_text_size"
+                android:layout_below="@+id/totalSection"/>
+
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

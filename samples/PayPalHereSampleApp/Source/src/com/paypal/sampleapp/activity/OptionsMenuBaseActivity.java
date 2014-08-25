@@ -100,14 +100,11 @@ public class OptionsMenuBaseActivity extends TabActivity {
                 break;
 
             case R.id.bt_connect:
-                Intent i = new Intent(OptionsMenuBaseActivity.this, EMVOnlyActivity.class);
-                startActivity(i);
-
                 returnValue = true;
                 break;
 
             case R.id.sdk_settings:
-                Intent in = new Intent(OptionsMenuBaseActivity.this, SDKSettingsActivity.class);
+                Intent in = new Intent(OptionsMenuBaseActivity.this, SettingsActivity.class);
                 startActivity(in);
 
                 returnValue = true;

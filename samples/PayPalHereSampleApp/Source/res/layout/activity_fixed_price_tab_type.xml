@@ -18,8 +18,14 @@
         <requestFocus />
     </EditText>
 
-    <Button android:id="@+id/fixed_price_checkout_button" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:layout_marginTop="20dp"
-        android:text="@string/title_checkout_button" />
-
+    <Button
+        android:id="@+id/id_purchase_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/title_purchase_button"
+        android:layout_gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/blue"
+        android:background="@color/transparent"/>
 </LinearLayout>

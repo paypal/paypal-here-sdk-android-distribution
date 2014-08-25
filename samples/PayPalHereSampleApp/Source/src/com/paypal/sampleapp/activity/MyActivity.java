@@ -20,16 +20,21 @@ import android.os.Message;
 import android.util.Log;
 
 import com.paypal.merchant.sdk.AuthenticationListener;
+import com.paypal.merchant.sdk.CardReaderListener;
 import com.paypal.merchant.sdk.MerchantManager;
 import com.paypal.merchant.sdk.PayPalHereSDK;
 import com.paypal.merchant.sdk.TransactionController;
+import com.paypal.merchant.sdk.domain.ChipAndPinDecisionEvent;
 import com.paypal.merchant.sdk.domain.DefaultResponseHandler;
 import com.paypal.merchant.sdk.domain.Invoice;
 import com.paypal.merchant.sdk.domain.Merchant;
 import com.paypal.merchant.sdk.domain.PPError;
+import com.paypal.merchant.sdk.domain.SecureCreditCard;
 import com.paypal.merchant.sdk.domain.credentials.Credentials;
 import com.paypal.merchant.sdk.domain.credentials.OauthCredentials;
+import com.paypal.sampleapp.login.LoginScreenActivity;
 import com.paypal.sampleapp.util.CommonUtils;
+import com.paypal.sampleapp.util.LocalPreferences;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -44,12 +49,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 
-public class MyActivity extends Activity {
+public class MyActivity extends Activity implements CardReaderListener {
 
-    public static final String PREFS_NAME = "MerchantPrefs";
-    public static final String REFRESH_URL = "refreshUrl";
     private static final String LOG = "MyActivity";
     private static Bitmap sBitmap;
     private static MerchantManager sMerchantManager = PayPalHereSDK.getMerchantManager();
@@ -57,32 +61,10 @@ public class MyActivity extends Activity {
     private static volatile boolean sIsPaymentCompleted;
     private static BluetoothDevice sEmvDevice;
     private static String sAccessToken;
+    private static String sTokenExpirationTime;
     private static boolean sIsHandledByApp = false;
-    /**
-     * Implementing the transaction controller that acts as an interceptor for pre and post authorize events.
-     */
-    protected TransactionController mTransactionController = new TransactionController() {
-        @Override
-        public TransactionControlAction onPreAuthorize(Invoice invoice,
-                                                       String payload) {
+    private static boolean mSwiperConnected = false;
 
-            CommonUtils.createToastMessage(MyActivity.this, "OnPreAuthorize!!!");
-            if (sIsHandledByApp) {
-                TransController controller = new TransController(payload);
-                controller.execute();
-                return TransactionControlAction.HANDLED;
-            }
-            return TransactionControlAction.CONTINUE;
-
-        }
-
-        @Override
-        public void onPostAuthorize(boolean didFail) {
-            CommonUtils.createToastMessage(MyActivity.this, "OnPostAuthorize!!!");
-        }
-    };
-    private static String sBNCode;
-    private static String sCashierId;
     /**
      * An authentication listener that is registered with the SDK and would be called when the access token of the
      * merchant expires.
@@ -118,51 +100,9 @@ public class MyActivity extends Activity {
 
             } else if (msg.what == 1) {
                 CommonUtils.createToastMessage(MyActivity.this, "Credentials refreshed.");
-
             }
         }
     };
-
-    public static Bitmap getBitmap() {
-        return sBitmap;
-    }
-
-    public static void setBitmap(Bitmap bm) {
-        sBitmap = bm;
-
-    }
-
-    public BluetoothDevice getBTDevice() {
-        return sEmvDevice;
-    }
-
-    public void setBTDevice(BluetoothDevice btDevice) {
-        sEmvDevice = btDevice;
-    }
-
-    public void handledByApp(boolean b) {
-        sIsHandledByApp = b;
-    }
-
-    public boolean isHandledByApp() {
-        return sIsHandledByApp;
-    }
-
-    public String getBNCode() {
-        return sBNCode;
-    }
-
-    public void setBNCode(String bnCode) {
-        sBNCode = bnCode;
-    }
-
-    public String getCashierId() {
-        return sCashierId;
-    }
-
-    public void setCashierId(String cashierId) {
-        sCashierId = cashierId;
-    }
 
     /**
      * Method to check if the merchant has checked in.
@@ -205,12 +145,7 @@ public class MyActivity extends Activity {
      */
     public void saveRefreshUrl(String refreshUrl) {
 
-        settings = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(REFRESH_URL, refreshUrl);
-        // Commit the edits!
-        editor.commit();
-
+        LocalPreferences.setRefreshURL(refreshUrl);
         Log.d("saveRefreshUrl", "Saving the refresh url: " + refreshUrl);
     }
 
@@ -220,8 +155,7 @@ public class MyActivity extends Activity {
      * @return : refresh url string.
      */
     public String getRefreshUrl() {
-        settings = getSharedPreferences(PREFS_NAME, 0);
-        return settings.getString(REFRESH_URL, null);
+        return LocalPreferences.getRefreshUrl();
     }
 
     public void saveAccessToken(String accessToken) {
@@ -232,13 +166,61 @@ public class MyActivity extends Activity {
         return sAccessToken;
     }
 
+    public String getTokenExpirationTime() {
+        return sTokenExpirationTime;
+    }
+
+    public void saveTokenExpirationTime(String expirationTime) {
+        sTokenExpirationTime = expirationTime;
+    }
+
     /**
      * Method to remove the saved refresh url from the shared preference.
      */
     private void removedSavedRefreshUrl() {
-        settings = getSharedPreferences(PREFS_NAME, 0);
-        if (settings != null)
-            settings.edit().remove(REFRESH_URL).commit();
+        LocalPreferences.removeRefreshURL();
+    }
+
+    public static Boolean isSwiperConnected(){
+        return mSwiperConnected;
+    }
+
+    @Override
+    public void onPaymentReaderConnected(ReaderTypes readerType, ReaderConnectionTypes transport) {
+        if(ReaderTypes.MagneticCardReader == readerType){
+            mSwiperConnected = true;
+        }
+    }
+
+    @Override
+    public void onPaymentReaderDisconnected(ReaderTypes readerType) {
+        if(ReaderTypes.MagneticCardReader == readerType){
+            mSwiperConnected = false;
+        }
+    }
+
+    @Override
+    public void onCardReadSuccess(SecureCreditCard paymentCard) {
+
+    }
+
+    @Override
+    public void onCardReadFailed(PPError<CardErrors> reason) {
+
+    }
+
+    @Override
+    public void onCardReaderEvent(PPError<CardReaderEvents> e) {
+
+    }
+
+    @Override
+    public void onSelectPaymentDecision(List<ChipAndPinDecisionEvent> decisionEventList) {
+
+    }
+
+    @Override
+    public void onInvalidListeningPort() {
 
     }
 
@@ -249,6 +231,7 @@ public class MyActivity extends Activity {
 
         private String accessToken;
         private String refreshUrl;
+        private String expiresIn;
 
         @Override
         protected String doInBackground(String... params) {
@@ -264,6 +247,7 @@ public class MyActivity extends Activity {
                     // Extract the ticket from the JSON response.
                     this.accessToken = json.getString("access_token");
                     this.refreshUrl = json.getString("refresh_url");
+                    this.expiresIn = json.getString("expires_in");
                 }
             } catch (Exception e) {
                 Log.e(LOG, e.getMessage());
@@ -281,8 +265,9 @@ public class MyActivity extends Activity {
             // Save the new refresh url.
             saveRefreshUrl(this.refreshUrl);
             saveAccessToken(this.accessToken);
+            saveTokenExpirationTime(this.expiresIn);
             // Create a new Credentials object with the newly obtained access token.
-            Credentials cred = new OauthCredentials(this.accessToken);
+            Credentials cred = new OauthCredentials(this.accessToken, this.refreshUrl, this.expiresIn);
             // Set the credentials object within the SDK.
             PayPalHereSDK.setCredentials(cred, new DefaultResponseHandler<Merchant,
                     PPError<MerchantManager.MerchantErrors>>() {
@@ -301,79 +286,6 @@ public class MyActivity extends Activity {
             });
 
 
-        }
-    }
-
-    private class TransController extends AsyncTask<String, String, String> {
-
-        private String mPayload;
-
-        public TransController(String jsonPayload) {
-            mPayload = jsonPayload;
-
-        }
-
-        private String convertStreamToString(InputStream is) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            try {
-                while ((line = reader.readLine()) != null) {
-                    sb.append((line + "\n"));
-                }
-            } catch (IOException e) {
-                Log.e("AppSDK", "Exception in response");
-            } finally {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    Log.e("AppSDK", "Exception in response");
-                }
-            }
-            return sb.toString();
-        }
-
-        protected String doInBackground(String... strings) {
-            String jsonResultAsString = null;
-            HttpClient hc = new DefaultHttpClient();
-            String message;
-
-            HttpPost p = new HttpPost("https://www.stage2pph32.stage.paypal.com/webapps/hereapi/merchant/v1/pay");
-            try {
-                message = mPayload;
-                p.setEntity(new StringEntity(message, "UTF8"));
-                p.setHeader("Content-type", "application/json");
-                p.setHeader("Authorization", "Bearer " + getAccessToken());
-                HttpResponse resp = hc.execute(p);
-                if (resp != null) {
-                    if (resp.getStatusLine().getStatusCode() == 200) {
-                        jsonResultAsString = convertStreamToString(resp.getEntity().getContent());
-                    }
-
-                }
-                Log.d("Status line", "" + resp.getStatusLine().getStatusCode());
-            } catch (Exception e) {
-                e.printStackTrace();
-
-            }
-            return jsonResultAsString;
-        }
-
-        protected void onPostExecute(String result) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MyActivity.this);
-            builder.setTitle("Payment Response");
-            builder.setMessage(result);
-            AlertDialog d = builder.create();
-            d.setButton(DialogInterface.BUTTON_NEUTRAL, "OK",
-                    new DialogInterface.OnClickListener
-                            () {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }
-            );
-            d.show();
         }
     }
 }

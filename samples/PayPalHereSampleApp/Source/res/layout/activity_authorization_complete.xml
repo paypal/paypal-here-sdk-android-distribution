@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:gravity="center_horizontal" android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/id_header_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/authorization_success_message"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="@color/green"
+        android:layout_marginTop="50dp"/>
+
+    <TextView
+        android:id="@+id/id_title_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/authorization_complete_what_next"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:layout_marginTop="70dp"/>
+
+    <Button
+        android:id="@+id/id_capture_payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/authorization_complete_capture_payment"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/blue"
+        android:background="@color/transparent"
+        android:layout_marginTop="40dp"/>
+
+    <Button
+        android:id="@+id/id_void_authorization"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/authorization_complete_void_payment"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/blue"
+        android:background="@color/transparent"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/id_new_transaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/authorization_complete_new_transaction"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/blue"
+        android:background="@color/transparent"
+        android:layout_marginTop="10dp"/>
+</LinearLayout>
+

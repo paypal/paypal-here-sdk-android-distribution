@@ -2,72 +2,90 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.paypal.sampleapp"
     android:versionCode="1667" android:versionName="1.6.6">
 
-    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="17" />
-
     <application android:allowBackup="true" android:icon="@drawable/logo"
-        android:label="@string/app_name" android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme">
+
         <activity android:name="com.paypal.sampleapp.activity.SplashScreenActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar.Fullscreen">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.paypal.sampleapp.activity.LoginScreenActivity"
+        <activity android:name="com.paypal.sampleapp.login.LoginScreenActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/login_screen">
-
-        </activity>
-        <activity android:name="com.paypal.sampleapp.activity.OAuthLoginActivity"
+            android:label="@string/login_screen"/>
+        <activity android:name="com.paypal.sampleapp.login.StageSelectActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/login_screen"
-            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog.NoActionBar"></activity>
+            android:label="@string/select_stage"/>
+        <activity android:name="com.paypal.sampleapp.login.OAuthLoginActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:label="@string/login_screen"/>
         <activity android:name="com.paypal.sampleapp.activity.BillingTypeTabActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/billing_type"></activity>
+            android:label="@string/billing_type"/>
         <activity android:name="com.paypal.sampleapp.activity.ItemizedActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name"/>
         <activity android:name="com.paypal.sampleapp.activity.FixedPriceActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name"/>
         <activity android:name="com.paypal.sampleapp.activity.PaymentTypeTabActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/payment_type"></activity>
-        <activity android:name="com.paypal.sampleapp.activity.CreditCardPeripheralActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/card_reader_payment"></activity>
+            android:label="@string/payment_type"/>
         <activity android:name="com.paypal.sampleapp.activity.CreditCardManualActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/key_in_payment"></activity>
+            android:label="@string/key_in_payment"/>
         <activity android:name="com.paypal.sampleapp.activity.PayPalMerchantCheckinActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/checkin_payment"></activity>
+            android:label="@string/checkin_payment"/>
 
         <activity android:name="com.paypal.sampleapp.activity.SignatureActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog.NoActionBar"></activity>
+            android:label="@string/app_name">
+        </activity>
         <activity android:name="com.paypal.sampleapp.activity.OptionsMenuBaseActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name"/>
 
-        <activity android:name="com.paypal.sampleapp.activity.BluetoothDeviceFinderActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog.NoActionBar"></activity>
-        <activity android:name="com.paypal.sampleapp.activity.EMVOnlyActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/app_name" />
 
-        <activity android:name=".activity.StageSelectActivity" android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/select_stage" />
+        <activity android:name=".activity.SettingsActivity" android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:label="@string/settings_activity" />
 
-        <activity android:name=".activity.SDKSettingsActivity"
+        <activity android:name=".emv.EMVTransactionActivity"
+            android:label="@string/title_emv_transaction"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"/>
+
+        <activity android:name=".swipe.SwipeTransactionActivity"
+            android:label="@string/title_swipe_transaction"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"/>
+
+        <activity android:name=".swipe.AuthorizationCompleteActivity"
+                  android:label="@string/title_authorization_complete"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".swipe.AuthorizedActivity"
+                  android:label="@string/title_authorized_activity"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".swipe.CaptureAuthorizedTransactionsActivity"
+                  android:label="@string/title_capture_authorized_activity"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".swipe.SalesActivity"
+                  android:label="@string/title_sales_activity"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".swipe.SendReceiptActivity"
+            android:label="@string/title_send_receipt_activity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/title_sdk_settings" />
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".emv.DeviceConnectActivity"
+            android:label="@string/title_emv_device_connect"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"/>
+
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

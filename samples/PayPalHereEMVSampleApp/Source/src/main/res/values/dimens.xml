@@ -1,13 +1,18 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">10dp</dimen>
 
     <!-- Main Activity related dimensions -->
     <dimen name="main_activity_reader_text_left_margin">5dp</dimen>
     <dimen name="main_activity_reader_text_right_margin">5dp</dimen>
     <dimen name="main_activity_left_margin">40dp</dimen>
     <dimen name="main_activity_right_margin">40dp</dimen>
-    <dimen name="main_activity_top_margin">20dp</dimen>
-    <dimen name="main_activity_bottom_margin">20dp</dimen>
+    <dimen name="main_activity_top_margin">10dp</dimen>
+    <dimen name="main_activity_bottom_margin">10dp</dimen>
+
+    <!-- device_details.xml related dimensions -->
+    <dimen name="device_details_margin_left">10dp</dimen>
+    <dimen name="device_details_margin_top">10dp</dimen>
+    <dimen name="device_details_gap_between_text_views">5dp</dimen>
 </resources>

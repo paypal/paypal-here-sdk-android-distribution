@@ -10,8 +10,10 @@ package com.paypal.emv.sampleapp.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -23,6 +25,10 @@ import android.widget.Toast;
 
 import com.paypal.emv.sampleapp.R;
 import com.paypal.merchant.sdk.PayPalHereSDK;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,14 +44,15 @@ import java.io.Writer;
  * 2. Performing an OAuth login (handled in the activity: OAuthLoginActivity.java).
  */
 public class LoginScreenActivity extends Activity {
-
-    private static final String LOG = LoginScreenActivity.class.getSimpleName();
+    private static final String LOG_TAG = LoginScreenActivity.class.getSimpleName();
     private String mUsername;
     private String mPassword;
     private Button mLoginButton;
     private ProgressBar mProgressBar;
     private TextView mEnv;
-    private String mServerName = PayPalHereSDK.Sandbox;
+    private TextView mEMVSoftwareRepo;
+    private String mServerName;
+    private static SharedPreferences mSharedPrefs;
 
     /**
      * initialize the various layout elements.
@@ -56,7 +63,19 @@ public class LoginScreenActivity extends Activity {
 
         setContentView(R.layout.activity_login_screen);
 
+        mServerName = getLastGoodServer();
+        if(mServerName == null) {
+            mServerName = PayPalHereSDK.Sandbox;
+        }
+
+        String lastGoodUsername = getLastGoodUsername();
+        if(lastGoodUsername != null) {
+            ((EditText) findViewById(R.id.username)).setText(lastGoodUsername);
+        }
+
         mEnv = (TextView) findViewById(R.id.env);
+        mEnv.setText(mServerName);
+        mEMVSoftwareRepo = (TextView) findViewById(R.id.env_emv_sw_repo);
 
         mProgressBar = (ProgressBar) findViewById(R.id.login_progress);
         mProgressBar.setVisibility(View.GONE);
@@ -73,6 +92,8 @@ public class LoginScreenActivity extends Activity {
                     Toast.makeText(LoginScreenActivity.this, R.string.invalid_user_credentials, Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+
                 performOAuthLogin(arg);
                 finish();
 
@@ -89,14 +110,19 @@ public class LoginScreenActivity extends Activity {
         });
 
         PayPalHereSDK.init(getApplicationContext(), PayPalHereSDK.Sandbox);
-        PayPalHereSDK.setOptionalServerList(getServerList());
-        //setUserCredentials();
+        setStage(mServerName);
+
+        updateConnectedEnvUI();
     }
 
     private void updateConnectedEnvUI() {
         String connectedTo = PayPalHereSDK.getCurrentServer();
         if (null != connectedTo) {
             mEnv.setText(connectedTo);
+        }
+        String repo = PayPalHereSDK.getEMVConfigRepo();
+        if(null != repo){
+            mEMVSoftwareRepo.setText(repo);
         }
     }
 
@@ -148,6 +174,7 @@ public class LoginScreenActivity extends Activity {
     private void setUserCredentials() {
         ((EditText) findViewById(R.id.username)).setText("harish");
         ((EditText) findViewById(R.id.password)).setText("11111111");
+        PayPalHereSDK.setServerName("stage2pph10");
     }
 
     /**
@@ -159,30 +186,38 @@ public class LoginScreenActivity extends Activity {
         super.onConfigurationChanged(newConfig);
     }
 
-    private String getServerList() {
-        InputStream is = getResources().openRawResource(R.raw.optional_server_list);
-        Writer writer = new StringWriter();
-        char[] buffer = new char[1024];
-        try {
-            Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-            int n;
-            while ((n = reader.read(buffer)) != -1) {
-                writer.write(buffer, 0, n);
-            }
-        } catch (IOException e) {
-
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-            }
-        }
-        return writer.toString();
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
         updateConnectedEnvUI();
+    }
+
+    private String getLastGoodServer() {
+        mSharedPrefs = getSharedPreferences(OAuthLoginActivity.PREFS_NAME, 0);
+        return mSharedPrefs.getString(OAuthLoginActivity.PREFS_LAST_GOOD_SERVER, null);
+    }
+
+    private String getLastGoodUsername() {
+        mSharedPrefs = getSharedPreferences(OAuthLoginActivity.PREFS_NAME, 0);
+        return mSharedPrefs.getString(OAuthLoginActivity.PREFS_LAST_GOOD_USERNAME, null);
+    }
+
+    public static void setStage(String name){
+        String url = "https://www."+name+".stage.paypal.com";
+        JSONObject object = new JSONObject();
+        try {
+            JSONArray array = new JSONArray();
+            JSONObject urlObject = new JSONObject();
+            urlObject.put("name",name);
+            urlObject.put("url",url);
+            array.put(urlObject);
+            object.put("servers",array);
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "JSONException");
+            e.printStackTrace();
+            return;
+        }
+        PayPalHereSDK.setOptionalServerList(object.toString());
+        PayPalHereSDK.setServerName(name);
     }
 }

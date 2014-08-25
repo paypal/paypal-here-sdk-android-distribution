@@ -24,6 +24,7 @@ import com.paypal.merchant.sdk.domain.PPError;
 import com.paypal.merchant.sdk.domain.SecureCreditCard;
 import com.paypal.sampleapp.R;
 import com.paypal.sampleapp.util.CommonUtils;
+import com.paypal.sampleapp.util.LocalPreferences;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -54,7 +55,7 @@ public class FixedPriceActivity extends MyActivity implements CardReaderListener
         mFixedPrice = (EditText) findViewById(R.id.fixed_price);
 
         // Find and setup the button for fixed price purchase button.
-        Button b = (Button) findViewById(R.id.fixed_price_checkout_button);
+        Button b = (Button) findViewById(R.id.id_purchase_button);
         b.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -78,10 +79,10 @@ public class FixedPriceActivity extends MyActivity implements CardReaderListener
                 Invoice i = PayPalHereSDK.getTransactionManager().beginPayment(mFixedPriceVal);
                 // Set the cashier id (if present) within the invoice to indicate which cashier within the store
                 // created this invoice.
-                i.setCashierId(getCashierId());
+                i.setCashierId(LocalPreferences.getCashierID());
                 // Set the partner attribution (BN) code (if present) also within the invoice to indicate which
                 // partner it came from.
-                i.setReferrerCode(getBNCode());
+                i.setReferrerCode(LocalPreferences.getBNCode());
                 PayPalHereSDK.getTransactionManager().setActiveInvoice(i);
 
                 // Send the amount to the next activity i.e., payment activity.

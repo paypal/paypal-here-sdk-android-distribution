@@ -16,7 +16,7 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 17
-    buildToolsVersion "19.0.0"
+    buildToolsVersion "19.1.0"
 
     defaultConfig {
         minSdkVersion 10
@@ -48,7 +48,7 @@ android {
     }
 
     dependencies {
-        compile('com.paypal.merchant.sdk:paypal-sdk:1.3.2@aar')
+        compile('com.paypal.merchant.sdk:paypal-sdk:1.5@aar')
         //compile project(':sdk')
     }
 
@@ -59,7 +59,7 @@ android {
     }
 }
 dependencies {
-    compile 'com.android.support:appcompat-v7:+'
+    compile 'com.android.support:appcompat-v7:19.1.0'
     compile 'com.android.support:support-v4:18.0.0'
     compile 'com.google.android.gms:play-services:4.0.30'
 }

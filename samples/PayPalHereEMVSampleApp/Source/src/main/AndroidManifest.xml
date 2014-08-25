@@ -3,10 +3,11 @@
     package="com.paypal.emv.sampleapp">
 
     <application android:allowBackup="true" android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme">
         <activity android:name="com.paypal.emv.sampleapp.login.LoginScreenActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -16,20 +17,20 @@
             android:label="@string/login_activity_name" android:noHistory="true" />
         <activity android:name="com.paypal.emv.sampleapp.login.StageSelectActivity"
             android:label="@string/stage_select_activity_name" />
-        <activity android:name="com.paypal.emv.sampleapp.MainActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/main_activity_name" />
-        <activity android:name="com.paypal.emv.sampleapp.DeviceConnectActivity"
+        <activity android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/main_activity_name"
-            android:theme="@style/SDK.Theme.transparent" />
-        <activity android:name="com.paypal.merchant.sdk.internal.activities.EMVPaymentActivity"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".activity.DeviceConnectActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/main_activity_name"
+            android:theme="@style/SDKTheme.transparent" />
+        <activity android:name=".activity.SalesActivity"/>
+        <activity android:name=".activity.DeviceDetailsActivity"/>
+        <activity android:name="com.paypal.merchant.sdk.internal.emv.activities.EMVDeviceConnectActivity"
             android:label="@string/sdk_app_name"
-            android:theme="@style/SDK.Theme.transparent" />
-        <activity android:name="com.paypal.merchant.sdk.internal.activities.EMVSignatureActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
-            android:label="@string/sdk_app_name" android:screenOrientation="landscape"></activity>
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/SDKTheme.transparent" />
     </application>
 
 </manifest>
