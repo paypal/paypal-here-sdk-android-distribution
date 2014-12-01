@@ -2,6 +2,8 @@ package com.paypal.emv.sampleapp.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,6 +30,8 @@ import com.paypal.merchant.sdk.domain.DefaultResponseHandler;
 import com.paypal.merchant.sdk.domain.PPError;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class MainActivity extends Activity {
     public static final int ACTIVITY_DEVICE_CONNECT_REQUEST_CODE = 1001;
@@ -47,6 +52,10 @@ public class MainActivity extends Activity {
     private String mReaderNotConnectedText;
 
     private Boolean mIsReaderDeviceConnected = false;
+
+    private AlertDialog mCurrentDisplayDialog;
+    private BluetoothDevice mSelectedBluetoothDevice;
+    private boolean mSoftwareUpdateRequired = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +89,11 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 if (mReaderConnectButton.getText().toString().equalsIgnoreCase(MainActivity.this.getString(R.string.reader_connect))) {
                     Log.d(LOG_TAG, "mReaderConnectButton onClick. Calling the mEMVTransaction to connect to the reader");
-                    startActivityForResult(new Intent(MainActivity.this, DeviceConnectActivity.class), ACTIVITY_DEVICE_CONNECT_REQUEST_CODE);
+                    showAvailableDevices();
                 } else if (mReaderConnectButton.getText().toString().equalsIgnoreCase(MainActivity.this.getString(R.string.reader_disconnect))) {
                     disconnectTheEMVDevice();
+                } else if(mReaderConnectButton.getText().toString().equalsIgnoreCase(getString(R.string.reader_update))){
+                    updateReader();
                 }
             }
         });
@@ -182,6 +193,11 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(LOG_TAG, "onOptionsItemSelected IN Item: " + item.getTitle());
         switch (item.getItemId()) {
+            case R.id.action_settings:{
+                Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+                startActivity(intent);
+            }
+            break;
             case R.id.action_device_details: {
                 Log.d(LOG_TAG, "onMenuItemSelected:action_device_details");
                 Intent intent = new Intent(MainActivity.this,DeviceDetailsActivity.class);
@@ -263,11 +279,29 @@ public class MainActivity extends Activity {
     }
 
     private void disconnectTheEMVDevice() {
-        if (null != DeviceConnectActivity.mSelectedBluetoothDevice) {
-            PayPalHereSDK.getCardReaderManager().disconnectFromDevice(DeviceConnectActivity.mSelectedBluetoothDevice);
+        if (null != mSelectedBluetoothDevice) {
+            PayPalHereSDK.getCardReaderManager().disconnectFromDevice(mSelectedBluetoothDevice);
             mReaderStatusButton.setText(mReaderNotConnectedText);
             mReaderStatusButton.setTextColor(Color.RED);
+            mReaderConnectButton.setText(R.string.reader_connect);
         }
+    }
+
+    private void updateReader(){
+        PayPalHereSDK.getCardReaderManager().initiateSoftwareUpdate(MainActivity.this,mSelectedBluetoothDevice,new DefaultResponseHandler<Boolean, PPError<CardReaderManager.ChipAndPinSoftwareUpdateStatus>>() {
+            @Override
+            public void onSuccess(Boolean responseObject) {
+                Log.d(LOG_TAG,"updateReader: response handler onSuccess");
+                mSoftwareUpdateRequired = false;
+                updateReaderConnectedMessage(true);
+            }
+
+            @Override
+            public void onError(PPError<CardReaderManager.ChipAndPinSoftwareUpdateStatus> error) {
+                mSoftwareUpdateRequired = true;
+                updateReaderConnectedMessage(true);
+            }
+        });
     }
 
     private void showExitDialog() {
@@ -310,6 +344,135 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void updateReaderConnectedMessage(boolean connected){
+        if(null != mReaderConnectButton && null != mReaderStatusButton) {
+            if (connected) {
+                mReaderStatusButton.setText(mReaderConnectedText);
+                mReaderStatusButton.setTextColor(Color.GREEN);
+                mIsReaderDeviceConnected = true;
+                mReaderConnectButton.setText(R.string.reader_disconnect);
+            } else {
+                mReaderStatusButton.setText(mReaderNotConnectedText);
+                mReaderStatusButton.setTextColor(Color.RED);
+                mIsReaderDeviceConnected = false;
+                mReaderConnectButton.setText(R.string.reader_connect);
+            }
+
+            if(mSoftwareUpdateRequired){
+                mReaderConnectButton.setText(R.string.reader_update);
+            }
+        }
+    }
+
+    private void connectDevice(final BluetoothDevice device){
+        mSelectedBluetoothDevice = device;
+        PayPalHereSDK.getCardReaderManager().connectToDevice(MainActivity.this,device,new DefaultResponseHandler<BluetoothDevice,PPError<CardReaderManager.ChipAndPinConnectionStatus>>(){
+
+            @Override
+            public void onSuccess(BluetoothDevice responseObject) {
+                Log.d(LOG_TAG," connectDevice Response Handler: onSuccess");
+                mSelectedBluetoothDevice = responseObject;
+                updateReaderConnectedMessage(true);
+            }
+
+            @Override
+            public void onError(PPError<CardReaderManager.ChipAndPinConnectionStatus> error) {
+                Log.d(LOG_TAG,"connectDevice Response Handler: onError: "+error.getErrorCode());
+                if(CardReaderManager.ChipAndPinConnectionStatus.ErrorSoftwareUpdateRequired == error.getErrorCode()
+                        || CardReaderManager.ChipAndPinConnectionStatus.ErrorSoftwareUpdateTriedAndFailed == error.getErrorCode()){
+                    Log.d(LOG_TAG,"connectDevice Response Handler: onError: SoftwareUpdate Recommended. Hence allowing to take payments..");
+                    mSoftwareUpdateRequired = true;
+                    updateReaderConnectedMessage(true);
+                }else if(CardReaderManager.ChipAndPinConnectionStatus.ErrorSoftwareUpdateRecommended == error.getErrorCode()){
+                    Log.e(LOG_TAG,"connectDevice Response Handler: onError. Not allowing to take payments");
+                    mSoftwareUpdateRequired = true;
+                    updateReaderConnectedMessage(true);
+                }else if(CardReaderManager.ChipAndPinConnectionStatus.ConnectedAndReady == error.getErrorCode()){
+                    mSoftwareUpdateRequired = false;
+                    updateReaderConnectedMessage(true);
+                }
+            }
+        });
+    }
+
+    private void showAvailableDevices(){
+        BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+        Set<BluetoothDevice> pairedDevices = btAdapter.getBondedDevices();
+        if (pairedDevices.size() <= 0) {
+            showNoPairedDevicesAlertDialog();
+        } else {
+            showAlertDialogWithPairedDevices(pairedDevices);
+        }
+    }
+
+    private void showAlertDialogWithPairedDevices(final Set<BluetoothDevice> deviceSet) {
+        Log.d(LOG_TAG, "showAlertDialogWithPairedDevices IN");
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, com.paypal.merchant.sdk.R.layout.sdk_device_name);
+        final ArrayList<BluetoothDevice> deviceArray = new ArrayList<BluetoothDevice>();
+        for (BluetoothDevice device : deviceSet) {
+            String deviceName = device.getName();
+            if (deviceName.contains("PayPal")) {
+                Log.d(LOG_TAG, "Adding the device: " + deviceName + " to the adapter");
+                adapter.add(deviceName);
+                deviceArray.add(device);
+            }
+        }
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(com.paypal.merchant.sdk.R.string.sdk_bt_paired_devices_alert_dialog_title);
+        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                mCurrentDisplayDialog = null;
+                final BluetoothDevice device = deviceArray.get(i);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(LOG_TAG,"showAlertDialogWithPairedDevices device selected onClick");
+                        connectDevice(device);
+                    }
+                }).run();
+            }
+        });
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                mCurrentDisplayDialog.dismiss();
+                mCurrentDisplayDialog = null;
+                finish();
+            }
+        });
+        mCurrentDisplayDialog = builder.create();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mCurrentDisplayDialog.show();
+            }
+        });
+    }
+
+    private void showNoPairedDevicesAlertDialog() {
+        Log.d(LOG_TAG, "showNoPairedDevicesAlertDialog IN");
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(com.paypal.merchant.sdk.R.string.sdk_bt_paired_devices_alert_dialog_title);
+        builder.setMessage(com.paypal.merchant.sdk.R.string.sdk_no_bt_paired_devices_msg);
+        builder.setCancelable(false);
+        builder.setNeutralButton(com.paypal.merchant.sdk.R.string.sdk_OK, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(LOG_TAG, "showNoPairedDevicesAlertDialog:run:onClick IN");
+                dialogInterface.dismiss();
+                mCurrentDisplayDialog = null;
+            }
+        });
+        mCurrentDisplayDialog = builder.create();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mCurrentDisplayDialog.show();
+            }
+        });
+    }
+
     private class CallbackHandler implements DefaultResponseHandler<TransactionManager.PaymentResponse, PPError<TransactionManager.EMVPaymentErrors>> {
         @Override
         public void onSuccess(TransactionManager.PaymentResponse responseObject) {
@@ -338,6 +501,10 @@ public class MainActivity extends Activity {
                     showAlertDialog(R.string.merchant_error_title,R.string.merchant_amount_too_high,false);
                 }else if(TransactionManager.EMVPaymentErrors.BatteryLow == error.getErrorCode()){
                     showAlertDialog(R.string.merchant_error_title,R.string.merchant_battery_too_low,false);
+                }else if(TransactionManager.EMVPaymentErrors.MandatorySoftwareUpdateRequired == error.getErrorCode()){
+                    showAlertDialog(R.string.merchant_error_title,R.string.error_mandatory_software_update,false);
+                }else if(TransactionManager.EMVPaymentErrors.UpgradePPHSDK == error.getErrorCode()){
+                    showAlertDialog(R.string.merchant_error_title,R.string.error_upgrade_sdk,false);
                 }
                 }
             });

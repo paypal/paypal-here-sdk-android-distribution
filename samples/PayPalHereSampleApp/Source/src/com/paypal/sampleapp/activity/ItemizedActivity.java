@@ -139,6 +139,8 @@ public class ItemizedActivity extends MyActivity {
                 ItemizedActivity.this.startActivity(intent);
             }
         });
+
+        CommonUtils.createToastMessage(ItemizedActivity.this, "Is device compatible : " + PayPalHereSDK.getCardReaderManager().getDeviceCompatibilityModel().isModelSupported());
     }
 
     @Override

@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.paypal.emv.sampleapp.R;
 import com.paypal.merchant.sdk.PayPalHereSDK;
 
@@ -60,6 +61,7 @@ public class LoginScreenActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
 
         setContentView(R.layout.activity_login_screen);
 
@@ -76,6 +78,12 @@ public class LoginScreenActivity extends Activity {
         mEnv = (TextView) findViewById(R.id.env);
         mEnv.setText(mServerName);
         mEMVSoftwareRepo = (TextView) findViewById(R.id.env_emv_sw_repo);
+
+        String lastGoodEMVConfigRepo = getLastGoodEMVConfigRepo();
+        if(null != lastGoodEMVConfigRepo){
+            mEMVSoftwareRepo.setText(lastGoodEMVConfigRepo);
+            PayPalHereSDK.setEMVConfigRepo(lastGoodEMVConfigRepo);
+        }
 
         mProgressBar = (ProgressBar) findViewById(R.id.login_progress);
         mProgressBar.setVisibility(View.GONE);
@@ -116,9 +124,9 @@ public class LoginScreenActivity extends Activity {
     }
 
     private void updateConnectedEnvUI() {
-        String connectedTo = PayPalHereSDK.getCurrentServer();
-        if (null != connectedTo) {
-            mEnv.setText(connectedTo);
+        mServerName = PayPalHereSDK.getCurrentServer();
+        if (null != mServerName) {
+            mEnv.setText(mServerName);
         }
         String repo = PayPalHereSDK.getEMVConfigRepo();
         if(null != repo){
@@ -138,6 +146,7 @@ public class LoginScreenActivity extends Activity {
         Intent intent = new Intent(LoginScreenActivity.this, OAuthLoginActivity.class);
         intent.putExtra("username", mUsername);
         intent.putExtra("password", mPassword);
+        intent.putExtra("servername",mServerName);
         startActivity(intent);
 
     }
@@ -195,6 +204,11 @@ public class LoginScreenActivity extends Activity {
     private String getLastGoodServer() {
         mSharedPrefs = getSharedPreferences(OAuthLoginActivity.PREFS_NAME, 0);
         return mSharedPrefs.getString(OAuthLoginActivity.PREFS_LAST_GOOD_SERVER, null);
+    }
+
+    private String getLastGoodEMVConfigRepo() {
+        mSharedPrefs = getSharedPreferences(OAuthLoginActivity.PREFS_NAME, 0);
+        return mSharedPrefs.getString(OAuthLoginActivity.PREFS_LAST_GOOD_EMV_CONFIG_REPO, null);
     }
 
     private String getLastGoodUsername() {

@@ -13,6 +13,7 @@ import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.http.SslError;
 import android.os.AsyncTask;
@@ -100,9 +101,12 @@ import javax.crypto.spec.SecretKeySpec;
 public class OAuthLoginActivity extends MyActivity {
 
     private static final String LOG = "PayPalHere.OAuthLoginScreen";
-    private static final String MERCHANT_SERVICE_STAGE_URL = "http://morning-tundra-8515.herokuapp.com/";
-    private static final String MERCHANT_SERVICE_SANDBOX_URL = "http://desolate-wave-3684.herokuapp.com/";
-    private static final String MERCHANT_SERVICE_LIVE_URL = "http://stormy-hollows-1584.herokuapp.com/";
+
+    public static final String PREFS_NAME = "MerchantPrefs";
+    public static final String PREFS_LAST_GOOD_USERNAME = "PREFS_LAST_GOOD_USERNAME";
+    public static final String PREFS_LAST_GOOD_SERVER = "PREFS_LAST_GOOD_SERVER";
+
+    private static final String MERCHANT_SERVICE_URL = "http://sdk-sample-server.herokuapp.com/server/";
     private String mMerchantServiceUrl;
     private String mTicket;
     private Merchant mMerchant;
@@ -112,6 +116,7 @@ public class OAuthLoginActivity extends MyActivity {
     private WebView mLoginWebView;
     private DialogFragment mMerchantInitDialog;
     private ProgressDialog mProgressDialog;
+    private static SharedPreferences mSharedPrefs;
 
     /**
      * initialize the various layout elements.
@@ -138,6 +143,8 @@ public class OAuthLoginActivity extends MyActivity {
         mUsername = getIntent().getStringExtra("username");
         mPassword = getIntent().getStringExtra("password");
 
+        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
+
         setMerchantServiceUrl();
         // Checking to see if the server urls are set above.
         // NOTE: This check is looking for a url that has the domain "herokuapp.com". If the 3rd apps are using any
@@ -153,12 +160,8 @@ public class OAuthLoginActivity extends MyActivity {
         String currentServer = PayPalHereSDK.getCurrentServer();
         if (currentServer.equalsIgnoreCase(PayPalHereSDK.Live)) {
             mUseLive = true;
-            mMerchantServiceUrl = MERCHANT_SERVICE_LIVE_URL;
-        } else if (currentServer.equalsIgnoreCase(PayPalHereSDK.Sandbox)) {
-            mMerchantServiceUrl = MERCHANT_SERVICE_SANDBOX_URL;
-        } else {
-            mMerchantServiceUrl = MERCHANT_SERVICE_STAGE_URL;
         }
+        mMerchantServiceUrl = MERCHANT_SERVICE_URL;
     }
 
     /**
@@ -168,7 +171,7 @@ public class OAuthLoginActivity extends MyActivity {
      * @return
      */
     private boolean isHerokuUrlsSet() {
-        if (CommonUtils.isNullOrEmpty(mMerchantServiceUrl) || !mMerchantServiceUrl.contains("herokuapp.com"))
+        if (CommonUtils.isNullOrEmpty(mMerchantServiceUrl))
             return false;
 
         return true;
@@ -612,6 +615,11 @@ public class OAuthLoginActivity extends MyActivity {
         // Save the token expiration time
         saveTokenExpirationTime(expiry);
 
+        saveLastGoodServer();
+        saveLastGoodUsername();
+
+
+
         // Create a credentials obj based off of the decrypted access token.
         // Should also implement a callback listener in case the access token is expired.
         Credentials credentials = new OauthCredentials(accessToken, refreshUrl, expiry);
@@ -620,7 +628,7 @@ public class OAuthLoginActivity extends MyActivity {
         Log.d("Access Token", accessToken);
         // Init the SDK with the current merchant credentials.
         PayPalHereSDK.setCredentials(credentials, new DefaultResponseHandler<Merchant,
-                        PPError<MerchantManager.MerchantErrors>>() {
+                PPError<MerchantManager.MerchantErrors>>() {
             @SuppressLint("NewApi")
             @Override
             public void onSuccess(Merchant merchant) {
@@ -688,6 +696,24 @@ public class OAuthLoginActivity extends MyActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
+    }
+
+    private void saveLastGoodUsername() {
+        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = mSharedPrefs.edit();
+        editor.putString(PREFS_LAST_GOOD_USERNAME, mUsername);
+        editor.commit();
+        Log.d("saveRefreshUrl", "Saving the last good username: " + mUsername);
+    }
+
+    private void saveLastGoodServer() {
+        String successfulServer = PayPalHereSDK.getCurrentServer();
+
+        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = mSharedPrefs.edit();
+        editor.putString(PREFS_LAST_GOOD_SERVER, successfulServer);
+        editor.commit();
+        Log.d("saveRefreshUrl", "Saving the last good server: " + successfulServer);
     }
 
     /**
@@ -798,6 +824,8 @@ public class OAuthLoginActivity extends MyActivity {
                 nameValuePairs.add(new BasicNameValuePair("password",
                         getPassword()));
                 nameValuePairs.add(new BasicNameValuePair("isLive", String.valueOf(mUseLive)));
+                nameValuePairs.add(new BasicNameValuePair("servername",
+                        PayPalHereSDK.getCurrentServer()));
 
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 HttpResponse response = httpclient.execute(httppost);
@@ -935,6 +963,8 @@ public class OAuthLoginActivity extends MyActivity {
                         .add(new BasicNameValuePair("ticket", getTicket()));
                 nameValuePairs.add(new BasicNameValuePair("username",
                         getUsername()));
+                nameValuePairs.add(new BasicNameValuePair("servername",
+                        PayPalHereSDK.getCurrentServer()));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 HttpResponse response = httpclient.execute(httppost);
 
