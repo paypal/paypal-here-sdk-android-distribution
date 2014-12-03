@@ -18,6 +18,11 @@
     <string name="no">No</string>
     <string name="ok">OK</string>
 
+    <!-- Strings in stage_selection.xml -->
+    <string name="update_stage_txt">Stage Selection</string>
+    <string name="update_stage_hint">stage2pph10</string>
+    <string name="update_txt">Update</string>
+
     <!-- Activity Descriptions.. -->
     <string name="settings_activity">Settings</string>
 

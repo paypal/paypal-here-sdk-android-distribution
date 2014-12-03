@@ -10,8 +10,10 @@ package com.paypal.sampleapp.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -19,10 +21,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.paypal.merchant.sdk.PayPalHereSDK;
+import com.crashlytics.android.Crashlytics;
 import com.paypal.sampleapp.R;
-import com.paypal.sampleapp.util.CommonUtils;
+import com.paypal.merchant.sdk.PayPalHereSDK;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,14 +45,14 @@ import java.io.Writer;
  * 2. Performing an OAuth login (handled in the activity: OAuthLoginActivity.java).
  */
 public class LoginScreenActivity extends Activity {
-
-    private static final String LOG = "PayPalHere.LoginScreen";
+    private static final String LOG_TAG = LoginScreenActivity.class.getSimpleName();
     private String mUsername;
     private String mPassword;
     private Button mLoginButton;
     private ProgressBar mProgressBar;
     private TextView mEnv;
-    //private boolean mUseLive;
+    private String mServerName;
+    private static SharedPreferences mSharedPrefs;
 
     /**
      * initialize the various layout elements.
@@ -53,10 +60,22 @@ public class LoginScreenActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Setting the layout for this activity.
+        Crashlytics.start(this);
+
         setContentView(R.layout.activity_login_screen);
 
+        mServerName = getLastGoodServer();
+        if(mServerName == null) {
+            mServerName = PayPalHereSDK.Sandbox;
+        }
+
+        String lastGoodUsername = getLastGoodUsername();
+        if(lastGoodUsername != null) {
+            ((EditText) findViewById(R.id.username)).setText(lastGoodUsername);
+        }
+
         mEnv = (TextView) findViewById(R.id.env);
+        mEnv.setText(mServerName);
 
         mProgressBar = (ProgressBar) findViewById(R.id.login_progress);
         mProgressBar.setVisibility(View.GONE);
@@ -66,62 +85,41 @@ public class LoginScreenActivity extends Activity {
             @Override
             public void onClick(View arg) {
                 // Get the username and password from the input fields.
-                mUsername = CommonUtils.getString((EditText) findViewById(R.id.username));
-                mPassword = CommonUtils.getString((EditText) findViewById(R.id.password));
+                mUsername = ((EditText) findViewById(R.id.username)).getText().toString();
+                mPassword = ((EditText) findViewById(R.id.password)).getText().toString();
                 // Validate the username and password for null or empty.
                 if (!isValidInput()) {
-                    // Sending back a toast message indicating invalid credentials.
-                    CommonUtils.createToastMessage(LoginScreenActivity.this,
-                            CommonUtils.getStringFromId(LoginScreenActivity.this, R.string.invalid_user_credentials));
+                    Toast.makeText(LoginScreenActivity.this, R.string.invalid_user_credentials, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // Move on to the OAuth login screen.
+
                 performOAuthLogin(arg);
+                finish();
 
             }
         });
 
-        //Easter egg : An option to connect to different stages.
-
         mLoginButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-
                 Intent i = new Intent(LoginScreenActivity.this, StageSelectActivity.class);
                 startActivity(i);
                 return true;
             }
         });
 
-        /*// In case we want to test in live.
-        CheckBox checkBox = (CheckBox) findViewById(R.id.isLive_checkbox);
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                mUseLive = isChecked;
-
-            }
-        });
-        */
-        // Initialize the PayPalHereSDK with the application context and the server env name.
-        // This init is NECESSARY as the SDK needs the app context to init a few underlying objects.
-        // The 2 options available are "Live" and "Sandbox"
         PayPalHereSDK.init(getApplicationContext(), PayPalHereSDK.Sandbox);
+        setStage(mServerName);
 
-        // Set the list of servers within the SDK so that we can choose to work with any one of them.
-        PayPalHereSDK.setOptionalServerList(getServerList());
-
-        // Using a default username and password.
-        setUserCredentials();
-
-
+        updateConnectedEnvUI();
     }
 
     private void updateConnectedEnvUI() {
-        String connectedTo = PayPalHereSDK.getCurrentServer();
-        mEnv.setText(CommonUtils.isNullOrEmpty(connectedTo) ? "" : connectedTo);
+        mServerName = PayPalHereSDK.getCurrentServer();
+        if (null != mServerName) {
+            mEnv.setText(mServerName);
+        }
     }
 
     /**
@@ -131,13 +129,12 @@ public class LoginScreenActivity extends Activity {
      */
     private void performOAuthLogin(View arg) {
         hideKeyboard(arg);
-
         // Pass the username and password to the OAuth login activity for OAuth login.
         // Once the login is successful, we automatically check in the merchant in the OAuth activity.
         Intent intent = new Intent(LoginScreenActivity.this, OAuthLoginActivity.class);
         intent.putExtra("username", mUsername);
         intent.putExtra("password", mPassword);
-        //intent.putExtra("useLive", mUseLive);
+        intent.putExtra("servername",mServerName);
         startActivity(intent);
 
     }
@@ -148,7 +145,9 @@ public class LoginScreenActivity extends Activity {
      * @return
      */
     private boolean isValidInput() {
-        if (CommonUtils.isNullOrEmpty(mUsername) || CommonUtils.isNullOrEmpty(mPassword)) {
+        if (null == mUsername || mUsername.length() <= 0) {
+            return false;
+        } else if (null == mPassword || mPassword.length() <= 0) {
             return false;
         }
         return true;
@@ -170,8 +169,9 @@ public class LoginScreenActivity extends Activity {
      */
     //TODO: need to remove this before shipping the app to public
     private void setUserCredentials() {
-        ((EditText) findViewById(R.id.username)).setText("sathya");
+        ((EditText) findViewById(R.id.username)).setText("");
         ((EditText) findViewById(R.id.password)).setText("11111111");
+        PayPalHereSDK.setServerName("stage2pph10");
     }
 
     /**
@@ -181,33 +181,46 @@ public class LoginScreenActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
-    }
-
-    private String getServerList() {
-        InputStream is = getResources().openRawResource(R.raw.optional_server_list);
-        Writer writer = new StringWriter();
-        char[] buffer = new char[1024];
-        try {
-            Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-            int n;
-            while ((n = reader.read(buffer)) != -1) {
-                writer.write(buffer, 0, n);
-            }
-        } catch (IOException e) {
-
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-            }
-        }
-        return writer.toString();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         updateConnectedEnvUI();
+    }
+
+    private String getLastGoodServer() {
+        mSharedPrefs = getSharedPreferences(OAuthLoginActivity.PREFS_NAME, 0);
+        return mSharedPrefs.getString(OAuthLoginActivity.PREFS_LAST_GOOD_SERVER, null);
+    }
+
+    private String getLastGoodUsername() {
+        mSharedPrefs = getSharedPreferences(OAuthLoginActivity.PREFS_NAME, 0);
+        return mSharedPrefs.getString(OAuthLoginActivity.PREFS_LAST_GOOD_USERNAME, null);
+    }
+
+    public static void setStage(String name){
+        if(name.equalsIgnoreCase(PayPalHereSDK.Sandbox)
+                || name.equalsIgnoreCase(PayPalHereSDK.Live)){
+
+            PayPalHereSDK.setServerName(name);
+        }else {
+            String url = "https://www." + name + ".stage.paypal.com";
+            JSONObject object = new JSONObject();
+            try {
+                JSONArray array = new JSONArray();
+                JSONObject urlObject = new JSONObject();
+                urlObject.put("name", name);
+                urlObject.put("url", url);
+                array.put(urlObject);
+                object.put("servers", array);
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "JSONException");
+                e.printStackTrace();
+                return;
+            }
+            PayPalHereSDK.setOptionalServerList(object.toString());
+            PayPalHereSDK.setServerName(name);
+        }
     }
 }

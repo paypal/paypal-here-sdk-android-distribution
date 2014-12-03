@@ -198,6 +198,34 @@ public class SalesActivity extends Activity implements AdapterListener {
             @Override
             public void onError(PPError<TransactionManager.EMVPaymentErrors> error) {
                 Log.e(LOG_TAG, "refund callback onFailure");
+                if(TransactionManager.EMVPaymentErrors.BatteryLow == error.getErrorCode()){
+                    showAlertDialog(R.string.merchant_error_title,R.string.merchant_battery_too_low,false);
+                }else if(TransactionManager.EMVPaymentErrors.MandatorySoftwareUpdateRequired == error.getErrorCode()){
+                    showAlertDialog(R.string.merchant_error_title,R.string.error_mandatory_software_update,false);
+                }
+            }
+        });
+    }
+
+    private void showAlertDialog(int titleResID, int msgResID, final boolean finish){
+        Log.d(LOG_TAG, "showTransactionCompleteAlertDialog IN");
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(titleResID);
+        builder.setMessage(msgResID);
+        builder.setCancelable(false);
+        builder.setNeutralButton(com.paypal.merchant.sdk.R.string.sdk_OK,new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                if(finish) {
+                    finish();
+                }
+            }
+        });
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                builder.create().show();
             }
         });
     }

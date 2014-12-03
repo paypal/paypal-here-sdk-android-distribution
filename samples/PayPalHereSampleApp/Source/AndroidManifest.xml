@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.paypal.sampleapp"
-    android:versionCode="1667" android:versionName="1.6.6">
+    android:versionCode="4" android:versionName="1.0">
 
     <application android:allowBackup="true" android:icon="@drawable/logo"
         android:theme="@style/AppTheme">
@@ -85,6 +85,7 @@
         <activity android:name=".emv.DeviceConnectActivity"
             android:label="@string/title_emv_device_connect"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"/>
+        <meta-data android:name="com.crashlytics.ApiKey" android:value="6fdee2cd3d6cb98362060d0ac0be20ef1c386ef3"/>
 
     </application>
 

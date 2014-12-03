@@ -102,10 +102,10 @@ public class OAuthLoginActivity extends Activity {
     public static final String REFRESH_URL = "refreshUrl";
     public static final String PREFS_LAST_GOOD_USERNAME = "PREFS_LAST_GOOD_USERNAME";
     public static final String PREFS_LAST_GOOD_SERVER = "PREFS_LAST_GOOD_SERVER";
+    public static final String PREFS_LAST_GOOD_EMV_CONFIG_REPO = "PREFS_LAST_GOOD_EMV_CONFIG_REPO";
     private static final String LOG = OAuthLoginActivity.class.getSimpleName();
-    private static final String MERCHANT_SERVICE_STAGE_URL = "http://morning-tundra-8515.herokuapp.com/";
-    private static final String MERCHANT_SERVICE_SANDBOX_URL = "http://desolate-wave-3684.herokuapp.com/";
-    private static final String MERCHANT_SERVICE_LIVE_URL = "http://stormy-hollows-1584.herokuapp.com/";
+    //private static final String MERCHANT_SERVICE_STAGE_URL = "http://192.168.0.141:8000/server/";
+    private static final String MERCHANT_SERVICE_URL = "http://hidden-spire-8232.herokuapp.com/server/";
     private static SharedPreferences mSharedPrefs;
     private static int HANDLER_MESSAGE_INVALID_CREDENTIALS = 3001;
     /**
@@ -152,6 +152,7 @@ public class OAuthLoginActivity extends Activity {
     private Merchant mMerchant;
     private String mUsername;
     private String mPassword;
+    private String mServerName;
     private boolean mUseLive = false;
     private WebView mLoginWebView;
     private DialogFragment mMerchantInitDialog;
@@ -182,6 +183,7 @@ public class OAuthLoginActivity extends Activity {
         // Get the username and password from the previous login screen.
         mUsername = getIntent().getStringExtra("username");
         mPassword = getIntent().getStringExtra("password");
+        mServerName = getIntent().getStringExtra("servername");
         mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
         setMerchantServiceUrl();
         // Checking to see if the server urls are set above.
@@ -198,12 +200,8 @@ public class OAuthLoginActivity extends Activity {
         String currentServer = PayPalHereSDK.getCurrentServer();
         if (currentServer.equalsIgnoreCase(PayPalHereSDK.Live)) {
             mUseLive = true;
-            mMerchantServiceUrl = MERCHANT_SERVICE_LIVE_URL;
-        } else if (currentServer.equalsIgnoreCase(PayPalHereSDK.Sandbox)) {
-            mMerchantServiceUrl = MERCHANT_SERVICE_SANDBOX_URL;
-        } else {
-            mMerchantServiceUrl = MERCHANT_SERVICE_STAGE_URL;
         }
+        mMerchantServiceUrl = MERCHANT_SERVICE_URL;
     }
 
     /**
@@ -213,7 +211,7 @@ public class OAuthLoginActivity extends Activity {
      * @return
      */
     private boolean isHerokuUrlsSet() {
-        if (null == mMerchantServiceUrl || mMerchantServiceUrl.length() <= 0 || !mMerchantServiceUrl.contains("herokuapp.com")) {
+        if (null == mMerchantServiceUrl || mMerchantServiceUrl.length() <= 0) {
             return false;
         }
         return true;
@@ -620,6 +618,7 @@ public class OAuthLoginActivity extends Activity {
     private void setMerchantAndCheckIn(String accessToken, String refreshUrl, String expiry) {
         saveRefreshUrl(refreshUrl);
         saveLastGoodServer();
+        saveLastGoodEMVConfigStage();
         saveLastGoodUsername();
 
         saveAccessToken(accessToken);
@@ -675,6 +674,15 @@ public class OAuthLoginActivity extends Activity {
         editor.putString(PREFS_LAST_GOOD_SERVER, successfulServer);
         editor.commit();
         Log.d("saveRefreshUrl", "Saving the last good server: " + successfulServer);
+    }
+
+    private void saveLastGoodEMVConfigStage() {
+        String successfulEMVConfigRepo = PayPalHereSDK.getEMVConfigRepo();
+        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = mSharedPrefs.edit();
+        editor.putString(PREFS_LAST_GOOD_EMV_CONFIG_REPO,successfulEMVConfigRepo);
+        editor.commit();
+        Log.d("saveLastGoodEMVConfigStage", "Saving the last good EMV Config Repo: " + successfulEMVConfigRepo);
     }
 
     private void saveLastGoodUsername() {
@@ -756,6 +764,10 @@ public class OAuthLoginActivity extends Activity {
             return mPassword;
         }
 
+        private synchronized String getServerName(){
+            return mServerName;
+        }
+
         public synchronized String getTicket() {
             return mTicket;
         }
@@ -832,10 +844,9 @@ public class OAuthLoginActivity extends Activity {
                         2);
 
                 // Provide the user's login credentials.
-                nameValuePairs.add(new BasicNameValuePair("username",
-                        getUsername()));
-                nameValuePairs.add(new BasicNameValuePair("password",
-                        getPassword()));
+                nameValuePairs.add(new BasicNameValuePair("username",getUsername()));
+                nameValuePairs.add(new BasicNameValuePair("password",getPassword()));
+                nameValuePairs.add(new BasicNameValuePair("servername",getServerName()));
                 nameValuePairs.add(new BasicNameValuePair("isLive", String.valueOf(mUseLive)));
 
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -961,6 +972,10 @@ public class OAuthLoginActivity extends Activity {
             return mUsername;
         }
 
+        private synchronized String getServerName(){
+            return mServerName;
+        }
+
         @Override
         protected ArrayList<String> doInBackground(String... urls) {
             // Create the HTTP request to call the Merchant's goPayPal url.
@@ -974,6 +989,7 @@ public class OAuthLoginActivity extends Activity {
                         .add(new BasicNameValuePair("ticket", getTicket()));
                 nameValuePairs.add(new BasicNameValuePair("username",
                         getUsername()));
+                nameValuePairs.add(new BasicNameValuePair("servername",getServerName()));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 HttpResponse response = httpclient.execute(httppost);
 
