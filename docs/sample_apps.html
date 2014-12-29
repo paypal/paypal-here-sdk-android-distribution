@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<h1><center>PayPalHere SDK Sample Apps</center></h1>
+		<hr>
+
+		<h3>Overview</h3>
+		<p>
+			This section will guide you through the necessary tools you will need for compiling the sample apps (which will come as part of the PayPalHere SDK release) and step by step process of compiling the sample apps.<br><br>
+
+			As part of the release, you will get two different sample apps along with source code.<br>
+			<ul>
+				<li><b>PayPalHereSampleApp: </b> This application showcases the functionality of<br>
+					<p></p>
+					<ul>
+						<li> Creating Invoice</li>
+						<li> Performing different operations with invoices such as adding tip, discount e.t.c</li>
+						<li> Taking the payment using the mag-stripe card reader</li>
+						<li> Taking payment using Key-In payment data</li>
+						<li> Showcasing the functionality of Auth-Capture</li>
+						<li> Performing the refund</li>
+					</ul>
+				</li>
+				<p></p>
+				<li><b>PayPalHereEMVSampleApp: </b> This application showcases the functionality of<br>
+					<p></p>
+					<ul>
+						<li> Taking payment using the EMV Card reader</li>
+						<li> Performing the refund without and with card using EMV Card reader</li>
+					</ul>
+					<p></p>
+				</li>
+			</ul>
+		</p>
+
+		<h3>Necessary Tools</h3>
+		<ul>
+			<li>Android Studio (1.0.1 or higher)</li>
+			<li>Maven (3.1.1 or higher)</li>
+			<li>Latest Android SDK</li>
+		</ul>
+		
+		<h3>Steps to be followed before compiling the sample app</h3>
+		<p>Android Gradle build system doesn't allow referencing the .aar files locally by keeping them in libs folder. Instead they have to be referenced as remote or local maven artifacts. For that first we will install the PayPalHereSDK-X.X.aar file in local Maven repositories and reference it as local maven artifact.
+
+			<br><br>
+			
+			Command for installing PayPalHereSDK-X.X.aar as local maven artifact<br><br>
+
+			mvn install:install-file -Dfile=[location where the PayPalHereSDK.aar files exists ex. sdk/PayPalHereSDK-X.X.aar] -DgroupId=com.paypal.merchant.sdk -DartifactId=paypal-sdk -Dversion=X.X -Dpackaging=aar
+			
+			<br><br>
+
+			Note: Please replace X.X with the version of the release. You can find the version in the name of the release library. Ex: PayPalHereSDK-X.X.aar where X.X represents the release version.
+		</p>
+
+		<h3>Importing and compiling the sample app in Android Studio</h3>
+		<ul>
+			<li>Open your Android Studio application and select "Open an existing Android Studio project"</li>
+			<p></p>
+			<img src="images/import.jpg" alt="Android Studio Import Option" style="width:512px;height:420px">
+			<p></p>
+
+			<li>Once you click on above option it opens up the finder window to select the project. Please go to the location where sample app is stored and point to build.gradle file of the sample app which you would like to open.</li>
+			<p></p>
+
+			<li>Now there will be a pop-up asking you to choose which gradle you want to use. Please select "Use default gradle wrapper" and click on OK.</li>
+			<p></p>
+			<img src="images/import_options.jpg" alt="Android Studio Gradle Options" style="width:512px;height:420px">
+			<p></p>
+
+			<li>Now Android studio will download required gradle version from internet. Please make sure you are connected to proper internet connection.</li>
+			<p></p>
+			<img src="images/downloading.jpg" alt="Android Studio Downloading gradle pop-up" style="width:512px;height:80px">
+			<p></p>
+
+			<li>Once you are done with the above steps successfully with out any errors, you should be able to see the imported application in the tool bar of Android Studio.</li>
+			<p></p>
+			<img src="images/sample_app.jpg" alt="Imported Sample App" style="width:512px;height:200px">
+			<p></p>	
+
+			<li>Now select the application which you imported and click on run button to compile and install the application on any of the connected device or on Emulator.<br>Note: Please note that you need to connect android phone to the computer and enable USB debugging in the setting of the Android phone</li>
+			<p></p>
+			<img src="images/run_option.jpg" alt="Running the Sample App" style="width:512px;height:100px">
+			<p></p>
+
+			<li>Now you should be good to go with playing with sample app :)</li>
+	</body>
+</html>
