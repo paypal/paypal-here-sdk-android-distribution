@@ -38,7 +38,7 @@ import com.paypal.merchant.sdk.domain.Merchant.AvailabilityTypeEnum;
 import com.paypal.merchant.sdk.domain.Merchant.MobilityTypeEnum;
 import com.paypal.merchant.sdk.domain.PPError;
 import com.paypal.merchant.sdk.domain.credentials.Credentials;
-import com.paypal.merchant.sdk.domain.credentials.OauthCredentials;
+import com.paypal.merchant.sdk.domain.credentials.OAuthCredentials;
 import com.paypal.merchant.sdk.internal.domain.Country;
 import com.paypal.sampleapp.R;
 import com.paypal.sampleapp.activity.BillingTypeTabActivity;
@@ -622,7 +622,7 @@ public class OAuthLoginActivity extends MyActivity {
 
         // Create a credentials obj based off of the decrypted access token.
         // Should also implement a callback listener in case the access token is expired.
-        Credentials credentials = new OauthCredentials(accessToken, refreshUrl, expiry);
+        Credentials credentials = new OAuthCredentials(accessToken, refreshUrl, expiry);
         // Display a message that indicates the merchant is being setup.
         showInitializingMerchantDialog();
         Log.d("Access Token", accessToken);

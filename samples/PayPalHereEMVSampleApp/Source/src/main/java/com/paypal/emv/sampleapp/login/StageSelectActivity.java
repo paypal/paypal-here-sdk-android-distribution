@@ -68,6 +68,36 @@ public class StageSelectActivity extends Activity {
             }
         });
         hideKeyboard();
+
+        Button sandbox = (Button)findViewById(R.id.id_select_sandbox);
+        sandbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG_TAG,"Sandbox environment Button onClick");
+                PayPalHereSDK.setServerName(PayPalHereSDK.Sandbox);
+                Toast.makeText(StageSelectActivity.this,"Selected Sandbox as environment to use",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button live = (Button)findViewById(R.id.id_select_live);
+        live.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG_TAG,"Live environment Button onClick");
+                PayPalHereSDK.setServerName(PayPalHereSDK.Live);
+                Toast.makeText(StageSelectActivity.this,"Selected Live as environment to use",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button controlledSandbox = (Button)findViewById(R.id.id_select_controlled_sandbox);
+        controlledSandbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG_TAG,"Controlled Sandbox Button onClick");
+                PayPalHereSDK.setServerName(PayPalHereSDK.ControlledSandbox);
+                Toast.makeText(StageSelectActivity.this,"Selected Controlled Sandbox as environment to use",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**

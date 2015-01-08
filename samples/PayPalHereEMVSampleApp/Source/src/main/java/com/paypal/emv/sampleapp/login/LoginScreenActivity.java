@@ -61,7 +61,7 @@ public class LoginScreenActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        Crashlytics.start(this);
 
         setContentView(R.layout.activity_login_screen);
 
@@ -100,8 +100,6 @@ public class LoginScreenActivity extends Activity {
                     Toast.makeText(LoginScreenActivity.this, R.string.invalid_user_credentials, Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-
                 performOAuthLogin(arg);
                 finish();
 
@@ -146,7 +144,11 @@ public class LoginScreenActivity extends Activity {
         Intent intent = new Intent(LoginScreenActivity.this, OAuthLoginActivity.class);
         intent.putExtra("username", mUsername);
         intent.putExtra("password", mPassword);
-        intent.putExtra("servername",mServerName);
+        String serverName = mServerName;
+        if(null != serverName && serverName.equals(PayPalHereSDK.ControlledSandbox)){
+            serverName = PayPalHereSDK.Live;
+        }
+        intent.putExtra("servername",serverName);
         startActivity(intent);
 
     }
@@ -217,21 +219,28 @@ public class LoginScreenActivity extends Activity {
     }
 
     public static void setStage(String name){
-        String url = "https://www."+name+".stage.paypal.com";
-        JSONObject object = new JSONObject();
-        try {
-            JSONArray array = new JSONArray();
-            JSONObject urlObject = new JSONObject();
-            urlObject.put("name",name);
-            urlObject.put("url",url);
-            array.put(urlObject);
-            object.put("servers",array);
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, "JSONException");
-            e.printStackTrace();
-            return;
+        if(name.equalsIgnoreCase(PayPalHereSDK.Sandbox)
+                || name.equalsIgnoreCase(PayPalHereSDK.Live)
+                || name.equalsIgnoreCase(PayPalHereSDK.ControlledSandbox)){
+
+            PayPalHereSDK.setServerName(name);
+        }else {
+            String url = "https://www." + name + ".stage.paypal.com";
+            JSONObject object = new JSONObject();
+            try {
+                JSONArray array = new JSONArray();
+                JSONObject urlObject = new JSONObject();
+                urlObject.put("name", name);
+                urlObject.put("url", url);
+                array.put(urlObject);
+                object.put("servers", array);
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "JSONException");
+                e.printStackTrace();
+                return;
+            }
+            PayPalHereSDK.setOptionalServerList(object.toString());
+            PayPalHereSDK.setServerName(name);
         }
-        PayPalHereSDK.setOptionalServerList(object.toString());
-        PayPalHereSDK.setServerName(name);
     }
 }
