@@ -11,7 +11,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.8+'
+        classpath 'com.android.tools.build:gradle:1.0.0'
         classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
     }
 }
@@ -25,8 +25,8 @@ repositories {
 
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.1.0"
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         minSdkVersion 11
@@ -34,7 +34,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
         debug{
@@ -47,23 +47,22 @@ android {
     lintOptions {
         abortOnError false
     }
-    
+
     repositories {
         mavenCentral()
         mavenLocal()
     }
 
     dependencies {
-        //compile project (':sdk')
-        compile('com.paypal.merchant.sdk:paypal-sdk:1.5.1@aar')
+        compile  ('com.paypal.merchant.sdk:paypal-sdk:1.5.2@aar')
     }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:19.1.0'
     compile 'com.android.support:support-v4:18.0.0'
-    compile 'com.google.android.gms:play-services:4.0.30'
+    compile 'com.android.support:appcompat-v7:21.0.2'
     compile 'com.crashlytics.android:crashlytics:1.+'
+    compile 'com.google.android.gms:play-services-location:6.5.87'
 }
 
 task incrementVersionCode << {

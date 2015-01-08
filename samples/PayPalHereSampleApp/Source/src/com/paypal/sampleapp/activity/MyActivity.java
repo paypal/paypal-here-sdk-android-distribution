@@ -31,7 +31,7 @@ import com.paypal.merchant.sdk.domain.Merchant;
 import com.paypal.merchant.sdk.domain.PPError;
 import com.paypal.merchant.sdk.domain.SecureCreditCard;
 import com.paypal.merchant.sdk.domain.credentials.Credentials;
-import com.paypal.merchant.sdk.domain.credentials.OauthCredentials;
+import com.paypal.merchant.sdk.domain.credentials.OAuthCredentials;
 import com.paypal.sampleapp.login.LoginScreenActivity;
 import com.paypal.sampleapp.util.CommonUtils;
 import com.paypal.sampleapp.util.LocalPreferences;
@@ -267,7 +267,7 @@ public class MyActivity extends Activity implements CardReaderListener {
             saveAccessToken(this.accessToken);
             saveTokenExpirationTime(this.expiresIn);
             // Create a new Credentials object with the newly obtained access token.
-            Credentials cred = new OauthCredentials(this.accessToken, this.refreshUrl, this.expiresIn);
+            Credentials cred = new OAuthCredentials(this.accessToken, this.refreshUrl, this.expiresIn);
             // Set the credentials object within the SDK.
             PayPalHereSDK.setCredentials(cred, new DefaultResponseHandler<Merchant,
                     PPError<MerchantManager.MerchantErrors>>() {

@@ -43,7 +43,7 @@ import com.paypal.merchant.sdk.domain.Merchant.AvailabilityTypeEnum;
 import com.paypal.merchant.sdk.domain.Merchant.MobilityTypeEnum;
 import com.paypal.merchant.sdk.domain.PPError;
 import com.paypal.merchant.sdk.domain.credentials.Credentials;
-import com.paypal.merchant.sdk.domain.credentials.OauthCredentials;
+import com.paypal.merchant.sdk.domain.credentials.OAuthCredentials;
 import com.paypal.merchant.sdk.internal.domain.Country;
 
 import org.apache.http.HttpResponse;
@@ -104,8 +104,7 @@ public class OAuthLoginActivity extends Activity {
     public static final String PREFS_LAST_GOOD_SERVER = "PREFS_LAST_GOOD_SERVER";
     public static final String PREFS_LAST_GOOD_EMV_CONFIG_REPO = "PREFS_LAST_GOOD_EMV_CONFIG_REPO";
     private static final String LOG = OAuthLoginActivity.class.getSimpleName();
-    //private static final String MERCHANT_SERVICE_STAGE_URL = "http://192.168.0.141:8000/server/";
-    private static final String MERCHANT_SERVICE_URL = "http://hidden-spire-8232.herokuapp.com/server/";
+    private static final String MERCHANT_SERVICE_URL = "http://sdk-sample-server.herokuapp.com/server/";
     private static SharedPreferences mSharedPrefs;
     private static int HANDLER_MESSAGE_INVALID_CREDENTIALS = 3001;
     /**
@@ -198,7 +197,7 @@ public class OAuthLoginActivity extends Activity {
 
     private void setMerchantServiceUrl() {
         String currentServer = PayPalHereSDK.getCurrentServer();
-        if (currentServer.equalsIgnoreCase(PayPalHereSDK.Live)) {
+        if (currentServer.equalsIgnoreCase(PayPalHereSDK.Live) || currentServer.equalsIgnoreCase(PayPalHereSDK.ControlledSandbox)) {
             mUseLive = true;
         }
         mMerchantServiceUrl = MERCHANT_SERVICE_URL;
@@ -624,7 +623,7 @@ public class OAuthLoginActivity extends Activity {
         saveAccessToken(accessToken);
         /* Create a credentials obj based off of the decrypted access token.
            Should also implement a callback listener in case the access token is expired. */
-        Credentials credentials = new OauthCredentials(accessToken, refreshUrl, expiry);
+        Credentials credentials = new OAuthCredentials(accessToken, refreshUrl, expiry);
         Log.d("Access Token", accessToken);
         showProgressDialog();
         // Init the SDK with the current merchant credentials.

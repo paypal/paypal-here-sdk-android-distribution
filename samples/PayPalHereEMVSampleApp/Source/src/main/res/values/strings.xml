@@ -29,7 +29,7 @@
     <!-- Strings related to stage_selection -->
     <string name="update_sw_repo_txt">Update Software Repo</string>
     <string name="update_sw_repo_hint">Software Repo Name</string>
-    <string name="update_stage_txt">Stage Selection</string>
+    <string name="update_stage_txt">Select Environment</string>
     <string name="update_stage_hint">stage2pph10</string>
     <string name="update_txt">Update</string>
 
