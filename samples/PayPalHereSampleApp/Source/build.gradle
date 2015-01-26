@@ -60,7 +60,7 @@ android {
     }
 
     dependencies {
-        compile  ('com.paypal.merchant.sdk:paypal-sdk:1.5.2@aar')
+        compile  ('com.paypal.merchant.sdk:paypal-sdk:1.5.3@aar')
     }
 
     packagingOptions {
