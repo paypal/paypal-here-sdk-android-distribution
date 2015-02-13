@@ -1,0 +1,1 @@
+Please refer to http://paypal-mobile.github.io/android-here-sdk-dist/sample_apps.html for more information about compiling the using the sample apps
