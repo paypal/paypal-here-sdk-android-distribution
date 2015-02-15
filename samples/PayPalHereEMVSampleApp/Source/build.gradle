@@ -7,26 +7,21 @@ buildscript {
         maven {
             url 'https://oss.sonatype.org/content/repositories/snapshots/'
         }
-        maven { url 'http://download.crashlytics.com/maven' }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:1.0.0'
-        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
     }
 }
 
 apply plugin: 'android'
-apply plugin: 'crashlytics'
 
 repositories {
-    maven { url 'http://download.crashlytics.com/maven' }
 }
 
-
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 19
+    buildToolsVersion "19.1.0"
 
     defaultConfig {
         minSdkVersion 11
@@ -54,14 +49,14 @@ android {
     }
 
     dependencies {
-        compile  ('com.paypal.merchant.sdk:paypal-sdk:1.5.2@aar')
+        compile ('com.paypal.merchant.sdk:paypal-sdk:1.5.4@aar')
+	    //compile('com.paypal.merchant.sdk:paypal-sdk:1.X@aar')
     }
 }
 
 dependencies {
     compile 'com.android.support:support-v4:18.0.0'
-    compile 'com.android.support:appcompat-v7:21.0.2'
-    compile 'com.crashlytics.android:crashlytics:1.+'
+    compile 'com.android.support:appcompat-v7:19.1.0'
     compile 'com.google.android.gms:play-services-location:6.5.87'
 }
 
