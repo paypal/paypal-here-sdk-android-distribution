@@ -154,7 +154,7 @@
     <string name="process_dialog_authorizing_payment_msg">Authorizing Payment...</string>
     <string name="process_dialog_finalizing_payment_msg">Finalizing Payment...</string>
     <string name="transaction_complete_title">Would you like a receipt?</string>
-    <string name="transaction_complete_success">Transaction Success</string>
+    <string name="transaction_complete_success">Transaction Complete</string>
     <string name="transaction_complete_failure">Transaction Failed</string>
     <string name="transaction_failure_msg">Failed to complete the transaction. Can not proceed further..</string>
     <string name="send_receipt_alert_dialog_title">Send Invoice To</string>
@@ -213,11 +213,13 @@
     <string name="invalid_amount_entered">Please enter a valid amount!</string>
 
     <string-array name="payment_options">
- <item>Card Reader</item>
- <item>Key-In</item>
- <item>Checkin</item>
- <item>Cash</item>
- <item>Check</item>
+        <item>Card Reader</item>
+        <item>Key-In</item>
+        <item>Checkin</item>
+        <item>Cash</item>
+        <item>Check</item>
     </string-array>
+
+    <string name="title_activity_cash">CashActivity</string>
 
 </resources>
