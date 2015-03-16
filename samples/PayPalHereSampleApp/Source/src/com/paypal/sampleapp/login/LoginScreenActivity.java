@@ -23,7 +23,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.paypal.sampleapp.R;
 import com.paypal.merchant.sdk.PayPalHereSDK;
 
@@ -60,7 +59,6 @@ public class LoginScreenActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Crashlytics.start(this);
 
         setContentView(R.layout.activity_login_screen);
 

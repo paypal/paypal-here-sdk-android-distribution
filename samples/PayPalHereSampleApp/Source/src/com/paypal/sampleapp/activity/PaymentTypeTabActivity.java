@@ -89,6 +89,11 @@ public class PaymentTypeTabActivity extends OptionsMenuBaseActivity {
                 .ic_launcher)).setContent(intent);
         tabHost.addTab(spec);
 
+        intent = new Intent().setClass(this, CashActivity.class);
+        spec = tabHost.newTabSpec("Cash").setIndicator("Cash", getResources().getDrawable(R.drawable
+                .ic_launcher)).setContent(intent);
+        tabHost.addTab(spec);
+
 
         tabHost.setCurrentTab(0);
     }
