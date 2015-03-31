@@ -5,7 +5,16 @@ The PayPal Here SDK enables Android apps to interact with credit card swipers so
 * **Interact with PayPal Hardware** — Detect, connect to, and listen for events coming from PayPal Here audio jack-based card swipers.
 * **Process Card-Present payments** — When you swipe a card through a PayPal Here swiper, card data is immediately encrypted. The encrypted package can be sent to PayPal alongside the transaction data for processing.
 
+Developers should use the PayPal Here SDK to get world-class payment process with extremely simple integration.  Some of the main benefits include
+* **Low, transparent pricing:** US Merchants pay just 2.7% per transaction (or 3.5% + $0.15 for keyed in transactions), including cards like American Express, with no additional hidden/monthly costs.
+* **Safety & Security:** PayPal's solution uses encrypted swipers, such that card data is never made available to merchants or anyone else.
+* **Live customer support:** Whenever you need support, we’re available to help with our customer support team.
+[Visit our website](https://www.paypal.com/webapps/mpp/credit-card-reader) for more information about PayPal Here.
+
+
 Full class and method documentation can be [found here](http://paypal-mobile.github.io/android-here-sdk-dist/).
+
+As an alternative to the SDK, a developer can also use a URI framework that lets one app (or mobile webpage) link directly to the PayPal Here app to complete a payment.  Using this method, the merchant will tap a button or link in one app, which will open the pre-installed PayPal Here app on their device, with the PayPal Here app pre-populating the original order information, collect a payment (card swipe) in the PayPal Here app, and return the merchant to the original app/webpage. This is available for US, UK, Austalia, and Japan for iOS & Android.  See the [Sideloader API](https://github.com/paypal/here-sideloader-api-samples) on Github.
 
 
 Prerequisites For Using The SDK
