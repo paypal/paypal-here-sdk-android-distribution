@@ -15,7 +15,7 @@ exports.MY_PORT = 80;
 exports.MY_APP_URL = "sdksampleapp://oauth";
 
 // In case you want more info, modify this
-exports.PAYPAL_SCOPES = "https://uri.paypal.com/services/paypalhere openid email profile";
+exports.PAYPAL_SCOPES = "https://uri.paypal.com/services/paypalhere openid email phone profile address https://uri.paypal.com/services/paypalattributes/business";
 
 // Live or stage?    This lets your sample server know which paypal service
 // to connect to (live, sandbox, or a custom stage server)
