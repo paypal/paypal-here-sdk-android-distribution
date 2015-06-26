@@ -10,7 +10,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.8+'
+        classpath 'com.android.tools.build:gradle:1.0.0'
     }
 }
 
@@ -20,8 +20,8 @@ repositories {
 }
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.1.0"
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         minSdkVersion 11
@@ -49,14 +49,13 @@ android {
     }
 
     dependencies {
-        compile ('com.paypal.merchant.sdk:paypal-sdk:1.5.4@aar')
-	    //compile('com.paypal.merchant.sdk:paypal-sdk:1.X@aar')
+        compile  ('com.paypal.merchant.sdk:paypal-sdk:1.5.5@aar')
     }
 }
 
 dependencies {
     compile 'com.android.support:support-v4:18.0.0'
-    compile 'com.android.support:appcompat-v7:19.1.0'
+    compile 'com.android.support:appcompat-v7:21.0.2'
     compile 'com.google.android.gms:play-services-location:6.5.87'
 }
 

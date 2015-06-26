@@ -77,11 +77,6 @@ public class LoginScreenActivity extends Activity {
         mEnv.setText(mServerName);
         mEMVSoftwareRepo = (TextView) findViewById(R.id.env_emv_sw_repo);
 
-        String lastGoodEMVConfigRepo = getLastGoodEMVConfigRepo();
-        if(null != lastGoodEMVConfigRepo){
-            mEMVSoftwareRepo.setText(lastGoodEMVConfigRepo);
-            PayPalHereSDK.setEMVConfigRepo(lastGoodEMVConfigRepo);
-        }
 
         mProgressBar = (ProgressBar) findViewById(R.id.login_progress);
         mProgressBar.setVisibility(View.GONE);
@@ -115,6 +110,12 @@ public class LoginScreenActivity extends Activity {
 
         PayPalHereSDK.init(getApplicationContext(), PayPalHereSDK.Sandbox);
         setStage(mServerName);
+
+        String lastGoodEMVConfigRepo = getLastGoodEMVConfigRepo();
+        if(null != lastGoodEMVConfigRepo){
+            mEMVSoftwareRepo.setText(lastGoodEMVConfigRepo);
+            PayPalHereSDK.setEMVConfigRepo(lastGoodEMVConfigRepo);
+        }
 
         updateConnectedEnvUI();
     }
