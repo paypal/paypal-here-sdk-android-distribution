@@ -192,3 +192,4 @@ There is a lot more available in the PayPal Here SDK.  More detail is available 
 * **Key-in:** Most applications need to let users key in card numbers directly, in case the card's magstripe data can no longer be read.
 * **CashierID:** Include your own unique user identifier to track a merchant's employee usage
 * **Error Handling:** See more detail about the different types of errors that can be returned
+* **Marketing Toolkit:** Downloadable marketing assets – from emails to banner ads – help you quickly, and effectively, promote your app’s new payments functionality. 
