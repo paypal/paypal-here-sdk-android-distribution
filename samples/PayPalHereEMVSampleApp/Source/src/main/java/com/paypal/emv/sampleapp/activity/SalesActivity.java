@@ -17,16 +17,21 @@ import com.paypal.emv.sampleapp.R;
 import com.paypal.emv.sampleapp.adapter.SalesListAdapter;
 import com.paypal.emv.sampleapp.listeners.AdapterListener;
 import com.paypal.emv.sampleapp.utils.LocalPreferences;
+import com.paypal.merchant.sdk.TransactionController;
 import com.paypal.merchant.sdk.PayPalHereSDK;
 import com.paypal.merchant.sdk.TransactionManager;
 import com.paypal.merchant.sdk.domain.DefaultResponseHandler;
+import com.paypal.merchant.sdk.domain.Invoice;
 import com.paypal.merchant.sdk.domain.PPError;
+import com.paypal.merchant.sdk.domain.SDKReceiptScreenOptions;
+import com.paypal.merchant.sdk.domain.SDKSignatureScreenOptions;
 import com.paypal.merchant.sdk.domain.TransactionRecord;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 
-public class SalesActivity extends Activity implements AdapterListener {
+public class SalesActivity extends Activity implements AdapterListener, TransactionController {
     private static final String LOG_TAG = SalesActivity.class.getSimpleName();
     public static final int SEND_RECEIPT_ACTIVITY_REQ_CODE = 8001;
 
@@ -130,26 +135,6 @@ public class SalesActivity extends Activity implements AdapterListener {
         });
     }
 
-    private void performRefund(final TransactionRecord record) {
-        showProgressDialog(null, SalesActivity.this.getString(R.string.refund_processing));
-        PayPalHereSDK.getTransactionManager().doRefund(record, record.getInvoice().getGrandTotal(), new DefaultResponseHandler<TransactionRecord, PPError<PPError.BasicErrors>>() {
-            @Override
-            public void onSuccess(TransactionRecord responseObject) {
-                Log.d(LOG_TAG, "refund callback onSuccess");
-                cancelProgressDialog();
-                LocalPreferences.removeTransactionRecordFromCompletedList(record);
-                showRefundCompleteDialog(true);
-            }
-
-            @Override
-            public void onError(PPError<PPError.BasicErrors> error) {
-                Log.e(LOG_TAG, "refund callback onFailure");
-                cancelProgressDialog();
-                showRefundCompleteDialog(false);
-            }
-        });
-    }
-
     private void showRefundAmountDialog() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -185,9 +170,10 @@ public class SalesActivity extends Activity implements AdapterListener {
     }
 
     private void performRefundWithSDKUI(final TransactionRecord record, BigDecimal amount) {
-        PayPalHereSDK.getTransactionManager().processRefund(SalesActivity.this, record, amount, new DefaultResponseHandler<TransactionRecord, PPError<TransactionManager.EMVPaymentErrors>>() {
+        PayPalHereSDK.getTransactionManager().beginRefund(record, this);
+        PayPalHereSDK.getTransactionManager().processRefund(amount, new DefaultResponseHandler<TransactionManager.PaymentResponse, PPError<TransactionManager.PaymentErrors>>() {
             @Override
-            public void onSuccess(TransactionRecord responseObject) {
+            public void onSuccess(TransactionManager.PaymentResponse responseObject) {
                 Log.d(LOG_TAG, "refund callback onSuccess");
                 if (!mPartialRefund) {
                     LocalPreferences.removeTransactionRecordFromCompletedList(record);
@@ -196,12 +182,12 @@ public class SalesActivity extends Activity implements AdapterListener {
             }
 
             @Override
-            public void onError(PPError<TransactionManager.EMVPaymentErrors> error) {
+            public void onError(PPError<TransactionManager.PaymentErrors> error) {
                 Log.e(LOG_TAG, "refund callback onFailure");
-                if(TransactionManager.EMVPaymentErrors.BatteryLow == error.getErrorCode()){
-                    showAlertDialog(R.string.merchant_error_title,R.string.merchant_battery_too_low,false);
-                }else if(TransactionManager.EMVPaymentErrors.MandatorySoftwareUpdateRequired == error.getErrorCode()){
-                    showAlertDialog(R.string.merchant_error_title,R.string.error_mandatory_software_update,false);
+                if (TransactionManager.PaymentErrors.BatteryLow == error.getErrorCode()) {
+                    showAlertDialog(R.string.merchant_error_title, R.string.merchant_battery_too_low, false);
+                } else if (TransactionManager.PaymentErrors.MandatorySoftwareUpdateRequired == error.getErrorCode()) {
+                    showAlertDialog(R.string.merchant_error_title, R.string.error_mandatory_software_update, false);
                 }
             }
         });
@@ -213,11 +199,11 @@ public class SalesActivity extends Activity implements AdapterListener {
         builder.setTitle(titleResID);
         builder.setMessage(msgResID);
         builder.setCancelable(false);
-        builder.setNeutralButton(com.paypal.merchant.sdk.R.string.sdk_OK,new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(com.paypal.merchant.sdk.R.string.sdk_OK, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
-                if(finish) {
+                if (finish) {
                     finish();
                 }
             }
@@ -254,5 +240,114 @@ public class SalesActivity extends Activity implements AdapterListener {
             mProgressDialog.dismiss();
             mProgressDialog = null;
         }
+    }
+
+    @Override
+    public void onPrintRequested(Activity activity, Invoice invoice) {
+        Log.d(LOG_TAG, "printReceiptRequested");
+        Intent intent = new Intent(SalesActivity.this,PrintReceiptActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public TransactionControlAction onPreAuthorize(Invoice inv, String preAuthJSON) {
+        return null;
+    }
+
+    @Override
+    public void onPostAuthorize(boolean didFail) {
+
+    }
+
+    @Override
+    public Activity getCurrentActivity() {
+        return this;
+    }
+
+    @Override
+    public com.paypal.merchant.sdk.domain.SDKSignatureScreenOptions getSignatureScreenOpts() {
+        return new SDKSignatureScreenOptions() {
+            @Override
+            public boolean isFullScreen() {
+                return true;
+            }
+        };
+    }
+
+    @Override
+    public com.paypal.merchant.sdk.domain.SDKReceiptScreenOptions getReceiptScreenOptions() {
+        return new SDKReceiptScreenOptions() {
+            @Override
+            public boolean isSubsequentScreensAsFullScreens() {
+                return true;
+            }
+
+            @Override
+            public Map<String, SDKTransactionScreenOptionCallback> getScreenOptions() {
+                return null;
+            }
+
+            @Override
+            public boolean isFullScreen() {
+                return true;
+            }
+        };
+    }
+
+    @Override
+    public void onUserPaymentOptionSelected(PaymentOption paymentOption) {
+
+    }
+
+    @Override
+    public void onUserRefundOptionSelected(PaymentOption paymentOption) {
+
+    }
+
+    @Override
+    public void onTokenExpired(Activity activity, TokenExpirationHandler listener) {
+
+    }
+
+    @Override
+    public void onReadyToCancelTransaction(CancelTransactionReason cancelTransactionReason) {
+
+    }
+
+    @Override
+    public void onContactlessReaderTimeout(Activity activity, final ContactlessReaderTimeoutOptionsHandler handler) {
+
+        showAlertDialogWithTwoButtonOptions(activity, R.string.error_title_contactless_reader_timeout, R.string.error_message_contactless_reader_timeout,
+                R.string.contactless_reader_timeout_try_again, R.string.contactless_reader_timeout_cancel,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        handler.onTimeout(ContactlessReaderTimeoutOptions.RETRY_WITH_CONTACTLESS);
+                    }
+                },
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        handler.onTimeout(ContactlessReaderTimeoutOptions.CANCEL_TRANSACTION);
+                    }
+                });
+    }
+
+    private void showAlertDialogWithTwoButtonOptions(Activity activity, int titleResID, int msgResID,
+                                                     int positiveButtonResId, int negativeButtonResId,
+                                                     final DialogInterface.OnClickListener posClickListener, final DialogInterface.OnClickListener negClickListener){
+        Log.d(LOG_TAG, "showAlertDialogWithActivity IN");
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(titleResID);
+        builder.setMessage(msgResID);
+        builder.setCancelable(false);
+        builder.setPositiveButton(positiveButtonResId, posClickListener);
+        builder.setNegativeButton(negativeButtonResId, negClickListener);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                builder.create().show();
+            }
+        });
     }
 }

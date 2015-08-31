@@ -9,10 +9,14 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.DialogPreference;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,16 +28,27 @@ import com.paypal.emv.sampleapp.R;
 import com.paypal.emv.sampleapp.utils.LocalPreferences;
 import com.paypal.merchant.sdk.CardReaderListener;
 import com.paypal.merchant.sdk.CardReaderManager;
+import com.paypal.merchant.sdk.TransactionController;
 import com.paypal.merchant.sdk.PayPalHereSDK;
+import com.paypal.merchant.sdk.TransactionListener;
 import com.paypal.merchant.sdk.TransactionManager;
 import com.paypal.merchant.sdk.domain.DefaultResponseHandler;
+import com.paypal.merchant.sdk.domain.DomainFactory;
+import com.paypal.merchant.sdk.domain.Invoice;
+import com.paypal.merchant.sdk.domain.InvoiceItem;
 import com.paypal.merchant.sdk.domain.PPError;
+import com.paypal.merchant.sdk.domain.SDKReceiptScreenOptions;
+import com.paypal.merchant.sdk.domain.SDKSignatureScreenOptions;
+import com.paypal.merchant.sdk.domain.shopping.Tip;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements TransactionController, TransactionListener{
     public static final int ACTIVITY_DEVICE_CONNECT_REQUEST_CODE = 1001;
     public static final int ACTIVITY_RESULT_CODE_SUCCESS = 2001;
     public static final int ACTIVITY_RESULT_CODE_FAILURE = 2002;
@@ -46,37 +61,62 @@ public class MainActivity extends Activity {
     private Button mSalesHistoryButton = null;
     private Button mChargeButton = null;
     private EditText mChargeAmount = null;
-    private double mAmount = -1;
+    private EditText mTipAmount = null;
+    private double mAmount = 0;
+    private double mTip = 0;
+    private boolean mIsProcessingPayment = false;
 
     private String mReaderConnectedText;
     private String mReaderNotConnectedText;
 
-    private Boolean mIsReaderDeviceConnected = false;
+    private boolean mIsReaderDeviceConnected = false;
 
     private AlertDialog mCurrentDisplayDialog;
     private BluetoothDevice mSelectedBluetoothDevice;
     private boolean mSoftwareUpdateRequired = false;
+    private Invoice mInvoice;
+    private InvoiceItem mItem;
+    private int mRetryCount = 0;
+
+    private TextWatcher mTotalWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            Log.d(LOG_TAG, "char seq:" + s + " : start:" + start + " : count:" + count +" : after:" + after);
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            Log.d(LOG_TAG, "char seq:" + s + " : start:" + start + " : count:" + count +" : before:" + before);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            Log.d(LOG_TAG, "Editable:" + s);
+            updateInvoice();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate IN");
         setContentView(R.layout.activity_main);
+
         LocalPreferences.init(this);
 
         mReaderStatusButton = (TextView) findViewById(R.id.reader_status);
         mReaderConnectButton = (Button) findViewById(R.id.reader_connect);
-        mChargeAmount = (EditText) findViewById(R.id.amount);
 
+        mChargeAmount = (EditText) findViewById(R.id.amount);
+        mChargeAmount.addTextChangedListener(mTotalWatcher);
+
+        mTipAmount = (EditText) findViewById(R.id.tip);
+        mTipAmount.addTextChangedListener(mTotalWatcher);
 
         mTransactionManager = PayPalHereSDK.getTransactionManager();
         mCardReaderManager = PayPalHereSDK.getCardReaderManager();
 
-        CardReaderManager.BeginMonitoringStatus status = mCardReaderManager.beginMonitoring(CardReaderListener.ReaderConnectionTypes.Bluetooth);
-        if(!(CardReaderManager.BeginMonitoringStatus.Success == status)){
-            showAlertDialog(R.string.merchant_error_title, R.string.merchant_not_supported_msg,true);
-            return;
-        }
+        mTransactionManager.registerListener(this);
 
         mReaderConnectedText = mReaderStatusButton.getText().toString() + "\n" + getString(R.string.reader_connected);
         mReaderNotConnectedText = mReaderStatusButton.getText().toString() + "\n" + getString(R.string.reader_not_connected);
@@ -103,31 +143,13 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 hideKeyboard();
-                if (false == mIsReaderDeviceConnected) {
-                    Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.no_charge_because_reader_not_connected), Toast.LENGTH_SHORT).show();
-                    return;
+                if(validateInput(true)) {
+                    if (LocalPreferences.isTakePaymentAfterUserInsertsOrTapsCard()) {
+                        mTransactionManager.activateReaderForPayment();
+                    } else {
+                        startTakingPayment();
+                    }
                 }
-                String amountText = mChargeAmount.getText().toString();
-                if(amountText == null || amountText.length() <= 0) {
-                    Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.no_charge_because_amount_not_valid), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                amountText = String.format("%.2f", Double.parseDouble(amountText));
-
-                if (null == amountText || amountText.length() <= 0 ||
-                        amountText.equalsIgnoreCase(MainActivity.this.getString(R.string.amount_hint))) {
-                    Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.no_charge_because_amount_not_valid), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                mAmount = Double.parseDouble(amountText);
-                if (0 >= mAmount) {
-                    Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.no_charge_because_amount_not_valid), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                BigDecimal amount = new BigDecimal(mAmount);
-                mTransactionManager.beginPayment(amount);
-                mTransactionManager.processPayment(MainActivity.this, new CallbackHandler());
             }
         });
 
@@ -204,11 +226,33 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
             break;
+            case R.id.action_about: {
+                Log.d(LOG_TAG, "onMenuItemSelected:action_about");
+                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+                startActivity(intent);
+            }
             default: {
 
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startTransaction() {
+        clearActiveInvoice();
+        mInvoice = mTransactionManager.beginPayment(this);
+        mItem = DomainFactory.newInvoiceItem("TestItem", "1234", BigDecimal.ZERO);
+        mInvoice.addItem(mItem, BigDecimal.ONE);
+    }
+
+    private void updateInvoice(){
+        //update the invoice
+        BigDecimal amount = (validateInput(false)) ? new BigDecimal(mAmount) : BigDecimal.ZERO;
+        validateTip();
+        mItem.setPrice(amount);
+        Tip tip = new Tip(Tip.Type.AMOUNT,new BigDecimal(mTip));
+        mInvoice.setTip(tip);
+        mInvoice.recalculate();
     }
 
     @Override
@@ -241,6 +285,7 @@ public class MainActivity extends Activity {
         super.onResume();
         Log.d(LOG_TAG, "onResume IN");
         hideKeyboard();
+        startTransaction();
     }
 
     @Override
@@ -253,6 +298,75 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(LOG_TAG, "onDestroy IN");
+    }
+
+    private boolean isValidAmount(String amountText) {
+        if(amountText == null || amountText.length() <= 0) {
+            return false;
+        }
+
+        String regExp = "[0-9]+([.][0-9]*)?";
+        Pattern pattern = Pattern.compile(regExp);
+        Matcher matcher = pattern.matcher(amountText);
+        return matcher.find();
+    }
+
+    private boolean validateInput(boolean isChargePressed){
+        if (!mIsReaderDeviceConnected) {
+            if (isChargePressed) {
+                showAlertDialog(R.string.merchant_error_title,R.string.no_charge_because_reader_not_connected,false);
+            }
+            return false;
+        }
+
+        String amountText = mChargeAmount.getText().toString();
+        if (null != amountText && amountText.length() > 0) {
+            amountText = String.format("%.2f", Double.parseDouble(amountText));
+            mAmount = Double.parseDouble(amountText);
+            return true;
+        }else{
+            mAmount = 0;
+            if (isChargePressed) {
+                showAlertDialog(R.string.merchant_error_title,R.string.no_charge_because_amount_not_valid,false);
+            }
+            return false;
+        }
+    }
+
+    private void validateTip(){
+        String tipText = mTipAmount.getText().toString();
+        if (null != tipText && tipText.length() > 0) {
+            tipText = String.format("%.2f", Double.parseDouble(tipText));
+            mTip = Double.parseDouble(tipText);
+        }else{
+            mTip = 0;
+        }
+    }
+
+    private void startTakingPayment(){
+
+        if(mIsProcessingPayment || !validateInput(true)){
+            return;
+        }
+
+        updateInvoice();
+        mIsProcessingPayment = true;
+        mTransactionManager.processPaymentWithSDKUI(TransactionManager.PaymentType.CardReader, new CallbackHandler());
+    }
+
+    private void showAlertDialogWithActivity(Activity activity, int titleResID, int msgResID, DialogInterface.OnClickListener clickListener){
+        Log.d(LOG_TAG, "showAlertDialogWithActivity IN");
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(titleResID);
+        builder.setMessage(msgResID);
+        builder.setCancelable(false);
+        builder.setNeutralButton(com.paypal.merchant.sdk.R.string.sdk_OK, clickListener);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                builder.create().show();
+            }
+        });
     }
 
     private void showAlertDialog(int titleResID, int msgResID, final boolean finish){
@@ -278,6 +392,24 @@ public class MainActivity extends Activity {
         });
     }
 
+    private void showAlertDialogWithTwoButtonOptions(Activity activity, int titleResID, int msgResID,
+                                                     int positiveButtonResId, int negativeButtonResId,
+                                                     final DialogInterface.OnClickListener posClickListener, final DialogInterface.OnClickListener negClickListener){
+        Log.d(LOG_TAG, "showAlertDialogWithActivity IN");
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(titleResID);
+        builder.setMessage(msgResID);
+        builder.setCancelable(false);
+        builder.setPositiveButton(positiveButtonResId, posClickListener);
+        builder.setNegativeButton(negativeButtonResId, negClickListener);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                builder.create().show();
+            }
+        });
+    }
+
     private void disconnectTheEMVDevice() {
         if (null != mSelectedBluetoothDevice) {
             PayPalHereSDK.getCardReaderManager().disconnectFromDevice(mSelectedBluetoothDevice);
@@ -288,10 +420,10 @@ public class MainActivity extends Activity {
     }
 
     private void updateReader(){
-        PayPalHereSDK.getCardReaderManager().initiateSoftwareUpdate(MainActivity.this,mSelectedBluetoothDevice,new DefaultResponseHandler<Boolean, PPError<CardReaderManager.ChipAndPinSoftwareUpdateStatus>>() {
+        PayPalHereSDK.getCardReaderManager().initiateSoftwareUpdate(MainActivity.this, mSelectedBluetoothDevice, new DefaultResponseHandler<Boolean, PPError<CardReaderManager.ChipAndPinSoftwareUpdateStatus>>() {
             @Override
             public void onSuccess(Boolean responseObject) {
-                Log.d(LOG_TAG,"updateReader: response handler onSuccess");
+                Log.d(LOG_TAG, "updateReader: response handler onSuccess");
                 mSoftwareUpdateRequired = false;
                 updateReaderConnectedMessage(true);
             }
@@ -339,6 +471,7 @@ public class MainActivity extends Activity {
     }
 
     private void clearChargeAmount() {
+        mRetryCount = 0;
         if (null != mChargeAmount) {
             mChargeAmount.setText("");
         }
@@ -366,28 +499,28 @@ public class MainActivity extends Activity {
 
     private void connectDevice(final BluetoothDevice device){
         mSelectedBluetoothDevice = device;
-        PayPalHereSDK.getCardReaderManager().connectToDevice(MainActivity.this,device,new DefaultResponseHandler<BluetoothDevice,PPError<CardReaderManager.ChipAndPinConnectionStatus>>(){
+        PayPalHereSDK.getCardReaderManager().connectToDevice(MainActivity.this, device, new DefaultResponseHandler<BluetoothDevice, PPError<CardReaderManager.ChipAndPinConnectionStatus>>() {
 
             @Override
             public void onSuccess(BluetoothDevice responseObject) {
-                Log.d(LOG_TAG," connectDevice Response Handler: onSuccess");
+                Log.d(LOG_TAG, " connectDevice Response Handler: onSuccess");
                 mSelectedBluetoothDevice = responseObject;
                 updateReaderConnectedMessage(true);
             }
 
             @Override
             public void onError(PPError<CardReaderManager.ChipAndPinConnectionStatus> error) {
-                Log.d(LOG_TAG,"connectDevice Response Handler: onError: "+error.getErrorCode());
-                if(CardReaderManager.ChipAndPinConnectionStatus.ErrorSoftwareUpdateRequired == error.getErrorCode()
-                        || CardReaderManager.ChipAndPinConnectionStatus.ErrorSoftwareUpdateTriedAndFailed == error.getErrorCode()){
-                    Log.d(LOG_TAG,"connectDevice Response Handler: onError: SoftwareUpdate Recommended. Hence allowing to take payments..");
+                Log.d(LOG_TAG, "connectDevice Response Handler: onError: " + error.getErrorCode());
+                if (CardReaderManager.ChipAndPinConnectionStatus.ErrorSoftwareUpdateRequired == error.getErrorCode()
+                        || CardReaderManager.ChipAndPinConnectionStatus.ErrorSoftwareUpdateTriedAndFailed == error.getErrorCode()) {
+                    Log.d(LOG_TAG, "connectDevice Response Handler: onError: SoftwareUpdate Recommended. Hence allowing to take payments..");
                     mSoftwareUpdateRequired = true;
                     updateReaderConnectedMessage(true);
-                }else if(CardReaderManager.ChipAndPinConnectionStatus.ErrorSoftwareUpdateRecommended == error.getErrorCode()){
-                    Log.e(LOG_TAG,"connectDevice Response Handler: onError. Not allowing to take payments");
+                } else if (CardReaderManager.ChipAndPinConnectionStatus.ErrorSoftwareUpdateRecommended == error.getErrorCode()) {
+                    Log.e(LOG_TAG, "connectDevice Response Handler: onError. Not allowing to take payments");
                     mSoftwareUpdateRequired = true;
                     updateReaderConnectedMessage(true);
-                }else if(CardReaderManager.ChipAndPinConnectionStatus.ConnectedAndReady == error.getErrorCode()){
+                } else if (CardReaderManager.ChipAndPinConnectionStatus.ConnectedAndReady == error.getErrorCode()) {
                     mSoftwareUpdateRequired = false;
                     updateReaderConnectedMessage(true);
                 }
@@ -418,7 +551,7 @@ public class MainActivity extends Activity {
             }
         }
         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle(com.paypal.merchant.sdk.R.string.sdk_bt_paired_devices_alert_dialog_title);
+        builder.setTitle(com.paypal.merchant.sdk.R.string.sdk_dlg_title_paired_devices);
         builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -454,8 +587,8 @@ public class MainActivity extends Activity {
     private void showNoPairedDevicesAlertDialog() {
         Log.d(LOG_TAG, "showNoPairedDevicesAlertDialog IN");
         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle(com.paypal.merchant.sdk.R.string.sdk_bt_paired_devices_alert_dialog_title);
-        builder.setMessage(com.paypal.merchant.sdk.R.string.sdk_no_bt_paired_devices_msg);
+        builder.setTitle(com.paypal.merchant.sdk.R.string.sdk_dlg_title_paired_devices);
+        builder.setMessage(com.paypal.merchant.sdk.R.string.sdk_dlg_msg_no_paired_devices);
         builder.setCancelable(false);
         builder.setNeutralButton(com.paypal.merchant.sdk.R.string.sdk_OK, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -473,13 +606,132 @@ public class MainActivity extends Activity {
         });
     }
 
-    private class CallbackHandler implements DefaultResponseHandler<TransactionManager.PaymentResponse, PPError<TransactionManager.EMVPaymentErrors>> {
+    @Override
+    public void onPrintRequested(Activity activity, Invoice invoice) {
+        Log.d(LOG_TAG,"printReceiptRequested");
+        Intent intent = new Intent(MainActivity.this,PrintReceiptActivity.class);
+        startActivity(intent);
+    }
+
+
+    @Override
+    public void onPaymentEvent(PaymentEvent e) {
+        Log.d(LOG_TAG,"onPaymentEvent: "+e.getEventType());
+    }
+
+    @Override
+    public TransactionControlAction onPreAuthorize(Invoice inv, String preAuthJSON) {
+        return TransactionControlAction.CONTINUE;
+    }
+
+    @Override
+    public void onPostAuthorize(boolean didFail) {
+
+    }
+
+    @Override
+    public Activity getCurrentActivity() {
+        return this;
+    }
+
+    @Override
+    public com.paypal.merchant.sdk.domain.SDKSignatureScreenOptions getSignatureScreenOpts() {
+        return new SDKSignatureScreenOptions() {
+            @Override
+            public boolean isFullScreen() {
+                return LocalPreferences.isSignatureInFullScreen();
+            }
+        };
+    }
+
+    @Override
+    public SDKReceiptScreenOptions getReceiptScreenOptions() {
+        return new SDKReceiptScreenOptions() {
+            @Override
+            public boolean isFullScreen() {
+                return LocalPreferences.isReceiptOptionsInFullScreen();
+            }
+
+            @Override
+            public boolean isSubsequentScreensAsFullScreens() {
+                return LocalPreferences.isReceiptsInFullScreen();
+            }
+
+            @Override
+            public Map<String, SDKReceiptScreenOptions.SDKTransactionScreenOptionCallback> getScreenOptions() {
+                return null;
+            }
+        };
+    }
+
+    @Override
+    public void onUserPaymentOptionSelected(PaymentOption paymentOption) {
+        startTakingPayment();
+    }
+
+    @Override
+    public void onUserRefundOptionSelected(PaymentOption paymentOption) {
+
+    }
+
+    @Override
+    public void onTokenExpired(Activity activity, TokenExpirationHandler listener) {
+
+    }
+
+    @Override
+    public void onReadyToCancelTransaction(CancelTransactionReason cancelTransactionReason) {
+
+    }
+
+    @Override
+    public void onContactlessReaderTimeout(Activity activity, final ContactlessReaderTimeoutOptionsHandler handler) {
+        showAlertDialogWithTwoButtonOptions(activity, R.string.error_title_contactless_reader_timeout, R.string.error_message_contactless_reader_timeout,
+                R.string.contactless_reader_timeout_try_again, R.string.contactless_reader_timeout_cancel,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mRetryCount++;
+                        handler.onTimeout(onTimeout());
+                    }
+                },
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        handler.onTimeout(ContactlessReaderTimeoutOptions.CANCEL_TRANSACTION);
+                    }
+                });
+    }
+
+    private ContactlessReaderTimeoutOptions onTimeout() {
+        ContactlessReaderTimeoutOptions options;
+        switch (mRetryCount) {
+            case 0:
+            case 1:
+                options = ContactlessReaderTimeoutOptions.RETRY_WITH_CONTACTLESS;
+                break;
+
+            case 2:
+            default:
+                options = ContactlessReaderTimeoutOptions.RETRY_WITHOUT_CONTACTLESS;
+                break;
+        }
+        return options;
+    }
+
+    private void clearActiveInvoice() {
+        mInvoice = null;
+    }
+
+    private class CallbackHandler implements DefaultResponseHandler<TransactionManager.PaymentResponse, PPError<TransactionManager.PaymentErrors>> {
         @Override
         public void onSuccess(TransactionManager.PaymentResponse responseObject) {
             Log.d(LOG_TAG, "CallbackHandler onSuccess");
             if(null != responseObject && null != responseObject.getTransactionRecord()) {
                 LocalPreferences.storeCompletedTransactionRecord(responseObject.getTransactionRecord());
             }
+            mIsProcessingPayment = false;
+            startTransaction();
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -489,23 +741,25 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        public void onError(final PPError<TransactionManager.EMVPaymentErrors> error) {
+        public void onError(final PPError<TransactionManager.PaymentErrors> error) {
             Log.e(LOG_TAG, "CallbackHandler onFailure");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                clearChargeAmount();
-                if(TransactionManager.EMVPaymentErrors.AmountTooLow == error.getErrorCode()){
-                    showAlertDialog(R.string.merchant_error_title,R.string.merchant_amount_too_low,false);
-                }else if(TransactionManager.EMVPaymentErrors.AmountTooHigh == error.getErrorCode()){
-                    showAlertDialog(R.string.merchant_error_title,R.string.merchant_amount_too_high,false);
-                }else if(TransactionManager.EMVPaymentErrors.BatteryLow == error.getErrorCode()){
-                    showAlertDialog(R.string.merchant_error_title,R.string.merchant_battery_too_low,false);
-                }else if(TransactionManager.EMVPaymentErrors.MandatorySoftwareUpdateRequired == error.getErrorCode()){
-                    showAlertDialog(R.string.merchant_error_title,R.string.error_mandatory_software_update,false);
-                }else if(TransactionManager.EMVPaymentErrors.UpgradePPHSDK == error.getErrorCode()){
-                    showAlertDialog(R.string.merchant_error_title,R.string.error_upgrade_sdk,false);
-                }
+                    mIsProcessingPayment = false;
+                    startTransaction();
+                    clearChargeAmount();
+                    if(TransactionManager.PaymentErrors.AmountTooLow == error.getErrorCode()){
+                        Log.d(LOG_TAG, "payment error :  AmountTooLow");
+                    }else if(TransactionManager.PaymentErrors.AmountTooHigh == error.getErrorCode()){
+                        Log.d(LOG_TAG, "payment error :  AmountTooHigh");
+                    }else if(TransactionManager.PaymentErrors.BatteryLow == error.getErrorCode()){
+                        showAlertDialog(R.string.merchant_error_title,R.string.merchant_battery_too_low,false);
+                    }else if(TransactionManager.PaymentErrors.MandatorySoftwareUpdateRequired == error.getErrorCode()){
+                        showAlertDialog(R.string.merchant_error_title,R.string.error_mandatory_software_update,false);
+                    }else if(TransactionManager.PaymentErrors.UpgradePPHSDK == error.getErrorCode()){
+                        showAlertDialog(R.string.merchant_error_title,R.string.error_upgrade_sdk,false);
+                    }
                 }
             });
         }

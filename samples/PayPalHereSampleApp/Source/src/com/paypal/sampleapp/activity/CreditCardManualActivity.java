@@ -139,7 +139,7 @@ public class CreditCardManualActivity extends MyActivity {
         if (CommonUtils.isNullOrEmpty(mCCInfo))
             return false;
 
-        if (mCCInfo.length() != 16)
+        if (mCCInfo.length() < 15)
             return false;
 
         return true;
@@ -185,7 +185,7 @@ public class CreditCardManualActivity extends MyActivity {
         // Create a ManualEntryCardData obj by providing the credit card into.
         Log.d(LOG, "{" + mCCInfo + " : " + mCCVInfo + " : " + expDate + "}");
         ManualEntryCardData manualEntryCardData = DomainFactory.newManualEntryCardData(mCCInfo, expDate
-                , mCCVInfo);
+                , mCCVInfo, mPostalCode);
         // Set the Card Holder's name.
         manualEntryCardData.setCardHoldersName("John Doe");
 
@@ -264,7 +264,7 @@ public class CreditCardManualActivity extends MyActivity {
     private void performAnotherTransaction() {
         Log.d(LOG, "Peforming another transaction");
         PayPalHereSDK.getCardReaderManager().cancelWaitForAuthorization();
-        PayPalHereSDK.getTransactionManager().beginPayment();
+        PayPalHereSDK.getTransactionManager().beginPayment(null);
         finish();
     }
 

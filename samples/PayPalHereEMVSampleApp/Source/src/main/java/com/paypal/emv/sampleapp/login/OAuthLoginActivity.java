@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.paypal.emv.sampleapp.R;
 import com.paypal.emv.sampleapp.activity.MainActivity;
 import com.paypal.emv.sampleapp.utils.AddressUtil;
+import com.paypal.emv.sampleapp.utils.CommonUtils;
 import com.paypal.merchant.sdk.AuthenticationListener;
 import com.paypal.merchant.sdk.MerchantManager;
 import com.paypal.merchant.sdk.PayPalHereSDK;
@@ -97,13 +98,7 @@ import javax.crypto.spec.SecretKeySpec;
  * In this activity, we also "check-in" the merchant after a successful login.
  */
 public class OAuthLoginActivity extends Activity {
-
-    public static final String PREFS_NAME = "MerchantPrefs";
-    public static final String REFRESH_URL = "refreshUrl";
-    public static final String PREFS_LAST_GOOD_USERNAME = "PREFS_LAST_GOOD_USERNAME";
-    public static final String PREFS_LAST_GOOD_SERVER = "PREFS_LAST_GOOD_SERVER";
-    public static final String PREFS_LAST_GOOD_EMV_CONFIG_REPO = "PREFS_LAST_GOOD_EMV_CONFIG_REPO";
-    private static final String LOG = OAuthLoginActivity.class.getSimpleName();
+    private static final String LOG_TAG = OAuthLoginActivity.class.getSimpleName();
     private static final String MERCHANT_SERVICE_URL = "http://sdk-sample-server.herokuapp.com/server/";
     private static SharedPreferences mSharedPrefs;
     private static int HANDLER_MESSAGE_INVALID_CREDENTIALS = 3001;
@@ -115,15 +110,11 @@ public class OAuthLoginActivity extends Activity {
         @Override
         public void onInvalidToken() {
 
-            String refreshUrl = getRefreshUrl();
+            String refreshUrl = CommonUtils.getRefreshUrl(OAuthLoginActivity.this);
             if (null != refreshUrl && refreshUrl.length() > 0) {
                 mHandler.sendEmptyMessage(HANDLER_MESSAGE_INVALID_CREDENTIALS);
                 return;
             }
-
-            //RefreshTokenTask refreshAccessTokenTask = new RefreshTokenTask();
-            //refreshAccessTokenTask.execute(refreshUrl);
-
         }
     };
     private static int HANDELR_MESSAGE_TOKEN_REFRESH_SUCCESS = 3002;
@@ -135,7 +126,7 @@ public class OAuthLoginActivity extends Activity {
         public void handleMessage(Message msg) {
 
             if (HANDLER_MESSAGE_INVALID_CREDENTIALS == msg.what) {
-                removedSavedRefreshUrl();
+                CommonUtils.removedSavedRefreshUrl(OAuthLoginActivity.this);
                 Toast.makeText(OAuthLoginActivity.this, OAuthLoginActivity.this.getString(R.string.invalid_login), Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(OAuthLoginActivity.this, LoginScreenActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -174,16 +165,17 @@ public class OAuthLoginActivity extends Activity {
            same. */
         mLoginWebView.setVisibility(View.GONE);
 
-        // Find and set the progress dialog.
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setIndeterminate(false);
-        mProgressDialog.setCanceledOnTouchOutside(false);
-
         // Get the username and password from the previous login screen.
         mUsername = getIntent().getStringExtra("username");
         mPassword = getIntent().getStringExtra("password");
         mServerName = getIntent().getStringExtra("servername");
-        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
+
+        if (CommonUtils.isMockServer(this)) {
+            Log.d(LOG_TAG, "Setting Mock Server");
+            setMockServer();
+            return;
+        }
+
         setMerchantServiceUrl();
         // Checking to see if the server urls are set above.
         // NOTE: This check is looking for a url that has the domain "herokuapp.com". If the 3rd apps are using any
@@ -195,9 +187,29 @@ public class OAuthLoginActivity extends Activity {
         }
     }
 
+    private void setMockServer() {
+        showProgressDialog();
+        if (CommonUtils.isMockServer(this)) {
+            PayPalHereSDK.setCredentials(new OAuthCredentials("MockServer"), new DefaultResponseHandler<Merchant, PPError<MerchantManager.MerchantErrors>>() {
+                @Override
+                public void onSuccess(Merchant responseObject) {
+                    Log.d(LOG_TAG, "Set credenetials was success");
+                    proceedToMainActivity();
+                    dismissProgressDialog();
+                }
+
+                @Override
+                public void onError(PPError<MerchantManager.MerchantErrors> error) {
+                    Log.e(LOG_TAG, "Set credenetials was a failure");
+                    dismissProgressDialog();
+                    loginPayPalFailed(error.getDetailedMessage());
+                }
+            });
+        }
+    }
+
     private void setMerchantServiceUrl() {
-        String currentServer = PayPalHereSDK.getCurrentServer();
-        if (currentServer.equalsIgnoreCase(PayPalHereSDK.Live) || currentServer.equalsIgnoreCase(PayPalHereSDK.ControlledSandbox)) {
+        if (CommonUtils.isMockServer(this)) {
             mUseLive = true;
         }
         mMerchantServiceUrl = MERCHANT_SERVICE_URL;
@@ -220,6 +232,13 @@ public class OAuthLoginActivity extends Activity {
      * Method to show the progress dialog with a suitable message.
      */
     private void showProgressDialog() {
+        if (null != mProgressDialog) {
+            dismissProgressDialog();
+        }
+
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setIndeterminate(false);
+        mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setMessage("Logging in...");
         mProgressDialog.show();
     }
@@ -227,9 +246,11 @@ public class OAuthLoginActivity extends Activity {
     /**
      * Method to hide the progress dialog.
      */
-    private void hideProgressDialog() {
-        if (mProgressDialog.isShowing())
+    private void dismissProgressDialog() {
+        if (null != mProgressDialog && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
     }
 
     /**
@@ -371,7 +392,7 @@ public class OAuthLoginActivity extends Activity {
 
     void validateTicketWithMerchantService(String ticket) {
         if (ticket == null) {
-            Log.e(LOG, "null ticket!");
+            Log.e(LOG_TAG, "null ticket!");
         }
         mTicket = ticket;
         // On to the next step.
@@ -383,17 +404,17 @@ public class OAuthLoginActivity extends Activity {
      * If the PayPal login failed, inform the user of the same.
      */
     private void loginPayPalFailed(String msg) {
-        Log.d(LOG, "doneWithLoginPayPal. Login Failed");
+        Log.d(LOG_TAG, "doneWithLoginPayPal. Login Failed");
         msg = ((null == msg || msg.length() <= 0) ? "Login Failed!" : "Login Failed : " + msg);
         Toast.makeText(OAuthLoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-        hideProgressDialog();
+        dismissProgressDialog();
         goBackToLoginScreen();
     }
 
     private void herokuUrlsNotSetErrorMessage() {
-        Log.d(LOG, "Heroku urls are not set.");
+        Log.d(LOG_TAG, "Heroku urls are not set.");
         Toast.makeText(OAuthLoginActivity.this, "Heroku server urls are not set! Please provide the urls to continue.", Toast.LENGTH_SHORT).show();
-        hideProgressDialog();
+        dismissProgressDialog();
         goBackToLoginScreen();
     }
 
@@ -407,7 +428,7 @@ public class OAuthLoginActivity extends Activity {
     private void goPayPalSuccessWithAccessToken(String accessToken,
                                                 String refreshUrl, String expiry) {
         finishMerchantInit(accessToken, refreshUrl, expiry);
-        Log.d(LOG, "goPayPalSuccessWithAccessToken");
+        Log.d(LOG_TAG, "goPayPalSuccessWithAccessToken");
 
     }
 
@@ -418,7 +439,7 @@ public class OAuthLoginActivity extends Activity {
      * @param url
      */
     private void goPayPalSuccessWithURL(final String url) {
-        Log.d(LOG,
+        Log.d(LOG_TAG,
                 "goPayPalSuccessWithURL - Now need to log into PayPal Access");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
@@ -443,7 +464,7 @@ public class OAuthLoginActivity extends Activity {
         );
         AlertDialog alert = builder.create();
         alert.show();
-        hideProgressDialog();
+        dismissProgressDialog();
 
     }
 
@@ -523,7 +544,7 @@ public class OAuthLoginActivity extends Activity {
 
                     } catch (Exception ex) {
                         ex.printStackTrace();
-                        Log.e(LOG, "decrypt exception = " + ex.getMessage());
+                        Log.e(LOG_TAG, "decrypt exception = " + ex.getMessage());
                     }
                 }
                 return false;
@@ -615,10 +636,7 @@ public class OAuthLoginActivity extends Activity {
      * @param accessToken
      */
     private void setMerchantAndCheckIn(String accessToken, String refreshUrl, String expiry) {
-        saveRefreshUrl(refreshUrl);
-        saveLastGoodServer();
-        saveLastGoodEMVConfigStage();
-        saveLastGoodUsername();
+        CommonUtils.saveRefreshUrl(this,refreshUrl);
 
         saveAccessToken(accessToken);
         /* Create a credentials obj based off of the decrypted access token.
@@ -634,86 +652,20 @@ public class OAuthLoginActivity extends Activity {
                 /* Register the Authentication listener (implemented in the parent class MyActivity) to listen for any
                    invalid credentials callbacks sent by the SDK. */
                 PayPalHereSDK.registerAuthenticationListener(authenticationListener);
-                hideProgressDialog();
+                dismissProgressDialog();
                 proceedToMainActivity();
             }
 
             @Override
             public void onError(PPError<MerchantManager.MerchantErrors> arg0) {
-                Log.e(LOG, "Merchant init failed : " + arg0.getDetailedMessage());
+                Log.e(LOG_TAG, "Merchant init failed : " + arg0.getDetailedMessage());
                 loginPayPalFailed(arg0.getDetailedMessage());
             }
         });
     }
 
-    /**
-     * Upon successful login with PayPal via PayPalAccess, an access token and a refresh url would be returned back.
-     * It is currently the application's responsibility to save this refresh url and invoke the same if needed when
-     * the token expires.
-     * <p/>
-     * The expiration of the token would be indicated by the SDK by invoking the AuthenticationListener callback
-     * (implemented above).
-     *
-     * @param refreshUrl : refresh url to be saved.
-     */
-    public void saveRefreshUrl(String refreshUrl) {
-
-        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = mSharedPrefs.edit();
-        editor.putString(REFRESH_URL, refreshUrl);
-        editor.commit();
-        Log.d("saveRefreshUrl", "Saving the refresh url: " + refreshUrl);
-    }
-
-    private void saveLastGoodServer() {
-        String successfulServer = PayPalHereSDK.getCurrentServer();
-
-        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = mSharedPrefs.edit();
-        editor.putString(PREFS_LAST_GOOD_SERVER, successfulServer);
-        editor.commit();
-        Log.d("saveRefreshUrl", "Saving the last good server: " + successfulServer);
-    }
-
-    private void saveLastGoodEMVConfigStage() {
-        String successfulEMVConfigRepo = PayPalHereSDK.getEMVConfigRepo();
-        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = mSharedPrefs.edit();
-        editor.putString(PREFS_LAST_GOOD_EMV_CONFIG_REPO,successfulEMVConfigRepo);
-        editor.commit();
-        Log.d("saveLastGoodEMVConfigStage", "Saving the last good EMV Config Repo: " + successfulEMVConfigRepo);
-    }
-
-    private void saveLastGoodUsername() {
-        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = mSharedPrefs.edit();
-        editor.putString(PREFS_LAST_GOOD_USERNAME, mUsername);
-        editor.commit();
-        Log.d("saveRefreshUrl", "Saving the last good username: " + mUsername);
-    }
-
     public void saveAccessToken(String accessToken) {
         mAccessToken = accessToken;
-    }
-
-    /**
-     * Method to retrieve the refresh url that is saved as a preference within the app.
-     *
-     * @return : refresh url string.
-     */
-    public String getRefreshUrl() {
-        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
-        return mSharedPrefs.getString(REFRESH_URL, null);
-    }
-
-    private String getLastGoodServer() {
-        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
-        return mSharedPrefs.getString(PREFS_LAST_GOOD_SERVER, null);
-    }
-
-    private String getLastGoodUsername() {
-        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
-        return mSharedPrefs.getString(PREFS_LAST_GOOD_USERNAME, null);
     }
 
     /**
@@ -724,16 +676,6 @@ public class OAuthLoginActivity extends Activity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-    }
-
-    /**
-     * Method to remove the saved refresh url from the shared preference.
-     */
-    private void removedSavedRefreshUrl() {
-        mSharedPrefs = getSharedPreferences(PREFS_NAME, 0);
-        if (mSharedPrefs != null) {
-            mSharedPrefs.edit().remove(REFRESH_URL).commit();
-        }
     }
 
     /**
@@ -763,7 +705,7 @@ public class OAuthLoginActivity extends Activity {
             return mPassword;
         }
 
-        private synchronized String getServerName(){
+        private synchronized String getServerName() {
             return mServerName;
         }
 
@@ -795,7 +737,7 @@ public class OAuthLoginActivity extends Activity {
         private synchronized void parseMerchantInfo(JSONObject merchantInfoJson) {
             if (null == merchantInfoJson) {
                 setFailed();
-                Log.e(LOG, "null merchantInfoJson");
+                Log.e(LOG_TAG, "null merchantInfoJson");
                 return;
             }
             try {
@@ -826,7 +768,7 @@ public class OAuthLoginActivity extends Activity {
 
             } catch (JSONException ex) {
                 setFailed();
-                Log.e(LOG, ex.getMessage());
+                Log.e(LOG_TAG, ex.getMessage());
             }
 
         }
@@ -843,9 +785,9 @@ public class OAuthLoginActivity extends Activity {
                         2);
 
                 // Provide the user's login credentials.
-                nameValuePairs.add(new BasicNameValuePair("username",getUsername()));
-                nameValuePairs.add(new BasicNameValuePair("password",getPassword()));
-                nameValuePairs.add(new BasicNameValuePair("servername",getServerName()));
+                nameValuePairs.add(new BasicNameValuePair("username", getUsername()));
+                nameValuePairs.add(new BasicNameValuePair("password", getPassword()));
+                nameValuePairs.add(new BasicNameValuePair("servername", getServerName()));
                 nameValuePairs.add(new BasicNameValuePair("isLive", String.valueOf(mUseLive)));
 
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -853,12 +795,12 @@ public class OAuthLoginActivity extends Activity {
 
                 if (response.getStatusLine().getStatusCode() != 200) {
                     setFailed();
-                    Log.e(LOG, "Response status code: "
+                    Log.e(LOG_TAG, "Response status code: "
                             + response.getStatusLine().getStatusCode());
                 } else {
                     String responseBody = EntityUtils.toString(response
                             .getEntity());
-                    Log.d(LOG, "Login Response: " + responseBody);
+                    Log.d(LOG_TAG, "Login Response: " + responseBody);
                     try {
                         // Since the response in a JSON format, create a JSON
                         // object to access the same.
@@ -872,13 +814,13 @@ public class OAuthLoginActivity extends Activity {
                         parseMerchantInfo(merchantInfoJson);
                     } catch (JSONException e) {
                         setFailed();
-                        Log.e(LOG, e.getMessage());
+                        Log.e(LOG_TAG, e.getMessage());
                     }
                 }
 
             } catch (Exception e) {
                 setFailed();
-                Log.e(LOG, e.getMessage());
+                Log.e(LOG_TAG, e.getMessage());
             }
             return null;
         }
@@ -971,7 +913,7 @@ public class OAuthLoginActivity extends Activity {
             return mUsername;
         }
 
-        private synchronized String getServerName(){
+        private synchronized String getServerName() {
             return mServerName;
         }
 
@@ -988,18 +930,18 @@ public class OAuthLoginActivity extends Activity {
                         .add(new BasicNameValuePair("ticket", getTicket()));
                 nameValuePairs.add(new BasicNameValuePair("username",
                         getUsername()));
-                nameValuePairs.add(new BasicNameValuePair("servername",getServerName()));
+                nameValuePairs.add(new BasicNameValuePair("servername", getServerName()));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 HttpResponse response = httpclient.execute(httppost);
 
                 if (response.getStatusLine().getStatusCode() != 200) {
                     setFailed();
-                    Log.e(LOG, "Response status code: "
+                    Log.e(LOG_TAG, "Response status code: "
                             + response.getStatusLine().getStatusCode());
                 } else {
                     String responseBody = EntityUtils.toString(response
                             .getEntity());
-                    Log.d(LOG, "Login Response: " + responseBody);
+                    Log.d(LOG_TAG, "Login Response: " + responseBody);
                     try {
                         // Since the response in a JSON format, create a JSON
                         // object to access the same.
@@ -1018,17 +960,17 @@ public class OAuthLoginActivity extends Activity {
                         // If neither are obtained, flag as failed.
                         else {
                             setFailed();
-                            Log.e(LOG, "Response has no url nor access_token.");
+                            Log.e(LOG_TAG, "Response has no url nor access_token.");
                         }
                     } catch (JSONException e) {
                         setFailed();
-                        Log.e(LOG, e.getMessage());
+                        Log.e(LOG_TAG, e.getMessage());
                     }
                 }
 
             } catch (Exception e) {
                 setFailed();
-                Log.e(LOG, e.getMessage());
+                Log.e(LOG_TAG, e.getMessage());
             }
             return null;
         }

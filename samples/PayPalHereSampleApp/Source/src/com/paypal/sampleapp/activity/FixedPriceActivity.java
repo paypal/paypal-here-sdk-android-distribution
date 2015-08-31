@@ -26,6 +26,7 @@ import com.paypal.sampleapp.R;
 import com.paypal.sampleapp.util.CommonUtils;
 import com.paypal.sampleapp.util.LocalPreferences;
 
+import java.lang.Override;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -76,7 +77,7 @@ public class FixedPriceActivity extends MyActivity implements CardReaderListener
                 // This feature is mainly aimed to offer flexibility as to when the card could be swiped.
                 // When a card swipe is detected, a SecureCreditCard object is also returned back by the SDK,
                 // which the apps can choose to store.
-                Invoice i = PayPalHereSDK.getTransactionManager().beginPayment(mFixedPriceVal);
+                Invoice i = PayPalHereSDK.getTransactionManager().beginPayment(mFixedPriceVal, null);
                 // Set the cashier id (if present) within the invoice to indicate which cashier within the store
                 // created this invoice.
                 i.setCashierId(LocalPreferences.getCashierID());
@@ -171,6 +172,11 @@ public class FixedPriceActivity extends MyActivity implements CardReaderListener
     @Override
     public void onInvalidListeningPort() {
         CommonUtils.createToastMessage(this, "No valid listening port.");
+    }
+
+    @Override
+    public void onIdleResponseReceived() {
+
     }
 
     @Override

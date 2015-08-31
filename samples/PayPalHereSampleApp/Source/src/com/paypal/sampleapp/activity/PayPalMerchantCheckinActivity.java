@@ -135,7 +135,7 @@ public class PayPalMerchantCheckinActivity extends MyActivity {
     private void performAnotherTransaction() {
         Log.d(LOG, "Performing another transaction");
         PayPalHereSDK.getCardReaderManager().cancelWaitForAuthorization();
-        PayPalHereSDK.getTransactionManager().beginPayment();
+        PayPalHereSDK.getTransactionManager().beginPayment(null);
         finish();
     }
 

@@ -12,8 +12,17 @@
         android:focusable="true" android:hint="@string/amount_hint"
         android:inputType="numberDecimal" />
 
+    <EditText android:id="@+id/tip" android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/amount"
+        android:layout_marginLeft="@dimen/main_activity_left_margin"
+        android:layout_marginRight="@dimen/main_activity_right_margin"
+        android:layout_marginTop="@dimen/main_activity_top_margin"
+        android:focusable="true" android:hint="@string/tip_hint"
+        android:inputType="numberDecimal" />
+
     <Button android:id="@+id/charge_button" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_below="@id/amount"
+        android:layout_height="wrap_content" android:layout_below="@id/tip"
         android:layout_marginLeft="@dimen/main_activity_left_margin"
         android:layout_marginRight="@dimen/main_activity_right_margin"
         android:layout_marginTop="@dimen/main_activity_top_margin"

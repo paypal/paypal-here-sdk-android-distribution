@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.paypal.sampleapp.R;
 import com.paypal.merchant.sdk.PayPalHereSDK;
 
@@ -59,6 +60,7 @@ public class LoginScreenActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Crashlytics.start(this);
 
         setContentView(R.layout.activity_login_screen);
 
@@ -134,7 +136,6 @@ public class LoginScreenActivity extends Activity {
         intent.putExtra("password", mPassword);
         intent.putExtra("servername",mServerName);
         startActivity(intent);
-
     }
 
     /**
@@ -143,6 +144,12 @@ public class LoginScreenActivity extends Activity {
      * @return
      */
     private boolean isValidInput() {
+        //If it is the mock server then there is no need of validataion..
+        if(null != mServerName && mServerName.equalsIgnoreCase(PayPalHereSDK.MockServer)){
+            return true;
+        }
+
+
         if (null == mUsername || mUsername.length() <= 0) {
             return false;
         } else if (null == mPassword || mPassword.length() <= 0) {

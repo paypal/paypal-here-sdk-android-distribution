@@ -20,6 +20,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.paypal.merchant.sdk.AuthenticationListener;
+import com.paypal.merchant.sdk.CardReaderConnectionListener;
 import com.paypal.merchant.sdk.CardReaderListener;
 import com.paypal.merchant.sdk.MerchantManager;
 import com.paypal.merchant.sdk.PayPalHereSDK;
@@ -49,10 +50,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.Override;
 import java.util.List;
 
 
-public class MyActivity extends Activity implements CardReaderListener {
+public class MyActivity extends Activity implements CardReaderListener, CardReaderConnectionListener {
 
     private static final String LOG = "MyActivity";
     private static Bitmap sBitmap;
@@ -133,6 +135,18 @@ public class MyActivity extends Activity implements CardReaderListener {
 
     }
 
+    @Override
+    protected void onPause() {
+        PayPalHereSDK.getCardReaderManager().unregisterCardReaderConnectionListener(this);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PayPalHereSDK.getCardReaderManager().registerCardReaderConnectionListener(this);
+    }
+
     /**
      * Upon successful login with PayPal via PayPalAccess, an access token and a refresh url would be returned back.
      * It is currently the application's responsibility to save this refresh url and invoke the same if needed when
@@ -199,6 +213,16 @@ public class MyActivity extends Activity implements CardReaderListener {
         }
     }
 
+
+    @Override
+    public void onConnectedReaderSoftwareUpdateComplete() {
+    }
+
+    @Override
+    public void onConnectedReaderNeedsSoftwareUpdate(boolean isUpdateOptional){
+
+    }
+
     @Override
     public void onCardReadSuccess(SecureCreditCard paymentCard) {
 
@@ -215,12 +239,27 @@ public class MyActivity extends Activity implements CardReaderListener {
     }
 
     @Override
+    public void onMultipleCardReadersConnected(List<ReaderTypes> connectedReaders) {
+
+    }
+
+    @Override
+    public void onActiveReaderChanged(ReaderTypes readerType) {
+
+    }
+
+    @Override
     public void onSelectPaymentDecision(List<ChipAndPinDecisionEvent> decisionEventList) {
 
     }
 
     @Override
     public void onInvalidListeningPort() {
+
+    }
+
+    @Override
+    public void onIdleResponseReceived() {
 
     }
 

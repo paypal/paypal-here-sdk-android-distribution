@@ -54,7 +54,7 @@ public class EMVTransactionActivity extends MyActivity {
     private Button mConnectButton;
     private Button mChargeButton;
 
-    private class CallbackHandler implements DefaultResponseHandler<TransactionManager.PaymentResponse, PPError<TransactionManager.EMVPaymentErrors>> {
+    private class CallbackHandler implements DefaultResponseHandler<TransactionManager.PaymentResponse, PPError<TransactionManager.PaymentErrors>> {
         @Override
         public void onSuccess(TransactionManager.PaymentResponse responseObject) {
             Log.d(LOG_TAG, "CallbackHandler onSuccess");
@@ -67,7 +67,7 @@ public class EMVTransactionActivity extends MyActivity {
         }
 
         @Override
-        public void onError(PPError<TransactionManager.EMVPaymentErrors> error) {
+        public void onError(PPError<TransactionManager.PaymentErrors> error) {
             Log.e(LOG_TAG, "CallbackHandler onFailure");
             runOnUiThread(new Runnable() {
                 @Override
@@ -108,7 +108,7 @@ public class EMVTransactionActivity extends MyActivity {
         mChargeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                PayPalHereSDK.getTransactionManager().processPayment(EMVTransactionActivity.this,new CallbackHandler());
+                PayPalHereSDK.getTransactionManager().processPaymentWithSDKUI(TransactionManager.PaymentType.CardReader,new CallbackHandler());
             }
         });
         updateButtonVisibility();

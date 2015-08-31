@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.paypal.merchant.sdk.CardReaderConnectionListener;
 import com.paypal.merchant.sdk.CardReaderListener;
 import com.paypal.merchant.sdk.PayPalHereSDK;
 import com.paypal.merchant.sdk.TransactionListener;
@@ -32,10 +33,11 @@ import com.paypal.sampleapp.activity.SignatureActivity;
 import com.paypal.sampleapp.util.CommonUtils;
 import com.paypal.sampleapp.util.LocalPreferences;
 
+import java.lang.Override;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class SwipeTransactionActivity extends Activity implements CardReaderListener, TransactionListener{
+public class SwipeTransactionActivity extends Activity implements CardReaderListener, TransactionListener, CardReaderConnectionListener{
     private static final String LOG_TAG = SwipeTransactionActivity.class.getSimpleName();
 
     private static final int SIGNATURE_ACTIVITY_REQ_CODE = 5001;
@@ -92,6 +94,7 @@ public class SwipeTransactionActivity extends Activity implements CardReaderList
         super.onPause();
         Log.d(LOG_TAG,"onPause IN");
         PayPalHereSDK.getCardReaderManager().unregisterCardReaderListener(this);
+        PayPalHereSDK.getCardReaderManager().unregisterCardReaderConnectionListener(this);
         mTransactionManager.unregisterListener(this);
     }
 
@@ -100,6 +103,7 @@ public class SwipeTransactionActivity extends Activity implements CardReaderList
         super.onResume();
         Log.d(LOG_TAG,"onResume IN");
         PayPalHereSDK.getCardReaderManager().registerCardReaderListener(this);
+        PayPalHereSDK.getCardReaderManager().registerCardReaderConnectionListener(this);
         mTransactionManager.registerListener(this);
     }
 
@@ -168,20 +172,20 @@ public class SwipeTransactionActivity extends Activity implements CardReaderList
                 new DefaultResponseHandler<TransactionManager.PaymentResponse, PPError<TransactionManager.PaymentErrors>>() {
                     @Override
                     public void onSuccess(TransactionManager.PaymentResponse paymentResponse) {
-                        Log.d(LOG_TAG,"TransactionManager:FinalizePayment onSuccess");
+                        Log.d(LOG_TAG, "TransactionManager:FinalizePayment onSuccess");
                         cancelProgressDialog();
                         startSendReceiptActivity(true);
                     }
 
                     @Override
                     public void onError(PPError<TransactionManager.PaymentErrors> paymentErrorsPPError) {
-                        Log.d(LOG_TAG,"TransactionManager:FinalizePayment onError");
+                        Log.d(LOG_TAG, "TransactionManager:FinalizePayment onError");
                         cancelProgressDialog();
                         startSendReceiptActivity(false);
                     }
                 }
         );
-        showProgressDialog(null,SwipeTransactionActivity.this.getString(R.string.process_dialog_finalizing_payment_msg));
+        showProgressDialog(null, SwipeTransactionActivity.this.getString(R.string.process_dialog_finalizing_payment_msg));
     }
 
     private void openTipDialog() {
@@ -279,6 +283,14 @@ public class SwipeTransactionActivity extends Activity implements CardReaderList
     }
 
     @Override
+    public void onConnectedReaderSoftwareUpdateComplete() {
+    }
+
+    @Override
+    public void onConnectedReaderNeedsSoftwareUpdate(boolean isUpdateOptional){
+    }
+
+    @Override
     public void onCardReadSuccess(SecureCreditCard paymentCard) {
         Log.d(LOG_TAG,"onCardReadSuccess IN");
         if(mIsAuthPayment) {
@@ -305,6 +317,7 @@ public class SwipeTransactionActivity extends Activity implements CardReaderList
             showProgressDialog(null,SwipeTransactionActivity.this.getString(R.string.process_dialog_authorizing_payment_msg));
         }else{
             Log.d(LOG_TAG,"onCardReadSuccess, calling processPayment");
+            showProgressDialog(null, SwipeTransactionActivity.this.getString(R.string.process_dialog_processing_payment_msg));
             mTransactionManager.processPayment(TransactionManager.PaymentType.CardReader, null, new DefaultResponseHandler<TransactionManager.PaymentResponse, PPError<TransactionManager.PaymentErrors>>() {
                 @Override
                 public void onSuccess(TransactionManager.PaymentResponse responseObject) {
@@ -324,7 +337,6 @@ public class SwipeTransactionActivity extends Activity implements CardReaderList
                     startSendReceiptActivity(false);
                 }
             });
-            showProgressDialog(null,SwipeTransactionActivity.this.getString(R.string.process_dialog_processing_payment_msg));
         }
     }
 
@@ -339,6 +351,16 @@ public class SwipeTransactionActivity extends Activity implements CardReaderList
     }
 
     @Override
+    public void onMultipleCardReadersConnected(List<ReaderTypes> connectedReaders) {
+        Log.d(LOG_TAG,"onMultipleCardReadersConnected");
+    }
+
+    @Override
+    public void onActiveReaderChanged(ReaderTypes readerType) {
+
+    }
+
+    @Override
     public void onSelectPaymentDecision(List<ChipAndPinDecisionEvent> decisionEventList) {
         Log.d(LOG_TAG,"onSelectPaymentDecision IN");
     }
@@ -346,6 +368,11 @@ public class SwipeTransactionActivity extends Activity implements CardReaderList
     @Override
     public void onInvalidListeningPort() {
         Log.d(LOG_TAG,"onInvalidListeningPort IN");
+    }
+
+    @Override
+    public void onIdleResponseReceived() {
+        
     }
 
     @Override

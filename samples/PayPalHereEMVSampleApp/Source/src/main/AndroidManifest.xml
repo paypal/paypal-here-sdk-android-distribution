@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.paypal.emv.sampleapp"
-    android:versionCode="4" android:versionName="1.0">
+    android:versionCode="99"
+    android:versionName="1.0" >
 
     <application
         android:allowBackup="true"
@@ -34,20 +35,34 @@
             android:name=".activity.DeviceConnectActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/main_activity_name"
-            android:theme="@style/SDKTheme.transparent" />
+            android:theme="@style/Theme.SDK.Transparent" />
         <activity android:name=".activity.SalesActivity" />
         <activity android:name=".activity.DeviceDetailsActivity" />
         <activity
-            android:name="com.paypal.merchant.sdk.internal.emv.activities.EMVDeviceConnectActivity"
+            android:name="com.paypal.merchant.sdk.internal.ui.emv.EMVDeviceConnectActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/sdk_app_name"
-            android:theme="@style/SDKTheme.transparent" />
+            android:theme="@style/Theme.SDK.Transparent" />
         <activity
             android:name=".activity.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_settings" >
         </activity>
-        <meta-data android:name="com.crashlytics.ApiKey" android:value="6fdee2cd3d6cb98362060d0ac0be20ef1c386ef3"/>
+
+        <activity
+            android:name=".activity.AboutActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_about" >
+        </activity>
+
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="6fdee2cd3d6cb98362060d0ac0be20ef1c386ef3" />
+
+        <activity
+            android:name=".activity.PrintReceiptActivity"
+            android:label="@string/title_activity_print_receipt" >
+        </activity>
     </application>
 
 </manifest>
