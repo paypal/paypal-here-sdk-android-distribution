@@ -54,7 +54,7 @@ android {
     }
 
     dependencies {
-        compile  ('com.paypal.merchant.sdk:paypal-sdk:1.6_pre_release@aar')
+        compile  ('com.paypal.merchant.sdk:paypal-sdk:1.6_pre_release_2@aar')
     }
 }
 
