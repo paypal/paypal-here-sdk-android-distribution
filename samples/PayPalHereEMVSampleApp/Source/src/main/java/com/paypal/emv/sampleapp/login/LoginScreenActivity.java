@@ -106,7 +106,7 @@ public class LoginScreenActivity extends Activity {
 
     private void setLastKnownValues() {
         mServerName = CommonUtils.getStoredServer(this);
-        if (null != mServerName && mServerName.length() > 0) {
+        if (null == mServerName || mServerName.length() <= 0) {
             mServerName = PayPalHereSDK.Sandbox;
         }
         CommonUtils.setStage(this, mServerName);

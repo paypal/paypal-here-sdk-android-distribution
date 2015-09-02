@@ -133,6 +133,7 @@ public class CommonUtils {
         Log.d(LOG_TAG,"setStage setting the stage as: "+name);
         if(isNullOrEmpty(name)){
             Log.e(LOG_TAG,"setStage incoming stage name is null or empty. Name: "+name);
+            return;
         }
 
         if(name.equals(PayPalHereSDK.Live) || name.equals(PayPalHereSDK.Sandbox) || name.equals(PayPalHereSDK.MockServer)){
