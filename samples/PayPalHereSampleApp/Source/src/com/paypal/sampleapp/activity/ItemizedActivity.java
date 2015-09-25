@@ -187,7 +187,7 @@ public class ItemizedActivity extends MyActivity {
 
         mHeaderLayout.setVisibility(View.VISIBLE);
         mPurchaseButton.setVisibility(View.VISIBLE);
-        mInvoice = PayPalHereSDK.getTransactionManager().beginPayment();
+        mInvoice = PayPalHereSDK.getTransactionManager().beginPayment(null);
     }
 
     private void clearListAdapter() {

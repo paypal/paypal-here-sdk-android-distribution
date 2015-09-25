@@ -100,7 +100,7 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class OAuthLoginActivity extends MyActivity {
 
-    private static final String LOG = "PayPalHere.OAuthLoginScreen";
+    private static final String LOG = OAuthLoginActivity.class.getSimpleName();
 
     public static final String PREFS_NAME = "MerchantPrefs";
     public static final String PREFS_LAST_GOOD_USERNAME = "PREFS_LAST_GOOD_USERNAME";
@@ -296,28 +296,17 @@ public class OAuthLoginActivity extends MyActivity {
     }
 
     private void loadDefaultMerchantAddressInfo(View vi) {
-        Address address = null;
         Merchant m = PayPalHereSDK.getMerchantManager().getActiveMerchant();
-
-        if (m.getEmail().contains("uk") || m.getEmail().contains("UK")) {
-
-            address = AddressUtil.getDefaultUKMerchantAddress();
-            m.setMerchantCurrency(Currency.getInstance("GBP"));
-            m.setUserCountry(new Country("GB"));
-            PayPalHereSDK.getCardReaderManager().beginMonitoring(CardReaderListener.ReaderConnectionTypes.Bluetooth);
-        } else {
-            address = AddressUtil.getDefaultUSMerchantAddress();
-            m.setMerchantCurrency(Currency.getInstance("USD"));
-            m.setUserCountry(new Country("US"));
-            PayPalHereSDK.getCardReaderManager().beginMonitoring(CardReaderListener.ReaderConnectionTypes.AudioJack);
-        }
+        Address address = m.getCurrentAddress();
         PayPalHereSDK.getCardReaderManager().registerCardReaderListener(this);
-        ((EditText) vi.findViewById(R.id.address_1)).setText(address.getLine1());
-        ((EditText) vi.findViewById(R.id.address_2)).setText(address.getLine2());
-        ((EditText) vi.findViewById(R.id.city)).setText(address.getCity());
-        ((EditText) vi.findViewById(R.id.state)).setText(address.getState());
-        ((EditText) vi.findViewById(R.id.country)).setText(address.getCountryCode());
-        ((EditText) vi.findViewById(R.id.zip)).setText(address.getPostalCode());
+        if(null != address) {
+            ((EditText) vi.findViewById(R.id.address_1)).setText(address.getLine1());
+            ((EditText) vi.findViewById(R.id.address_2)).setText(address.getLine2());
+            ((EditText) vi.findViewById(R.id.city)).setText(address.getCity());
+            ((EditText) vi.findViewById(R.id.state)).setText(address.getState());
+            ((EditText) vi.findViewById(R.id.country)).setText(address.getCountryCode());
+            ((EditText) vi.findViewById(R.id.zip)).setText(address.getPostalCode());
+        }
     }
 
     private void setupMerchantInfo(Merchant merchant) {

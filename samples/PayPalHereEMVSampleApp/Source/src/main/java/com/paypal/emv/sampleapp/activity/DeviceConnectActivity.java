@@ -109,7 +109,7 @@ public class DeviceConnectActivity extends Activity {
             }
         }
         final AlertDialog.Builder builder = new AlertDialog.Builder(mAlertDialogTheme);
-        builder.setTitle(R.string.sdk_bt_paired_devices_alert_dialog_title);
+        builder.setTitle(R.string.sdk_dlg_title_paired_devices);
         builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -144,8 +144,8 @@ public class DeviceConnectActivity extends Activity {
     private void showNoPairedDevicesAlertDialog() {
         Log.d(LOG_TAG, "showNoPairedDevicesAlertDialog IN");
         final AlertDialog.Builder builder = new AlertDialog.Builder(mAlertDialogTheme);
-        builder.setTitle(R.string.sdk_bt_paired_devices_alert_dialog_title);
-        builder.setMessage(R.string.sdk_no_bt_paired_devices_msg);
+        builder.setTitle(R.string.sdk_dlg_title_paired_devices);
+        builder.setMessage(R.string.sdk_dlg_msg_no_paired_devices);
         builder.setCancelable(false);
         builder.setNeutralButton(R.string.sdk_OK, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -168,8 +168,8 @@ public class DeviceConnectActivity extends Activity {
     private void showSoftwareUpdateRequiredAlertDialog() {
         Log.d(LOG_TAG, "showSoftwareUpdateRequiredAlertDialog IN");
         final AlertDialog.Builder builder = new AlertDialog.Builder(mAlertDialogTheme);
-        builder.setTitle(R.string.sdk_software_update_required_alert_dialog_title);
-        builder.setMessage(R.string.sdk_software_update_required_alert_dialog_msg);
+        builder.setTitle(R.string.sdk_dlg_title_sw_upd_required);
+        builder.setMessage(R.string.sdk_dlg_msg_sw_upd_required);
         builder.setCancelable(false);
         builder.setPositiveButton(R.string.sdk_OK, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -196,8 +196,8 @@ public class DeviceConnectActivity extends Activity {
     private void showSoftwareUpdateSuggestedAlertDialog() {
         Log.d(LOG_TAG, "showSoftwareUpdateSuggestedAlertDialog IN");
         final AlertDialog.Builder builder = new AlertDialog.Builder(mAlertDialogTheme);
-        builder.setTitle(R.string.sdk_software_update_recommended_alert_dialog_title);
-        builder.setMessage(R.string.sdk_software_update_recommended_alert_dialog_msg);
+        builder.setTitle(R.string.sdk_dlg_title_sw_upd_recommended);
+        builder.setMessage(R.string.sdk_dlg_msg_sw_upd_recommended);
         builder.setCancelable(false);
         builder.setPositiveButton(R.string.sdk_OK, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -275,8 +275,8 @@ public class DeviceConnectActivity extends Activity {
             finish();
             return;
         }
-        String title = DeviceConnectActivity.this.getString(R.string.sdk_progress_dialog_software_update_title);//+" "+mSelectedBluetoothDevice.getName();
-        String msg = DeviceConnectActivity.this.getString(R.string.sdk_progress_dialog_software_update_msg_initiating);
+        String title = DeviceConnectActivity.this.getString(R.string.sdk_dlg_title_sw_upd_updating);//+" "+mSelectedBluetoothDevice.getName();
+        String msg = DeviceConnectActivity.this.getString(R.string.sdk_dlg_msg_sw_upd_initiating);
         showProgressDialog(title, msg);
         PayPalHereSDK.getCardReaderManager().initiateSoftwareUpdate(mSelectedBluetoothDevice, new ReaderUpdateHandler());
     }
@@ -290,8 +290,8 @@ public class DeviceConnectActivity extends Activity {
         }
         mSelectedBluetoothDevice = device;
         Log.d(LOG_TAG, "connectToBluetoothDevice IN. Device: " + device.getName());
-        String message = DeviceConnectActivity.this.getString(R.string.sdk_progress_dialog_device_connect_title) + " " + device.getName();
-        showProgressDialog(message, this.getString(R.string.sdk_progress_dialog_device_connect_msg_detecting));
+        String message = DeviceConnectActivity.this.getString(R.string.sdk_dlg_title_connecting_device) + " " + device.getName();
+        showProgressDialog(message, this.getString(R.string.sdk_dlg_msg_detecting_device));
         PayPalHereSDK.getCardReaderManager().connectToDevice(device, new ReaderConnectHandler());
     }
 
@@ -311,11 +311,11 @@ public class DeviceConnectActivity extends Activity {
             Log.d(LOG_TAG, "ReaderConnectHandler:onStatusUpdated: " + info.name());
             switch (info) {
                 case ConnectionInProgress:
-                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_progress_dialog_device_connect_msg_connecting));
+                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_dlg_msg_connecting_device));
                     break;
 
                 case ConnectedAndConfiguring:
-                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_progress_dialog_device_connect_msg_configuring));
+                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_dlg_msg_configuring_device));
                     break;
 
                 case TerminalInfoAvailable:
@@ -366,7 +366,7 @@ public class DeviceConnectActivity extends Activity {
         public void onInitiated(CardReaderManager.ChipAndPinStatusResponse object,
                                 PPError<CardReaderManager.ChipAndPinSoftwareUpdateStatus> updatedStatus) {
             Log.d(LOG_TAG, "ReaderUpdateHandler:onInitiated IN");
-            updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_progress_dialog_software_update_msg_initiating));
+            updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_dlg_msg_sw_upd_initiating));
         }
 
         @Override
@@ -381,19 +381,19 @@ public class DeviceConnectActivity extends Activity {
                 }
                 break;
                 case KeyInjectionInProgress: {
-                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_progress_dialog_software_update_msg_key_injection));
+                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_dlg_msg_sw_upd_key_injection));
                 }
                 break;
                 case FetchingTerminalKeys: {
-                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_progress_dialog_software_update_msg_key_fetching));
+                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_dlg_msg_sw_upd_fetching_keys));
                 }
                 break;
                 case SoftwareUpdateInProgress: {
-                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_progress_dialog_software_update_msg_software_in_progress));
+                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_dlg_msg_sw_upd_update_in_progress));
                 }
                 break;
                 case DownloadInProgress: {
-                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_progress_dialog_software_update_msg_download_in_progress));
+                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_dlg_msg_sw_upd_download_in_progress));
                 }
                 break;
                 case ProgressOfCurrentFileDownload: {
@@ -401,11 +401,11 @@ public class DeviceConnectActivity extends Activity {
                 }
                 break;
                 case EndDownloadingFile: {
-                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_progress_dialog_software_update_msg_download_complete));
+                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_dlg_msg_sw_upd_download_complete));
                 }
                 break;
                 case InstallInProgress: {
-                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_progress_dialog_software_update_msg_install_in_progress));
+                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_dlg_msg_sw_upd_install_in_progress));
                 }
                 break;
                 case KeyInjectionFailedWithCause:
@@ -416,7 +416,7 @@ public class DeviceConnectActivity extends Activity {
                 }
                 break;
                 case RestartingTerminal: {
-                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_progress_dialog_software_update_msg_terminal_restart));
+                    updateProgressDialog(null, DeviceConnectActivity.this.getString(R.string.sdk_dlg_msg_sw_upd_restarting_terminal));
                 }
                 break;
             }

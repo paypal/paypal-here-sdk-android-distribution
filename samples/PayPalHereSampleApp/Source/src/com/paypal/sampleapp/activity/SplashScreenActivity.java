@@ -13,6 +13,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.crashlytics.android.Crashlytics;
 import com.paypal.sampleapp.R;
 import com.paypal.sampleapp.login.LoginScreenActivity;
 
@@ -26,6 +27,7 @@ public class SplashScreenActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Crashlytics.start(this);
         setContentView(R.layout.activity_splash_screen);
 
 		/*

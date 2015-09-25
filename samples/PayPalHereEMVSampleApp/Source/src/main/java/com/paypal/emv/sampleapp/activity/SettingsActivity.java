@@ -13,9 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ToggleButton;
 
 import com.paypal.emv.sampleapp.R;
+import com.paypal.emv.sampleapp.utils.LocalPreferences;
 import com.paypal.merchant.sdk.PayPalHereSDK;
 import com.paypal.merchant.sdk.domain.DefaultResponseHandler;
 import com.paypal.merchant.sdk.domain.Merchant;
@@ -52,7 +55,43 @@ public class SettingsActivity extends ActionBarActivity {
             }
         });
 
-        showProgressDialog(null,getString(R.string.progress_getting_prefs));
+        ToggleButton button = (ToggleButton)findViewById(R.id.id_sig_screen_option);
+        button.setChecked(LocalPreferences.isSignatureInFullScreen());
+        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                LocalPreferences.setSignatureFullScreen(isChecked);
+            }
+        });
+
+        button = (ToggleButton)findViewById(R.id.id_receipt_options_screen_option);
+        button.setChecked(LocalPreferences.isReceiptOptionsInFullScreen());
+        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                LocalPreferences.setReceiptOptionsFullScreen(isChecked);
+            }
+        });
+
+        button = (ToggleButton)findViewById(R.id.id_receipts_screen_option);
+        button.setChecked(LocalPreferences.isReceiptsInFullScreen());
+        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                LocalPreferences.setReceiptsFullScreen(isChecked);
+            }
+        });
+
+        button = (ToggleButton)findViewById(R.id.id_process_payment_option);
+        button.setChecked(LocalPreferences.isTakePaymentAfterUserInsertsOrTapsCard());
+        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                LocalPreferences.setTakePaymentAfterUserInsertsOrTapsCard(isChecked);
+            }
+        });
+
+        showProgressDialog(null, getString(R.string.progress_getting_prefs));
 
         PayPalHereSDK.getMerchantManager().getActiveMerchant().getMerchantPreferences(new DefaultResponseHandler<Merchant.MerchantPreferences, PPError<PPError.BasicErrors>>() {
             @Override

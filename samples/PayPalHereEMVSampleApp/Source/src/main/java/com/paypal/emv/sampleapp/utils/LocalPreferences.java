@@ -15,6 +15,10 @@ public class LocalPreferences {
     private static final String PREFERENCE_NAME_CASHIER_ID = "CashierID";
     private static final String PREFERENCE_NAME_REFRESH_URL = "RefershURL";
     private static final String PREFERENCE_NAME_AUTHORIZE_OPTION = "AuthorizeOption";
+    private static final String PREFERENCE_NAME_SIGNATURE_FULL_SCREEN = "SIGNATURE_FULL_SCREEN";
+    private static final String PREFERENCE_RECEIPT_OPTIONS_FULL_SCREEN = "RECEIPT_OPTIONS_FULL_SCREEN";
+    private static final String PREFERENCE_RECEIPTS_FULL_SCREEN = "RECEIPTS_FULL_SCREEN";
+    private static final String PREFERENCE_PROCESS_PAYMENT = "PROCESS_PAYMENT";
     private static SharedPreferences mSharedPreferences;
 
     private static String mBNCode;
@@ -146,5 +150,37 @@ public class LocalPreferences {
 
     public static TransactionRecord getmRecentTransactionRecord(){
         return mRecentTransactionRecord;
+    }
+
+    public static boolean isSignatureInFullScreen(){
+        return mSharedPreferences.getBoolean(PREFERENCE_NAME_SIGNATURE_FULL_SCREEN,false);
+    }
+
+    public static void setSignatureFullScreen(boolean fullScreen){
+        mSharedPreferences.edit().putBoolean(PREFERENCE_NAME_SIGNATURE_FULL_SCREEN,fullScreen).commit();
+    }
+
+    public static boolean isReceiptOptionsInFullScreen(){
+        return mSharedPreferences.getBoolean(PREFERENCE_RECEIPT_OPTIONS_FULL_SCREEN,false);
+    }
+
+    public static void setReceiptOptionsFullScreen(boolean fullScreen){
+        mSharedPreferences.edit().putBoolean(PREFERENCE_RECEIPT_OPTIONS_FULL_SCREEN,fullScreen).commit();
+    }
+
+    public static boolean isReceiptsInFullScreen(){
+        return mSharedPreferences.getBoolean(PREFERENCE_RECEIPTS_FULL_SCREEN,false);
+    }
+
+    public static void setReceiptsFullScreen(boolean fullScreen){
+        mSharedPreferences.edit().putBoolean(PREFERENCE_RECEIPTS_FULL_SCREEN,fullScreen).commit();
+    }
+
+    public static boolean isTakePaymentAfterUserInsertsOrTapsCard(){
+        return mSharedPreferences.getBoolean(PREFERENCE_PROCESS_PAYMENT,false);
+    }
+
+    public static void setTakePaymentAfterUserInsertsOrTapsCard(boolean afterPayment){
+        mSharedPreferences.edit().putBoolean(PREFERENCE_PROCESS_PAYMENT,afterPayment).commit();
     }
 }
