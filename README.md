@@ -25,11 +25,11 @@ The Sample App
 ==============
 
 The sample app which is available in the repo will demonstrate how to use PayPal Here SDK to perform the following functionality
-* **How to take payment using mag stripe audio jack card reader**
-* **How to take payment using EMV chip card reader**
-* **How to take payment when both mag stripe and EMV chip card readers are connected at the same time**
-* **How to perform refund once the payment goes through**
-* **How to check & update the software on EMV chip card rader**
+* *How to take payment using mag stripe audio jack card reader**
+* *How to take payment using EMV chip card reader**
+* *How to take payment when both mag stripe and EMV chip card readers are connected at the same time**
+* *How to perform refund once the payment goes through**
+* *How to check & update the software on EMV chip card rader**
 
 Please feel free to modify and play with the sample app to learn more about the SDK and it's capabilities.
 
@@ -91,7 +91,7 @@ PayPalHereSDK.setCredentialsFromCompositeStrFromMidTierServer(compositeAccessTok
 
             @Override
             public void onError(PPError<MerchantManager.MerchantErrors> merchantErrorsPPError) {
-                                //PayPal Here SDK failed to set with the credentials provided.
+                //PayPal Here SDK failed to set with the credentials provided.
             }
         });
 ```
@@ -99,11 +99,14 @@ PayPalHereSDK.setCredentialsFromCompositeStrFromMidTierServer(compositeAccessTok
 Creating Invoice and Beginning Payment
 ================================
 
-To take a payment first, we must reate an invoice which can be as simple or complex as your use case demands. The simplest use case is to create an invoice for a single non-itemized amount:
+Inorder to take a payment, first, we must create an invoice which can be as simple or complex as your use case demands.
 
-* Creating the invoice with some fixed price and beginning Payment
+* Creating the invoice with fixed price (1 dollar) and beginning Payment
 ```java
+//create the invoice..
 Invoice myOneDollarFixedPriceInvoice = DomainFactory.newInvoiceWithFixedAmountItem(new BigDecimal(1));
+
+//begin the payment using above created invoice..
 PayPalHereSDK.getTransactionManager().beginPayment(myOneDollarFixedPriceInvoice, transactionController);
 ```
 
@@ -122,7 +125,7 @@ myInvoice.addItem(myInvoiceItem, new BigDecimal(1));
 PayPalHereSDK.getTransactionManager().beginPayment(myInvoice, transactionController);
 ```
 
-* Beginning the payment which will in turn returns you will the invoice.
+* Beginning the payment which will in turn returns you with the invoice.
 ```java
 //To begin payment with no amount and later adding items to invice
 Invoice invoice = PayPalHereSDK.getTransactionManager().beginPayment(transactionController);
@@ -145,7 +148,7 @@ PayPalHere SDK provides the simple api to process payment which will take care o
 * Signature entry UI and transmission
 * Receipt destination UI and transmission
 
-Before calling process payment api please make sure all of the following is doen properly
+Before calling process payment api please make sure all of the following is done properly
 
 1. Implement the interface `TransactionController`
 2. Call `PayPalHereSDK.getTransactionManager().beginPayment()` as described in the above step "Creating Invoice and Beginning Payment"
@@ -174,7 +177,7 @@ Card Readers
 
 Although `TransactionManager` is capable of managing card readers by itself there may be times when you require more information about the card reader or more granular control over card readers. This functionality is provided by `CardReaderManager`.
 
-**List Of Available Card Readers**
+**Available Card Readers**
 
 To get all the list of available card readers
 ```java
