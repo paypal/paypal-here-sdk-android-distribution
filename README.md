@@ -19,17 +19,17 @@ As an alternative to the SDK, a developer can also use a URI framework that lets
 Project Configuration
 ==============
 
-Please follow the steps in the [described here](http://paypal-mobile.github.io/android-here-sdk-dist/index.html) to properly set up your application for use with the PayPalHereSDK.
+Please follow the steps in the [described here](http://paypal-mobile.github.io/android-here-sdk-dist/sample_apps.html) to properly set up your application for use with the PayPalHereSDK.
 
 The Sample App
 ==============
 
 The sample app which is available in the repo will demonstrate how to use PayPal Here SDK to perform the following functionality
-* *How to take payment using mag stripe audio jack card reader**
-* *How to take payment using EMV chip card reader**
-* *How to take payment when both mag stripe and EMV chip card readers are connected at the same time**
-* *How to perform refund once the payment goes through**
-* *How to check & update the software on EMV chip card rader**
+* *How to take payment using mag stripe audio jack card reader*
+* *How to take payment using EMV chip card reader*
+* *How to take payment when both mag stripe and EMV chip card readers are connected at the same time*
+* *How to perform refund once the payment goes through*
+* *How to check & update the software on EMV chip card rader*
 
 Please feel free to modify and play with the sample app to learn more about the SDK and it's capabilities.
 
