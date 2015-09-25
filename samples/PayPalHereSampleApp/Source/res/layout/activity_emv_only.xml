@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:gravity="center_horizontal" android:orientation="vertical">
+
+    <Button android:id="@+id/bt_scan_button" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_marginTop="10dp"
+        android:text="Scan for BT devices" />
+
+
+    <Button android:id="@+id/bt_disconnect_button" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_marginTop="10dp"
+        android:text="Disconnect BT device" />
+
+    <Button android:id="@+id/bt_battery_Level_button" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_marginTop="10dp"
+        android:text="Get Battery Level" />
+
+    <Button android:id="@+id/bt_update_emv_info_button" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_marginTop="10dp"
+        android:text="Get EMV device info" />
+
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" android:text="Device Name" />
+
+        <TextView android:id="@+id/bt_device_name" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="5dp" />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" android:text="Serial Number" />
+
+        <TextView android:id="@+id/bt_serial_number" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="5dp" />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" android:text="Firmware Version" />
+
+        <TextView android:id="@+id/bt_firmare_version" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="5dp" />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" android:text="OS Version" />
+
+        <TextView android:id="@+id/bt_os_version" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="5dp" />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" android:text="Last known battery level" />
+
+        <TextView android:id="@+id/bt_last_battery_level" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="5dp" />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" android:text="Connection Status" />
+
+        <TextView android:id="@+id/bt_connection_status" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="5dp" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,24 @@
+{
+  "name":"sample-server",
+  "version": "0.0.1",
+  "dependencies": {
+	"express":"3.x",
+	"consolidate":"0.5.x",
+	"request":"*",
+	"async":"*",
+	"stylus":"*",
+	"bignumber.js":"*",
+	"nstore":"*",
+    "commander": "*",
+    "node-uuid": "*",
+    "request": "*",
+    "zlib": "*",
+    "needle": "*"
+  },
+  "engines":{
+      "node":"0.8.x",
+      "npm":"1.1.x"
+  }
+}
+
+

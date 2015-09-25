@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText android:id="@+id/address_1" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_marginTop="20dp"
+        android:hint="@string/title_address_1" />
+    <EditText android:id="@+id/address_2" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_marginTop="20dp"
+        android:hint="@string/title_address_2" />
+    <EditText android:id="@+id/city" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_marginTop="20dp" android:hint="@string/title_city" />
+    <EditText android:id="@+id/state" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_marginTop="20dp"
+        android:hint="@string/title_state" />
+
+    <EditText android:id="@+id/country" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_marginTop="20dp"
+        android:hint="@string/title_country" />
+    <EditText android:id="@+id/zip" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_marginTop="20dp" android:hint="@string/title_zip"
+        android:inputType="number" />
+</LinearLayout>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/id_update_sw_repo_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/id_stage_layout"
+            android:layout_alignRight="@+id/id_stage_layout"
+            android:layout_marginBottom="10dp"
+            android:text="@string/update_sw_repo_txt"/>
+        <View
+            android:id="@+id/id_line_break_1"
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:layout_alignLeft="@+id/id_stage_layout"
+            android:layout_alignRight="@+id/id_stage_layout"
+            android:background="@color/blue"
+            android:layout_below="@id/id_update_sw_repo_button"/>
+
+        <TextView
+            android:id="@+id/id_update_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/id_stage_layout"
+            android:layout_alignRight="@+id/id_stage_layout"
+            android:layout_below="@+id/id_line_break_1"
+            android:text="@string/update_stage_txt"
+            android:textSize="18sp"
+            android:textColor="@color/blue"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/id_select_sandbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/id_update_text"
+            android:layout_alignLeft="@+id/id_stage_layout"
+            android:layout_alignRight="@+id/id_stage_layout"
+            android:layout_marginTop="20dp"
+            android:text="Sandbox"/>
+
+        <Button
+            android:id="@+id/id_select_live"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/id_select_sandbox"
+            android:layout_alignLeft="@+id/id_stage_layout"
+            android:layout_alignRight="@+id/id_stage_layout"
+            android:layout_marginTop="20dp"
+            android:text="Live"/>
+
+        <Button
+            android:id="@+id/id_select_controlled_sandbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/id_select_live"
+            android:layout_alignLeft="@+id/id_stage_layout"
+            android:layout_alignRight="@+id/id_stage_layout"
+            android:layout_marginTop="20dp"
+            android:text="Controlled Sandbox"/>
+
+        <LinearLayout
+            android:id="@+id/id_stage_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/id_select_controlled_sandbox"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/id_stage_selection"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/update_stage_hint"/>
+            <Button
+                android:id="@+id/id_stage_selection_button"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/update_txt"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,92 @@
+import java.util.regex.Pattern
+
+buildscript {
+    repositories {
+        mavenCentral()
+
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.0'
+    }
+}
+
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        minSdkVersion 10
+        targetSdkVersion 15
+
+
+    }
+
+    sourceSets {
+
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs file('src')
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        lintOptions {
+            abortOnError false
+        }
+
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+
+    dependencies {
+        compile  ('com.paypal.merchant.sdk:paypal-sdk:1.5.5@aar')
+    }
+
+    packagingOptions {
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+        debug{
+            //Don't change the value of release notes as we are searching for the value and replacing it with actual release notes in build jobs
+            ext.betaDistributionReleaseNotes='Release Notes for this build.'
+            ext.betaDistributionGroupAliases='paypalhere-sdk'
+        }
+    }
+}
+dependencies {
+    compile 'com.android.support:support-v4:18.0.0'
+    compile 'com.android.support:appcompat-v7:21.0.2'
+    compile 'com.google.android.gms:play-services-location:6.5.87'
+}
+
+task incrementVersionCode << {
+    def manifestFile = file("AndroidManifest.xml")
+    def patternVersionCode = Pattern.compile("versionCode=\"(\\d+)\"")
+    def manifestText = manifestFile.getText()
+    def matcherVersionCode = patternVersionCode.matcher(manifestText)
+    matcherVersionCode.find()
+    def mVersionCode = Integer.parseInt(matcherVersionCode.group(1))
+    def mNextVersionCode = mVersionCode + 1
+    def manifestContent = matcherVersionCode.replaceAll("versionCode=\"" + mNextVersionCode + "\"")
+    manifestFile.write(manifestContent)
+}
