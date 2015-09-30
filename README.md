@@ -1,8 +1,8 @@
 Introduction
 =================
 
-The Android PayPal Here SDK enables Android apps to process in-person credit card transactions using EMV chip card readers or mag stipe swipers. PayPal Here SDK library enables you to:
-* **Interact with PayPal Hardware** — Detect, connect to, and listen for card events coming from both PayPal provided audio jack based card swipers and EMV Chip card readers
+The Android PayPal Here SDK enables Android apps to process in-person credit card transactions using Contactless/EMV chip card readers or mag stipe swipers. PayPal Here SDK library enables you to:
+* **Interact with PayPal Hardware** — Detect, connect to, and listen for card events coming from both PayPal provided audio jack based card swipers and Contactless/EMV Chip card readers
 * **Process Card-Present payments** — To process the payment using the data coming from card readers (chip card reader or mag stripe card reader) which will be in the encrypted form. 
 
 Developers should use the PayPal Here SDK to get world-class payment process with extremely simple integration.  Some of the main benefits include
@@ -12,26 +12,28 @@ Developers should use the PayPal Here SDK to get world-class payment process wit
 [Visit our website](https://www.paypal.com/webapps/mpp/credit-card-reader) for more information about PayPal Here.
 
 
-Full class and method documentation can be [found here](http://paypal-mobile.github.io/android-here-sdk-dist/javadoc/index.html).
-
 As an alternative to the SDK, a developer can also use a URI framework that lets one app (or mobile webpage) link directly to the PayPal Here app to complete a payment.  Using this method, the merchant will tap a button or link in one app, which will open the pre-installed PayPal Here app on their device, with the PayPal Here app pre-populating the original order information, collect a payment in the PayPal Here app, and return the merchant to the original app/webpage. This is available for US, UK, Australia, and Japan for iOS & Android.  See the [Sideloader API](https://github.com/paypal/here-sideloader-api-samples) on Github.
+
+
+
+Supporting Materials
+===================
+
+
+* Full class and method documentation can be [found here](http://paypal-mobile.github.io/android-here-sdk-dist/javadoc/index.html).
+* the sample app demonstrates how to use PayPal Here SDK to perform the following functionality
+  * How to take payment using mag stripe audio jack card reader
+  * How to take payment using EMV chip card reader
+  * How to take payment when both mag stripe and EMV chip card readers are connected at the same time
+  * How to perform refund once the payment goes through
+  * How to check & update the software on EMV chip card rader
+
+Please feel free to modify and play with the sample app to learn more about the SDK and it's capabilities.
 
 Project Configuration
 ==============
 
 Please follow the steps in the [described here](http://paypal-mobile.github.io/android-here-sdk-dist/sample_apps.html) to properly set up your application for use with the PayPalHereSDK.
-
-The Sample App
-==============
-
-The sample app which is available in the repo will demonstrate how to use PayPal Here SDK to perform the following functionality
-* *How to take payment using mag stripe audio jack card reader*
-* *How to take payment using EMV chip card reader*
-* *How to take payment when both mag stripe and EMV chip card readers are connected at the same time*
-* *How to perform refund once the payment goes through*
-* *How to check & update the software on EMV chip card rader*
-
-Please feel free to modify and play with the sample app to learn more about the SDK and it's capabilities.
 
 Authentication
 ===============================
@@ -46,7 +48,7 @@ See our [Merchant Onboarding Guide](docs/Merchant%20Onboarding%20Guide.pdf) for 
 SDK Initialization
 ==================
 
-* By default SDK is configured to use Live environment. In case if you wish to use sandbox environment, please configure it while initializing the SDK. Consult [sandbox overview](https://developer.paypal.com/docs/classic/lifecycle/sb_overview/) for more information about the PayPal sandbox environment.
+* By default SDK is configured to use Live environment. In case if you wish to use sandbox environment (for using with _Swipe_ card readers only), please configure it while initializing the SDK and consult [sandbox overview](https://developer.paypal.com/docs/classic/lifecycle/sb_overview/) for more information about the PayPal sandbox environment.
 
 ```java
 //For setting Live environment
