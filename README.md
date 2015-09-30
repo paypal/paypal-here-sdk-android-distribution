@@ -1,8 +1,8 @@
 Introduction
 =================
 
-The Android PayPal Here SDK enables Android apps to process in-person credit card transactions using EMV chip card readers or mag stipe swipers. PayPal Here SDK library enables you to:
-* **Interact with PayPal Hardware** — Detect, connect to, and listen for card events coming from both PayPal provided audio jack based card swipers and EMV Chip card readers
+The Android PayPal Here SDK enables Android apps to process in-person credit card transactions using Contactless/EMV chip card readers or mag stipe swipers. PayPal Here SDK library enables you to:
+* **Interact with PayPal Hardware** — Detect, connect to, and listen for card events coming from both PayPal provided audio jack based card swipers and Contactless/EMV Chip card readers
 * **Process Card-Present payments** — To process the payment using the data coming from card readers (chip card reader or mag stripe card reader) which will be in the encrypted form. 
 
 Developers should use the PayPal Here SDK to get world-class payment process with extremely simple integration.  Some of the main benefits include
@@ -12,26 +12,28 @@ Developers should use the PayPal Here SDK to get world-class payment process wit
 [Visit our website](https://www.paypal.com/webapps/mpp/credit-card-reader) for more information about PayPal Here.
 
 
-Full class and method documentation can be [found here](http://paypal-mobile.github.io/android-here-sdk-dist/javadoc/index.html).
-
 As an alternative to the SDK, a developer can also use a URI framework that lets one app (or mobile webpage) link directly to the PayPal Here app to complete a payment.  Using this method, the merchant will tap a button or link in one app, which will open the pre-installed PayPal Here app on their device, with the PayPal Here app pre-populating the original order information, collect a payment in the PayPal Here app, and return the merchant to the original app/webpage. This is available for US, UK, Australia, and Japan for iOS & Android.  See the [Sideloader API](https://github.com/paypal/here-sideloader-api-samples) on Github.
+
+
+
+Supporting Materials
+===================
+
+
+* Full class and method documentation can be [found here](http://paypal-mobile.github.io/android-here-sdk-dist/javadoc/index.html).
+* the sample app demonstrates how to use PayPal Here SDK to perform the following functionality
+  * How to take payment using mag stripe audio jack card reader
+  * How to take payment using EMV chip card reader
+  * How to take payment when both mag stripe and EMV chip card readers are connected at the same time
+  * How to perform refund once the payment goes through
+  * How to check & update the software on EMV chip card rader
+
+Please feel free to modify and play with the sample app to learn more about the SDK and it's capabilities.
 
 Project Configuration
 ==============
 
-Please follow the steps in the [described here](http://paypal-mobile.github.io/android-here-sdk-dist/index.html) to properly set up your application for use with the PayPalHereSDK.
-
-The Sample App
-==============
-
-The sample app which is available in the repo will demonstrate how to use PayPal Here SDK to perform the following functionality
-* **How to take payment using mag stripe audio jack card reader**
-* **How to take payment using EMV chip card reader**
-* **How to take payment when both mag stripe and EMV chip card readers are connected at the same time**
-* **How to perform refund once the payment goes through**
-* **How to check & update the software on EMV chip card rader**
-
-Please feel free to modify and play with the sample app to learn more about the SDK and it's capabilities.
+Please follow the steps in the [described here](http://paypal-mobile.github.io/android-here-sdk-dist/sample_apps.html) to properly set up your application for use with the PayPalHereSDK.
 
 Authentication
 ===============================
@@ -46,7 +48,7 @@ See our [Merchant Onboarding Guide](docs/Merchant%20Onboarding%20Guide.pdf) for 
 SDK Initialization
 ==================
 
-* By default SDK is configured to use Live environment. In case if you wish to use sandbox environment, please configure it while initializing the SDK. Consult [sandbox overview](https://developer.paypal.com/docs/classic/lifecycle/sb_overview/) for more information about the PayPal sandbox environment.
+* By default SDK is configured to use Live environment. In case if you wish to use sandbox environment (for using with _Swipe_ card readers only), please configure it while initializing the SDK and consult [sandbox overview](https://developer.paypal.com/docs/classic/lifecycle/sb_overview/) for more information about the PayPal sandbox environment.
 
 ```java
 //For setting Live environment
@@ -91,7 +93,7 @@ PayPalHereSDK.setCredentialsFromCompositeStrFromMidTierServer(compositeAccessTok
 
             @Override
             public void onError(PPError<MerchantManager.MerchantErrors> merchantErrorsPPError) {
-                                //PayPal Here SDK failed to set with the credentials provided.
+                //PayPal Here SDK failed to set with the credentials provided.
             }
         });
 ```
@@ -99,11 +101,14 @@ PayPalHereSDK.setCredentialsFromCompositeStrFromMidTierServer(compositeAccessTok
 Creating Invoice and Beginning Payment
 ================================
 
-To take a payment first, we must reate an invoice which can be as simple or complex as your use case demands. The simplest use case is to create an invoice for a single non-itemized amount:
+Inorder to take a payment, first, we must create an invoice which can be as simple or complex as your use case demands.
 
-* Creating the invoice with some fixed price and beginning Payment
+* Creating the invoice with fixed price (1 dollar) and beginning Payment
 ```java
+//create the invoice..
 Invoice myOneDollarFixedPriceInvoice = DomainFactory.newInvoiceWithFixedAmountItem(new BigDecimal(1));
+
+//begin the payment using above created invoice..
 PayPalHereSDK.getTransactionManager().beginPayment(myOneDollarFixedPriceInvoice, transactionController);
 ```
 
@@ -122,7 +127,7 @@ myInvoice.addItem(myInvoiceItem, new BigDecimal(1));
 PayPalHereSDK.getTransactionManager().beginPayment(myInvoice, transactionController);
 ```
 
-* Beginning the payment which will in turn returns you will the invoice.
+* Beginning the payment which will in turn returns you with the invoice.
 ```java
 //To begin payment with no amount and later adding items to invice
 Invoice invoice = PayPalHereSDK.getTransactionManager().beginPayment(transactionController);
@@ -145,7 +150,7 @@ PayPalHere SDK provides the simple api to process payment which will take care o
 * Signature entry UI and transmission
 * Receipt destination UI and transmission
 
-Before calling process payment api please make sure all of the following is doen properly
+Before calling process payment api please make sure all of the following is done properly
 
 1. Implement the interface `TransactionController`
 2. Call `PayPalHereSDK.getTransactionManager().beginPayment()` as described in the above step "Creating Invoice and Beginning Payment"
@@ -174,7 +179,7 @@ Card Readers
 
 Although `TransactionManager` is capable of managing card readers by itself there may be times when you require more information about the card reader or more granular control over card readers. This functionality is provided by `CardReaderManager`.
 
-**List Of Available Card Readers**
+**Available Card Readers**
 
 To get all the list of available card readers
 ```java
