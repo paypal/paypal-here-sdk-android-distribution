@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.paypal.heresdk.sampleapp.ui.ChargeActivity">
+
+    <RelativeLayout
+        android:id="@+id/id_charge_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/amount"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/main_activity_left_margin"
+            android:layout_marginRight="@dimen/main_activity_right_margin"
+            android:layout_marginTop="@dimen/main_activity_top_margin"
+            android:focusable="true"
+            android:hint="@string/amount_hint"
+            android:inputType="numberDecimal" />
+
+        <Button
+            android:id="@+id/charge_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/amount"
+            android:layout_marginLeft="@dimen/main_activity_left_margin"
+            android:layout_marginRight="@dimen/main_activity_right_margin"
+            android:layout_marginTop="@dimen/main_activity_top_margin"
+            android:onClick="onTakePaymentOptionSelected"
+            android:text="@string/button_charge" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/id_payment_successful_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/id_payment_success_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/payment_complete"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/id_refund_payment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/id_payment_success_textView"
+            android:layout_marginTop="@dimen/main_activity_top_margin"
+            android:text="@string/refund_button_text"
+            android:onClick="onRefundOptionSelected"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/id_refund_payment"
+            android:text="@string/payment_finish_msg"
+            android:onClick="goBackToPaymentOptionsActivity"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/id_payment_failure_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/id_payment_failure_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/payment_fail"
+            android:textSize="18sp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/id_payment_failure_textView"
+            android:text="@string/payment_finish_msg"
+            android:onClick="goBackToPaymentOptionsActivity"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/id_refund_successful_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/id_refund_successful_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/refund_complete"
+            android:textSize="18sp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/id_refund_successful_textView"
+            android:text="@string/payment_finish_msg"
+            android:onClick="goBackToPaymentOptionsActivity"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/id_refund_failure_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/id_refund_failure_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/refund_failed"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/id_refund_retry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/id_refund_failure_textView"
+            android:text="@string/refund_retry_msg"
+            android:onClick="onRefundOptionSelected"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/id_refund_retry"
+            android:text="@string/payment_finish_msg"
+            android:onClick="goBackToPaymentOptionsActivity"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
