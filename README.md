@@ -1,7 +1,7 @@
 Introduction
 =================
 
-The Android PayPal Here SDK enables Android apps to process in-person credit card transactions using Contactless/EMV chip card readers or mag stipe swipers. PayPal Here SDK library enables you to:
+The Android PayPal Here SDK enables Android apps to process in-person credit card transactions using Contactless/EMV chip card readers or mag stripe swipers. PayPal Here SDK library enables you to:
 * **Interact with PayPal Hardware** — Detect, connect to, and listen for card events coming from both PayPal provided audio jack based card swipers and Contactless/EMV Chip card readers
 * **Process Card-Present payments** — To process the payment using the data coming from card readers (chip card reader or mag stripe card reader) which will be in the encrypted form. 
 
@@ -21,7 +21,7 @@ Supporting Materials
 
 
 * Full class and method documentation can be [found here](http://paypal-mobile.github.io/android-here-sdk-dist/javadoc/index.html).
-* the sample app demonstrates how to use PayPal Here SDK to perform the following functionality
+* The sample app demonstrates how to use PayPal Here SDK to perform the following functionality
   * How to take payment using mag stripe audio jack card reader
   * How to take payment using EMV chip card reader
   * How to take payment when both mag stripe and EMV chip card readers are connected at the same time
