@@ -147,8 +147,8 @@ PayPalHere SDK provides simple APIs to process payments which will take care of 
 
 Before calling process payment API, please make sure to:
 
-1. Implemeint `TransactionController` Interface
-2. Call `PayPalHereSDK.getTransactionManager().beginPayment()` as described in the above step "Creating Invoice and Beginning Payment"
+* Implemeint `TransactionController` Interface
+* Call `PayPalHereSDK.getTransactionManager().beginPayment()` as described in the above step "Creating Invoice and Beginning Payment"
 
 Once the above steps are completed then call process payment of the transaction manager
 ```java
