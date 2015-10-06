@@ -11,10 +11,7 @@ Developers should use the PayPal Here SDK to get world-class payment process wit
 * **Live customer support:** Whenever you need support, we’re available to help with our customer support team.
 [Visit our website](https://www.paypal.com/webapps/mpp/credit-card-reader) for more information about PayPal Here.
 
-
-As an alternative to the SDK, a developer can also use a URI framework that lets one app (or mobile webpage) link directly to the PayPal Here app to complete a payment.  Using this method, the merchant will tap a button or link in one app, which will open the pre-installed PayPal Here app on their device, with the PayPal Here app pre-populating the original order information, collect a payment in the PayPal Here app, and return the merchant to the original app/webpage. This is available for US, UK, Australia, and Japan for iOS & Android.  See the [Sideloader API](https://github.com/paypal/here-sideloader-api-samples) on Github.
-
-
+**Note:** At the moment we only support Android Studio on Mac.
 
 Supporting Materials
 ===================
@@ -59,7 +56,7 @@ PayPalHereSDK.init(appContext, null);
 //For setting Sandbox environment
 PayPalHereSDK.init(appContext, PayPalHereSDK.Sandbox);
 
-Alternatively you can set Live or Sandbox environment after completing initialization as below
+//Alternatively you can set Live or Sandbox environment after completing initialization as below
 
 //For setting Live environment
 PayPalHereSDK.setServerName(PayPalHereSDK.Live);
@@ -142,7 +139,7 @@ invoice.addItem(myInvoiceItem, new BigDecimal(1));
 ProcessPayment
 ================================
 
-PayPalHere SDK provides the simple api to process payment which will take care of showing the UI which is needed to complete the transaction. So the application doesn't need to worry about showing the UI after calling process payment api of the transaction manager. Process payment api hides all of the following complexity for the application
+PayPalHere SDK provides simple APIs to process payments which will take care of showing the UI which is needed to complete the transaction. Process payment API takes care of:
 
 * Reader connection and activation
 * Listening for card events
@@ -150,9 +147,9 @@ PayPalHere SDK provides the simple api to process payment which will take care o
 * Signature entry UI and transmission
 * Receipt destination UI and transmission
 
-Before calling process payment api please make sure all of the following is done properly
+Before calling process payment API, please make sure to:
 
-1. Implement the interface `TransactionController`
+1. Implemeint `TransactionController` Interface
 2. Call `PayPalHereSDK.getTransactionManager().beginPayment()` as described in the above step "Creating Invoice and Beginning Payment"
 
 Once the above steps are completed then call process payment of the transaction manager
@@ -186,7 +183,7 @@ To get all the list of available card readers
 List<CardReader> availableCardReaders = PayPalHereSDK.getCardReaderManager().getAvailableReaders();
 ```
 
-To get the currently active reader (incase if multiple readers are connected)
+To get the currently active reader type (while multiple readers are connected)
 ```java
 ReaderTypes activeReaderType = PayPalHereSDK.getCardReaderManager().getActiveReaderType();
 ```
@@ -201,6 +198,7 @@ PayPalHereSDK.getCardReaderManager().registerCardReaderListener(cardReaderListen
 More Stuff to Look At
 =====================
 There is a lot more available in the PayPal Here SDK.  More detail is available in our [developer documentation](https://developer.paypal.com/docs/integration/paypal-here/android-dev/getting-started/) to show other capabilities.  These include:
+* **Sideloader:** As an alternative to the SDK, a developer can also use a URI framework that lets one app (or mobile webpage) link directly to the PayPal Here app to complete a payment.  Using this method, the merchant will tap a button or link in one app, which will open the pre-installed PayPal Here app on their device, with the PayPal Here app pre-populating the original order information, collect a payment in the PayPal Here app, and return the merchant to the original app/webpage. This is available for US, UK, Australia, and Japan for iOS & Android.  See the [Sideloader API](https://github.com/paypal/here-sideloader-api-samples) on Github.
 * **Auth/Capture:** Rather than a one-time sale, authorize a payment with a card swipe, and complete the transaction at a later time.  This is common when adding tips after the transaction is complete (e.g. at a restaurant).
 * **Refunds:** Use the SDK to refund a transaction
 * **Send Receipts:** You can use services through the SDK to send email or SMS receipts to customers
