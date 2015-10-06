@@ -13,9 +13,16 @@ Developers should use the PayPal Here SDK to get world-class payment process wit
 
 **Note:** At the moment we only support Android Studio/Mac.
 
+Important Note
+==============
+Before you start developing you will need to import the PayPal Here AAR file:
+1. Locate the PayPalHereSDK-x.x.x-release.aar file in the sdk folder of the repo
+2. Load into Android Studio via File -> New -> New Project and selecting JAR/AAR, Then locating the AAR file. 
+3. Ensure compile `project(':PayPalHereSDK-x.x.x-release')` in build.gradle matches the folder that is created in the project root
+
+
 Supporting Materials
 ===================
-
 
 * Full class and method documentation can be [found here](http://paypal-mobile.github.io/android-here-sdk-dist/javadoc/index.html).
 * The sample app demonstrates how to use PayPal Here SDK to perform the following functionality
@@ -27,10 +34,6 @@ Supporting Materials
 
 Please feel free to modify and play with the sample app to learn more about the SDK and it's capabilities.
 
-Project Configuration
-==============
-
-Please follow the steps in the [described here](http://paypal-mobile.github.io/android-here-sdk-dist/sample_apps.html) to properly set up your application for use with the PayPalHereSDK.
 
 Authentication
 ===============================
