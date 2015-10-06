@@ -196,11 +196,12 @@ PayPalHereSDK.getCardReaderManager().registerCardReaderListener(cardReaderListen
 More Stuff to Look At
 =====================
 There is a lot more available in the PayPal Here SDK.  More detail is available in our [developer documentation](https://developer.paypal.com/docs/integration/paypal-here/android-dev/getting-started/) to show other capabilities.  These include:
-* **Sideloader:** As an alternative to the SDK, a developer can also use a URI framework that lets one app (or mobile webpage) link directly to the PayPal Here app to complete a payment.  Using this method, the merchant will tap a button or link in one app, which will open the pre-installed PayPal Here app on their device, with the PayPal Here app pre-populating the original order information, collect a payment in the PayPal Here app, and return the merchant to the original app/webpage. This is available for US, UK, Australia, and Japan for iOS & Android.  See the [Sideloader API](https://github.com/paypal/here-sideloader-api-samples) on Github.
+
 * **Auth/Capture:** Rather than a one-time sale, authorize a payment with a card swipe, and complete the transaction at a later time.  This is common when adding tips after the transaction is complete (e.g. at a restaurant).
 * **Refunds:** Use the SDK to refund a transaction
 * **Send Receipts:** You can use services through the SDK to send email or SMS receipts to customers
 * **Key-in:** Most applications need to let users key in card numbers directly, in case the card's magstripe data can no longer be read.
 * **CashierID:** Include your own unique user identifier to track a merchant's employee usage
 * **Error Handling:** See more detail about the different types of errors that can be returned
+* **Sideloader:** As an alternative to the SDK, a developer can also use a URI framework that lets one app (or mobile webpage) link directly to the PayPal Here app to complete a payment.  Using this method, the merchant will tap a button or link in one app, which will open the pre-installed PayPal Here app on their device, with the PayPal Here app pre-populating the original order information, collect a payment in the PayPal Here app, and return the merchant to the original app/webpage. This is available for US, UK, Australia, and Japan for iOS & Android.  See the [Sideloader API](https://github.com/paypal/here-sideloader-api-samples) on Github.
 * **Marketing Toolkit:** Downloadable marketing assets – from emails to banner ads – help you quickly, and effectively, promote your app’s new payments functionality. 
