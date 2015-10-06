@@ -11,7 +11,7 @@ Developers should use the PayPal Here SDK to get world-class payment process wit
 * **Live customer support:** Whenever you need support, we’re available to help with our customer support team.
 [Visit our website](https://www.paypal.com/webapps/mpp/credit-card-reader) for more information about PayPal Here.
 
-**Note:** At the moment we only support Android Studio on Mac.
+**Note:** At the moment we only support Android Studio/Mac.
 
 Supporting Materials
 ===================
