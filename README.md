@@ -34,7 +34,7 @@ Please follow the steps in the [described here](http://paypal-mobile.github.io/a
 
 Authentication
 ===============================
-First you need to complete the on-boarding process and get the access token to use PayPal Here SDK. With out the proper access token, PayPal Here SDK will not get initialized properly and hence first thing is to get the proper access token.
+First you need to complete the on-boarding process and get the access token to use PayPal Here SDK. Without the proper access token, PayPal Here SDK will not get initialized properly and hence first thing is to get the proper access token.
 
 1. Set up a PayPal developer account ([sign up here](https://developer.paypal.com/developer/applications/)) and configure an application to be used with the PayPal Here SDK.  Refer to the [PayPal Here SDK integration Document](https://developer.paypal.com/docs/integration/mobile/pph-sdk-overview/) for information on how to properly configure your app.
 
@@ -50,8 +50,6 @@ SDK Initialization
 ```java
 //For setting Live environment
 PayPalHereSDK.init(appContext, PayPalHereSDK.Live);
-or
-PayPalHereSDK.init(appContext, null);
 
 //For setting Sandbox environment
 PayPalHereSDK.init(appContext, PayPalHereSDK.Sandbox);
@@ -109,7 +107,7 @@ Invoice myOneDollarFixedPriceInvoice = DomainFactory.newInvoiceWithFixedAmountIt
 PayPalHereSDK.getTransactionManager().beginPayment(myOneDollarFixedPriceInvoice, transactionController);
 ```
 
-* Creating the empty invice, adding the items to it and beginning payment
+* Creating the empty invoice, adding the items to it and beginning payment
 ```java
 //Create empty invoice
 Invoice myInvoice = DomainFactory.newEmptyInvoice();
@@ -126,7 +124,7 @@ PayPalHereSDK.getTransactionManager().beginPayment(myInvoice, transactionControl
 
 * Beginning the payment which will in turn returns you with the invoice.
 ```java
-//To begin payment with no amount and later adding items to invice
+//To begin payment with no amount and later adding items to invoice
 Invoice invoice = PayPalHereSDK.getTransactionManager().beginPayment(transactionController);
 
 //create new invoice item
