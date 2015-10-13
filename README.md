@@ -11,14 +11,18 @@ Developers should use the PayPal Here SDK to get world-class payment process wit
 * **Live customer support:** Whenever you need support, we’re available to help with our customer support team.
 [Visit our website](https://www.paypal.com/webapps/mpp/credit-card-reader) for more information about PayPal Here.
 
+**Note:** At the moment we only support Android Studio/Mac.
 
-As an alternative to the SDK, a developer can also use a URI framework that lets one app (or mobile webpage) link directly to the PayPal Here app to complete a payment.  Using this method, the merchant will tap a button or link in one app, which will open the pre-installed PayPal Here app on their device, with the PayPal Here app pre-populating the original order information, collect a payment in the PayPal Here app, and return the merchant to the original app/webpage. This is available for US, UK, Australia, and Japan for iOS & Android.  See the [Sideloader API](https://github.com/paypal/here-sideloader-api-samples) on Github.
-
+Important Note
+==============
+Before you start developing you will need to import the PayPal Here AAR file:
+1. Locate the PayPalHereSDK-x.x.x-release.aar file in the sdk folder of the repo
+2. Load into Android Studio via File -> New -> New Project and selecting JAR/AAR, Then locating the AAR file. 
+3. Ensure compile `project(':PayPalHereSDK-x.x.x-release')` in build.gradle matches the folder that is created in the project root
 
 
 Supporting Materials
 ===================
-
 
 * Full class and method documentation can be [found here](http://paypal-mobile.github.io/android-here-sdk-dist/javadoc/index.html).
 * The sample app demonstrates how to use PayPal Here SDK to perform the following functionality
@@ -30,14 +34,10 @@ Supporting Materials
 
 Please feel free to modify and play with the sample app to learn more about the SDK and it's capabilities.
 
-Project Configuration
-==============
-
-Please follow the steps in the [described here](http://paypal-mobile.github.io/android-here-sdk-dist/sample_apps.html) to properly set up your application for use with the PayPalHereSDK.
 
 Authentication
 ===============================
-First you need to complete the on-boarding process and get the access token to use PayPal Here SDK. With out the proper access token, PayPal Here SDK will not get initialized properly and hence first thing is to get the proper access token.
+First you need to complete the on-boarding process and get the access token to use PayPal Here SDK. Without the proper access token, PayPal Here SDK will not get initialized properly and hence first thing is to get the proper access token.
 
 1. Set up a PayPal developer account ([sign up here](https://developer.paypal.com/developer/applications/)) and configure an application to be used with the PayPal Here SDK.  Refer to the [PayPal Here SDK integration Document](https://developer.paypal.com/docs/integration/mobile/pph-sdk-overview/) for information on how to properly configure your app.
 
@@ -53,13 +53,11 @@ SDK Initialization
 ```java
 //For setting Live environment
 PayPalHereSDK.init(appContext, PayPalHereSDK.Live);
-or
-PayPalHereSDK.init(appContext, null);
 
 //For setting Sandbox environment
 PayPalHereSDK.init(appContext, PayPalHereSDK.Sandbox);
 
-Alternatively you can set Live or Sandbox environment after completing initialization as below
+//Alternatively you can set Live or Sandbox environment after completing initialization as below
 
 //For setting Live environment
 PayPalHereSDK.setServerName(PayPalHereSDK.Live);
@@ -112,7 +110,7 @@ Invoice myOneDollarFixedPriceInvoice = DomainFactory.newInvoiceWithFixedAmountIt
 PayPalHereSDK.getTransactionManager().beginPayment(myOneDollarFixedPriceInvoice, transactionController);
 ```
 
-* Creating the empty invice, adding the items to it and beginning payment
+* Creating the empty invoice, adding the items to it and beginning payment
 ```java
 //Create empty invoice
 Invoice myInvoice = DomainFactory.newEmptyInvoice();
@@ -129,7 +127,7 @@ PayPalHereSDK.getTransactionManager().beginPayment(myInvoice, transactionControl
 
 * Beginning the payment which will in turn returns you with the invoice.
 ```java
-//To begin payment with no amount and later adding items to invice
+//To begin payment with no amount and later adding items to invoice
 Invoice invoice = PayPalHereSDK.getTransactionManager().beginPayment(transactionController);
 
 //create new invoice item
@@ -142,7 +140,7 @@ invoice.addItem(myInvoiceItem, new BigDecimal(1));
 ProcessPayment
 ================================
 
-PayPalHere SDK provides the simple api to process payment which will take care of showing the UI which is needed to complete the transaction. So the application doesn't need to worry about showing the UI after calling process payment api of the transaction manager. Process payment api hides all of the following complexity for the application
+PayPalHere SDK provides simple APIs to process payments which will take care of showing the UI which is needed to complete the transaction. Process payment API takes care of:
 
 * Reader connection and activation
 * Listening for card events
@@ -150,10 +148,10 @@ PayPalHere SDK provides the simple api to process payment which will take care o
 * Signature entry UI and transmission
 * Receipt destination UI and transmission
 
-Before calling process payment api please make sure all of the following is done properly
+Before calling process payment API, please make sure to:
 
-1. Implement the interface `TransactionController`
-2. Call `PayPalHereSDK.getTransactionManager().beginPayment()` as described in the above step "Creating Invoice and Beginning Payment"
+* Implemeint `TransactionController` Interface
+* Call `PayPalHereSDK.getTransactionManager().beginPayment()` as described in the above step "Creating Invoice and Beginning Payment"
 
 Once the above steps are completed then call process payment of the transaction manager
 ```java
@@ -186,7 +184,7 @@ To get all the list of available card readers
 List<CardReader> availableCardReaders = PayPalHereSDK.getCardReaderManager().getAvailableReaders();
 ```
 
-To get the currently active reader (incase if multiple readers are connected)
+To get the currently active reader type (while multiple readers are connected)
 ```java
 ReaderTypes activeReaderType = PayPalHereSDK.getCardReaderManager().getActiveReaderType();
 ```
@@ -201,10 +199,12 @@ PayPalHereSDK.getCardReaderManager().registerCardReaderListener(cardReaderListen
 More Stuff to Look At
 =====================
 There is a lot more available in the PayPal Here SDK.  More detail is available in our [developer documentation](https://developer.paypal.com/docs/integration/paypal-here/android-dev/getting-started/) to show other capabilities.  These include:
+
 * **Auth/Capture:** Rather than a one-time sale, authorize a payment with a card swipe, and complete the transaction at a later time.  This is common when adding tips after the transaction is complete (e.g. at a restaurant).
 * **Refunds:** Use the SDK to refund a transaction
 * **Send Receipts:** You can use services through the SDK to send email or SMS receipts to customers
 * **Key-in:** Most applications need to let users key in card numbers directly, in case the card's magstripe data can no longer be read.
 * **CashierID:** Include your own unique user identifier to track a merchant's employee usage
 * **Error Handling:** See more detail about the different types of errors that can be returned
+* **Sideloader:** As an alternative to the SDK, a developer can also use a URI framework that lets one app (or mobile webpage) link directly to the PayPal Here app to complete a payment.  Using this method, the merchant will tap a button or link in one app, which will open the pre-installed PayPal Here app on their device, with the PayPal Here app pre-populating the original order information, collect a payment in the PayPal Here app, and return the merchant to the original app/webpage. This is available for US, UK, Australia, and Japan for iOS & Android.  See the [Sideloader API](https://github.com/paypal/here-sideloader-api-samples) on Github.
 * **Marketing Toolkit:** Downloadable marketing assets – from emails to banner ads – help you quickly, and effectively, promote your app’s new payments functionality. 
