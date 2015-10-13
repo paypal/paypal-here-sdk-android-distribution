@@ -2,13 +2,12 @@ import java.util.regex.Pattern
 
 buildscript {
     repositories {
-	mavenCentral()
-
+        mavenCentral()
         maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
-	classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.android.tools.build:gradle:1.3.0'
         classpath 'io.fabric.tools:gradle:1.+'
     }
 }
@@ -38,7 +37,7 @@ android {
         }
         debug{
             //Don't change the value of release notes as we are searching for the value and replacing it with actual release notes in build jobs
-            ext.betaDistributionReleaseNotes='External SDK Release 1.6'
+            ext.betaDistributionReleaseNotes='External SDK Release 1.6.1'
             ext.betaDistributionGroupAliases='paypalhere-sdk'
         }
     }
