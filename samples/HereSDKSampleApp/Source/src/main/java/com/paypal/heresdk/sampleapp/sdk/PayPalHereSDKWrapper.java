@@ -341,4 +341,9 @@ public class PayPalHereSDKWrapper implements CardReaderConnectionListener,
     public void onReadyToCancelTransaction(CancelTransactionReason cancelTransactionReason) {
         Log.d(LOG_TAG,"onReadyToCancelTransaction");
     }
+
+    @Override
+    public TipPromptOptions shouldPromptForTips() {
+        return TipPromptOptions.NONE;
+    }
 }
