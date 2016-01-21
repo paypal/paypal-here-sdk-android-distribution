@@ -37,7 +37,7 @@ android {
         }
         debug{
             //Don't change the value of release notes as we are searching for the value and replacing it with actual release notes in build jobs
-            ext.betaDistributionReleaseNotes='External SDK Release 1.6.1.1'
+            ext.betaDistributionReleaseNotes='External SDK Release 1.6.2.1'
             ext.betaDistributionGroupAliases='paypalhere-sdk'
         }
     }
