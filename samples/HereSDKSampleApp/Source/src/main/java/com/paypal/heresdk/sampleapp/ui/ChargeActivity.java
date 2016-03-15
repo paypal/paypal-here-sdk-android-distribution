@@ -11,10 +11,12 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.paypal.heresdk.sampleapp.sdk.PayPalHereSDKWrapper;
 import com.paypal.heresdk.sampleapp.sdk.PayPalHereSDKWrapperCallbacks;
 import com.paypal.heresdk.sampleapp.R;
+import com.paypal.merchant.sdk.CardReaderManager;
 import com.paypal.merchant.sdk.TransactionManager;
 import com.paypal.merchant.sdk.domain.TransactionRecord;
 
@@ -51,6 +53,7 @@ public class ChargeActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         Log.d(LOG_TAG, "onResume");
+        PayPalHereSDKWrapper.getInstance().registerCardReaderEventListener();
         setListener();
     }
 
@@ -66,6 +69,7 @@ public class ChargeActivity extends ActionBarActivity {
 
         //Lets go back to PaymentOptionsActivity instead of going back to ReaderConnectionActivity
         goBackToPaymentOptionsActivity(null);
+        PayPalHereSDKWrapper.getInstance().unregisterCardReaderEventListener();
     }
 
     /*
