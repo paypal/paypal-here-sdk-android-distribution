@@ -3,6 +3,7 @@ package com.paypal.heresdk.sampleapp.sdk;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.paypal.merchant.sdk.AuthenticationListener;
@@ -224,6 +225,33 @@ public class PayPalHereSDKWrapper implements CardReaderConnectionListener,
         return PayPalHereSDK.getCardReaderManager().getAvailableReaders();
     }
 
+    public void registerCardReaderEventListener() {
+        PayPalHereSDK.getCardReaderManager().registerCardReaderKeyboardListener(new CardReaderKeyBoardEventListener());
+
+    }
+
+    public void unregisterCardReaderEventListener() {
+        PayPalHereSDK.getCardReaderManager().unregisterCardReaderKeyboardListener();
+    }
+
+    public class CardReaderKeyBoardEventListener implements CardReaderManager.CardReaderEventListener {
+
+        @Override
+        public void onConfirmPressed() {
+            Log.d(LOG_TAG,"onConfirmPressed");
+        }
+
+        @Override
+        public void onCancelPressed() {
+            Log.d(LOG_TAG,"onCancelPressed");
+        }
+
+        @Override
+        public void onBackArrowPressed() {
+            Log.d(LOG_TAG,"onBackArrowPressed");
+        }
+    }
+
     @Override
     public void onPaymentReaderConnected(CardReaderListener.ReaderTypes readerTypes, CardReaderListener.ReaderConnectionTypes readerConnectionTypes) {
         Log.d(LOG_TAG,"onPaymentReaderConnected readerType: "+readerTypes+" ReaderConnectionType: "+readerConnectionTypes);
@@ -340,5 +368,20 @@ public class PayPalHereSDKWrapper implements CardReaderConnectionListener,
     @Override
     public void onReadyToCancelTransaction(CancelTransactionReason cancelTransactionReason) {
         Log.d(LOG_TAG,"onReadyToCancelTransaction");
+    }
+
+    @Override
+    public TipPromptOptions shouldPromptForTips() {
+        return TipPromptOptions.NONE;
+    }
+
+    @Override
+    public Bitmap provideSignatureBitmap() {
+        return null;
+    }
+
+    @Override
+    public void onReaderDisplayUpdated(PresentedReaderDisplay readerDisplay) {
+        Log.d(LOG_TAG,"onReaderDisplayUpdated : " + readerDisplay);
     }
 }
