@@ -11,6 +11,8 @@ import android.view.View;
 
 import com.paypal.heresdk.sampleapp.sdk.PayPalHereSDKWrapper;
 import com.paypal.heresdk.sampleapp.R;
+import com.paypal.merchant.sdk.domain.Invoice;
+import java.math.BigDecimal;
 
 public class PaymentOptionsActivity extends Activity {
     private static final String LOG_TAG = PaymentOptionsActivity.class.getSimpleName();
@@ -19,7 +21,12 @@ public class PaymentOptionsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate");
+        
         setContentView(R.layout.activity_payment_options);
+        
+        Log.d(LOG_TAG, "reset reader screen");
+        Invoice newInv = PayPalHereSDKWrapper.getInstance().beginPayment(BigDecimal.ZERO);
+        newInv.recalculate();
     }
 
     @Override
