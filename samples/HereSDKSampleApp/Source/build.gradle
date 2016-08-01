@@ -37,7 +37,7 @@ android {
         }
         debug{
             //Don't change the value of release notes as we are searching for the value and replacing it with actual release notes in build jobs
-            ext.betaDistributionReleaseNotes='External SDK Release 1.6.2.6'
+            ext.betaDistributionReleaseNotes='External SDK Release 1.6.3'
             ext.betaDistributionGroupAliases='paypalhere-sdk'
         }
     }
@@ -58,7 +58,7 @@ android {
 dependencies{
     compile 'com.android.support:support-v4:21.0.0'
     compile 'com.android.support:appcompat-v7:21.0.2'
-    compile 'com.google.android.gms:play-services-location:6.5.87'
+    compile 'com.google.android.gms:play-services-location:8.1.0'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
