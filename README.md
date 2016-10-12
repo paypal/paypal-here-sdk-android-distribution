@@ -15,9 +15,11 @@ Developers should use the PayPal Here SDK to get world-class payment process wit
 
 Important Note
 ==============
-Before you start developing you will need to import the PayPal Here AAR file:
+Before you start developing you will need to import the PayPal Here AAR file into Android Studio:
+
 1. Locate the PayPalHereSDK-x.x.x-release.aar file in the sdk folder of the repo
-2. Load into Android Studio via File -> New -> New Project and selecting JAR/AAR, Then locating the AAR file. 
+2. Click on File -> Project Structure then click the + in the top left of the window
+3. Select Import .JAR/.AAR Package and find loction of the .AAR 
 3. Ensure compile `project(':PayPalHereSDK-x.x.x-release')` in build.gradle matches the folder that is created in the project root
 
 
