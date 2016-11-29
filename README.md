@@ -26,7 +26,7 @@ Before you start developing you will need to import the PayPal Here AAR file int
 Supporting Materials
 ===================
 
-* Full class and method documentation can be [found here](http://paypal-mobile.github.io/android-here-sdk-dist/javadoc/index.html).
+* Full class and method documentation can be [found here](http://paypal.github.io/paypal-here-sdk-android-distribution/javadoc/index.html).
 * The sample app demonstrates how to use PayPal Here SDK to perform the following functionality
   * How to take payment using mag stripe audio jack card reader
   * How to take payment using EMV chip card reader
@@ -172,7 +172,7 @@ PayPalHereSDK.getTransactionManager().processPaymentWithSDKUI(TransactionManager
 
 The approach for taking a refund is very similar.
 
-For more information about the apis please visit [full API documentation](http://paypal-mobile.github.io/android-here-sdk-dist/javadoc/index.html).
+For more information about the apis please visit [full API documentation](http://paypal.github.io/paypal-here-sdk-android-distribution/javadoc/index.html).
 
 Card Readers
 ================================
