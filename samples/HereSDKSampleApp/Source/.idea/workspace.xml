@@ -49,10 +49,10 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/paypal/heresdk/sampleapp/sdk/PayPalHereSDKWrapper.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="974">
-              <caret line="374" column="38" selection-start-line="374" selection-start-column="38" selection-end-line="374" selection-end-column="38" />
+              <caret line="374" column="37" selection-start-line="374" selection-start-column="37" selection-end-line="374" selection-end-column="37" />
               <folding>
                 <element signature="e#15072#15073#0" expanded="true" />
-                <element signature="e#15118#15119#0" expanded="true" />
+                <element signature="e#15116#15117#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1391,7 +1391,7 @@
           <caret line="322" column="13" selection-start-line="322" selection-start-column="13" selection-end-line="322" selection-end-column="13" />
           <folding>
             <element signature="e#15072#15073#0" expanded="true" />
-            <element signature="e#15118#15119#0" expanded="true" />
+            <element signature="e#15116#15117#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1414,10 +1414,10 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/paypal/heresdk/sampleapp/sdk/PayPalHereSDKWrapper.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="974">
-          <caret line="374" column="38" selection-start-line="374" selection-start-column="38" selection-end-line="374" selection-end-column="38" />
+          <caret line="374" column="37" selection-start-line="374" selection-start-column="37" selection-end-line="374" selection-end-column="37" />
           <folding>
             <element signature="e#15072#15073#0" expanded="true" />
-            <element signature="e#15118#15119#0" expanded="true" />
+            <element signature="e#15116#15117#0" expanded="true" />
           </folding>
         </state>
       </provider>
