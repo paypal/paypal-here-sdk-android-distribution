@@ -372,7 +372,7 @@ public class PayPalHereSDKWrapper implements CardReaderConnectionListener,
 
     @Override
     public TipPromptOptions shouldPromptForTips() {
-        return TipPromptOptions.NONE;
+        return TipPromptOptions.AMOUNT;
     }
 
     @Override
