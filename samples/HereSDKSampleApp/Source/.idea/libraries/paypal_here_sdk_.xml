@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="paypal-here-sdk-">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.android/build-cache/cb2e174a28ed753e049bd7a83610aeb9880b02c1/output/jars/libs/ksoap2-android-assembly-2.6.5-jar-with-dependencies.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/cb2e174a28ed753e049bd7a83610aeb9880b02c1/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/cb2e174a28ed753e049bd7a83610aeb9880b02c1/output/jars/libs/swiperapi-android-4.3.9.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/cb2e174a28ed753e049bd7a83610aeb9880b02c1/output/jars/libs/statemap.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/cb2e174a28ed753e049bd7a83610aeb9880b02c1/output/jars/libs/jmdns-3.4.1.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/cb2e174a28ed753e049bd7a83610aeb9880b02c1/output/jars/libs/volley.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/cb2e174a28ed753e049bd7a83610aeb9880b02c1/output/jars/libs/magtek-scra_v111_01.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/cb2e174a28ed753e049bd7a83610aeb9880b02c1/output/jars/libs/woosimprinter_bt-1.0.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/cb2e174a28ed753e049bd7a83610aeb9880b02c1/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/cb2e174a28ed753e049bd7a83610aeb9880b02c1/output/jars/libs/android-risk-component-intf-1.0.2.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/cb2e174a28ed753e049bd7a83610aeb9880b02c1/output/jars/libs/android-risk-component-3.1.9.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/cb2e174a28ed753e049bd7a83610aeb9880b02c1/output/jars/libs/paypal-retail-emv-1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
