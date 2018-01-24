@@ -71,16 +71,18 @@ The PayPal SDK is released under the following license:
 
     4.  TRADEMARK USAGE
     PayPal is a trademark of PayPal, Inc. in the United States and other countries.  Such trademarks may not be used 
-    to endorse or promote any product unless expressly permitted under separate agreement with PayPal.  
+    to endorse or promote any product unless expressly permitted under separate agreement with PayPal.
+    
+    5.  CERTIFICATIONS
+    Please note that if you modify the source code and redistribute these modifications for commercial purposes,
+    you agree and understand you may need to certify or comply with any relevant certification or compliance entities
+    to process payments. 
 
-	5.	CERTIFICATIONS
-	Please note that if you modify the source code and redistribute these modifications for commercial purposes, you agree and understand you may need to certify or comply with any relevant certification or compliance entities to process payments. 
-
-	6.  TERM
+    6.  TERM
     Your rights under this Agreement shall terminate if you fail to comply with any of the material terms or 
     conditions of this Agreement and do not cure such failure in a reasonable period of time after becoming 
     aware of such noncompliance.  If all your rights under this Agreement terminate, you agree to cease use 
-    and distribution of the Software and Documentation as soon as reasonably practicable. 
+    and distribution of the Software and Documentation as soon as reasonably practicable.
 
     7. GOVERNING LAW AND JURISDICTION. This Agreement is governed by the statutes and laws of the State of 
     California, without regard to the conflicts of law principles thereof.  If any part of this Agreement is 
