@@ -24,11 +24,24 @@ dependencies {
         mavenCentral()
     }
 
-//    api('com.paypal.retail:here-sdk-release:2.0.1@aar'){transitive=true}
-    api('com.paypal.retail:here-sdk-debug:2.0.1@aar'){transitive=true}
+//    api('com.paypal.retail:here-sdk-release:2.0.0@aar'){transitive=true}
+    api('com.paypal.retail:here-sdk-debug:2.0.0@aar'){transitive=true}
 }
 ```
 There's both a Debug and Release build available to be referenced. Please make sure that you switch to the Release build prior to pushing your app to the Play Store otherwise your submission will likely be rejected.
+
+Also, if you see a runtime exception `java.lang.IllegalStateException: J2V8 native library not loaded`, please add the following code. Native 64 bit support will come with an upcoming release, but PayPal Here is using this workaround currently. More info on this can be found at [eclipsesource/J2V8#174](https://github.com/eclipsesource/J2V8/issues/174).
+```
+android {
+    ....
+    defaultConfig {
+        ....
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+        }
+    }
+}
+```
 
 
 Housekeeping Items
