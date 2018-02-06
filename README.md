@@ -12,7 +12,7 @@ Developers should use the PayPal Here SDK to get world-class payment processing 
 Supporting Materials
 ========================
  *  PPH SDK documentation can be found [here](https://developer.paypal.com/docs/integration/paypal-here/).
- *  Sample App (Coming Soon): Please see and modify the sample app thats available in this repo to experiment and learn more about the SDK and it's capabilities.
+ *  Sample App: Please see and modify the sample app thats available in this repo to experiment and learn more about the SDK and it's capabilities.
 
 
 Installation

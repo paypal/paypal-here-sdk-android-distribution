@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/main_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/upBanner"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:background="@color/sdk_blue">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="14dp"
+                android:text="@string/up_banner"
+                android:textColor="@color/sdk_white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:text="Demo App"
+                android:padding="@dimen/medium"
+                android:textColor="@color/sdk_grey"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/xxxlarge"
+            android:layout_alignParentTop="true">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/big_greenarrow"
+            />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/xlarge">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:shadowColor="@android:color/white"
+                    android:shadowRadius="5.0"
+                    android:text="Your authorization of "
+                    android:textColor="@color/sdk_dark_gray"
+                    android:textSize="20sp" android:id="@+id/textView4" />
+
+                <TextView
+                    android:id="@+id/amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:shadowColor="@android:color/white"
+                    android:shadowRadius="5.0"
+                    android:text="$1.50"
+                    android:textColor="@color/sdk_dark_gray"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:shadowColor="@android:color/white"
+                android:shadowRadius="5.0"
+                android:text="was successful"
+                android:textColor="@color/sdk_dark_gray"
+                android:textSize="20sp" android:id="@+id/textView5" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/xxxlarge">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:shadowColor="@android:color/white"
+                android:shadowRadius="5.0"
+                android:text="Choose One:"
+                android:textColor="@color/sdk_black"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/initSdk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="@dimen/small"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txtVoidAuth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:shadowColor="@android:color/white"
+                        android:shadowRadius="5.0"
+                        android:text="Void Authorization"
+                        android:textColor="@color/sdk_blue"
+                        android:textSize="20sp"
+                        android:onClick="onVoidAuthClicked"/>
+
+                    <ImageView
+                        android:id="@+id/imageBlueButtonVoid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:src="@drawable/small_bluearrow" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="@dimen/small"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/ViewCodeVoidAuth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/rect_view_code"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center"
+                        android:shadowColor="@android:color/white"
+                        android:shadowRadius="5.0"
+                        android:text="View Code"
+                        android:textColor="@color/sdk_white"
+                        android:textSize="15sp"
+                        android:onClick="onVoidAuthViewCodeClicked"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtVoidAuthCode"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:background="@color/sdk_grey"
+                android:textSize="@dimen/regular"
+                android:text="@string/void_auth"
+                android:padding="@dimen/large"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/initMerchant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="@dimen/small"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txtCaptureAuth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:shadowColor="@android:color/white"
+                        android:shadowRadius="5.0"
+                        android:layout_marginLeft="15dp"
+                        android:text="Capture Authorization"
+                        android:textColor="@color/sdk_blue"
+                        android:textSize="20sp"
+                        android:onClick="onCaptureAuthClicked"/>
+
+
+                    <ImageView
+                        android:id="@+id/imageBlueButton2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:src="@drawable/small_bluearrow" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="@dimen/small"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/ViewCodeCaptureAuth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/rect_view_code"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center"
+                        android:shadowColor="@android:color/white"
+                        android:shadowRadius="5.0"
+                        android:text="View Code"
+                        android:textColor="@color/sdk_white"
+                        android:textSize="15sp"
+                        android:onClick="onCaptureAuthViewCodeClicked"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtCaptureAuthCode"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:background="@color/sdk_grey"
+                android:textSize="@dimen/regular"
+                android:text="@string/capture_auth"
+                android:padding="@dimen/large"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/large"
+                android:padding="@dimen/large"  />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottomBanner"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:background="@color/sdk_blue"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imageFwdBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/white_fwdarrow" />
+
+            <TextView
+                android:id="@+id/goToChargePage"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/large"
+                android:text="@string/run_more"
+                android:padding="@dimen/large"
+                android:textColor="@color/sdk_white"
+                android:onClick="onRunMoreClicked"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
+
