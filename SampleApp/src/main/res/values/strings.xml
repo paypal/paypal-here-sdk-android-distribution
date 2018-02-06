@@ -1,0 +1,101 @@
+<resources>
+    <string name="app_name">HereSDK SampleApp</string>
+
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="error_title">Error</string>
+
+    <string name="sandbox">Sandbox</string>
+    <string name="live">Live</string>
+    <string name="login">Login</string>
+    <string name="title_activity_payment_options">PaymentOptionsActivity</string>
+    <string name="title_activity_reader_connection">ReaderConnectionActivity</string>
+
+    <string name="swipe_payment">Payment using Audio Jack Reader</string>
+    <string name="emv_payment">Payment using EMV Reader</string>
+    <string name="both_payments">Payment using both Audio Jack and EMV Reader</string>
+    <string name="title_activity_swipe_payment">SwipePaymentActivity</string>
+
+    <string name="audio_jack_reader_connect_msg">Please plug-in audio jack reader</string>
+    <string name="audio_jack_reader_connected_msg">Audio Jack reader already connected. Please proceed further</string>
+    <string name="emv_reader_connect_msg">Please connect to EMV Reader before proceeding to take payment</string>
+    <string name="emv_reader_update_msg">Software on currently connected EMV Reader needs to be updated before taking payment</string>
+    <string name="emv_reader_connected_msg">EMV Reader already connected. Please proceed further</string>
+    <string name="emv_reader_connect_button_msg">Connect To EMV Reader</string>
+    <string name="emv_reader_update_button_msg">Update Software on EMV Reader</string>
+    <string name="emv_reader_disconnect_button_msg">Disconnect EMV Reader</string>
+    <string name="reader_connect_proceed_msg">Proceed</string>
+
+    <string name="error_initialize_msg">Failed to set AccessToken. Please try after clearing the data/cache of the application.</string>
+    <string name="error_invalid_amount">Entered amount is invalid. Please enter the valid amount</string>
+    <string name="title_activity_charge">ChargeActivity</string>
+    <string name="title_activity_refund">RefundActivity</string>
+
+    <string name="amount_hint">Enter the Amount</string>
+    <string name="button_charge">Take Payment</string>
+    <string name="swipe_card">Please swipe the card</string>
+
+    <string name="payment_complete">Payment Successful</string>
+    <string name="payment_fail">Payment Failed</string>
+    <string name="refund_complete">Refund Successful</string>
+    <string name="refund_failed">Failed to Refund.</string>
+    <string name="refund_retry_msg">Retry</string>
+    <string name="refund_button_text">Do Refund</string>
+    <string name="payment_finish_msg">Done</string>
+    <string name="payment_processing_msg">Processing Payment...</string>
+    <string name="initializing_processing_msg">Initializing SDK...</string>
+    <string name="capturing_msg">Capturing...</string>
+
+    <string name="multi_readers_both_connected_msg">Both Audio Jack and EMV Reader is connected.</string>
+    <string name="multi_readers_audio_jack_connected_msg">Audio Jack Reader is connected and EMV Reader is not connected. If you want to connect EMV reader please click on below button to connect</string>
+    <string name="multi_readers_emv_connected_msg">EMV reader is connected and Audio Jack reader is not connected. If you want to connect Audio Jack reader please plug it in</string>
+    <string name="multi_readers_no_reader_connected">Looks like there is no reader connected. Please connect at least one reader before proceeding further.\n For Audio Jack reader please plug it in. \nIn case EMV reader please use the below button to connect to it.</string>
+    <string name="active_reader_msg">Currently Active Reader: </string>
+    <string name="active_reader_audio_jack">Audio Jack Reader</string>
+    <string name="active_reader_emv">EMV Reader</string>
+    <string name="change_active_reader_msg">Change Active Reader</string>
+    <string name="select_reader_title">Select Reader</string>
+
+    <string name="exit_dialog_title">Exit</string>
+    <string name="exit_dialog_msg">Do you want to Exit?</string>
+
+
+    <string name="title_activity_main">Switch Button Demo</string>
+    <string name="dark">Change to Dark Theme</string>
+    <string name="light">Change to Light Theme</string>
+    <string name="cheer">Cheer:</string>
+    <string name="left">left</string>
+    <string name="right">right</string>
+    <string name="woohoo">woohoo</string>
+    <string name="yeah">yeah</string>
+    <string name="on">on</string>
+    <string name="off">off</string>
+    <string name="default_checked">Checked by default:</string>
+    <string name="checked">checked</string>
+    <string name="unchecked">unchecked</string>
+    <string name="init_sdk_code">RetailSDK.initialize(Context context, RetailSDK.AppState appState)</string>
+    <string name="init_merchant_code">RetailSDK.initializeMerchant(SdkCredential credentials, RetailSDK.MerchantInitializedCallback callback)</string>
+    <string name="merchant_account">Merchant Account:</string>
+    <string name="merchant_account_email">test12312312@test.com</string>
+    <string name="connect_card_reader">Connect card reader</string>
+    <string name="up_banner">SDK v2.x</string>
+    <string name="device_find_connect">DeviceManager.searchAndConnectWithUI(ConnectionCallback callback)</string>
+    <string name="device_connect_last">DeviceManager.connectToLastActiveReaderOrFindAnotherWithUI(ConnectionCallback callback)</string>
+    <string name="run_transactions">Run transactions</string>
+    <string name="run_more">Run more transactions</string>
+    <string name="find_connect">Find &amp; Connect</string>
+    <string name="create_invoice">new Invoice(String currencyCode)</string>
+    <string name="create_transaction">RetailSDK.createTransaction(Invoice invoice)</string>
+    <string name="begin_transaction">currentTransaction.beginPaymentWithOptions(TransactionBeginOptions options)</string>
+    <string name="go_back_setup">Go back to initial setup</string>
+    <string name="accept_transaction">transaction.beginPaymentWithOptions(TransactionBeginOptions options)</string>
+    <string name="provide_refund">Provide a Refund</string>
+    <string name="no_thanks">No Thanks</string>
+    <string name="concluding">This concludes the primary transaction flows \nfor payment and refund.</string>
+    <string name="beginRefund">currentTransaction.beginRefund(Boolean cardPresent, BigDecimal amount)</string>
+    <string name="void_auth">RetailSDK.voidAuthorization(String autId, RetailSDK.VoidAuthorizationHandler handler) </string>
+    <string name="capture_auth">RetailSDK.captureAuthorization(String authId, String invoiceId, BigDecimal totalAmount, BigDecimal gratuityAmount, String currency, RetailSDK.CaptureAuthorizationHandler handler)</string>
+
+
+</resources>

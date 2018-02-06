@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme"/>
+
+    <style name="Theme.SDK" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/sdk_blue</item>
+        <item name="colorControlActivated">@color/sdk_blue</item>
+        <item name="colorPrimaryDark">@color/sdk_primary_dark_blue</item>
+        <item name="actionBarStyle">@style/SDKActionBarStyle</item>
+        <item name="android:dropDownListViewStyle">@style/spinner_style</item>
+    </style>
+
+    <style name="Theme.SDK.Base" parent="Theme.SDK" tools:ignore="NewApi">
+        <item name="android:windowBackground">@color/sdk_light_grey</item>
+        <item name="android:actionMenuTextColor">@color/sdk_white</item>
+        <item name="android:actionBarStyle">@style/SDKActionBarStyle</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="Theme.SDK.Destination" parent="Theme.SDK"/>
+
+    <style name="Theme.SDK.Transparent" parent="@style/Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/sdk_blue</item>
+        <item name="colorControlActivated">@color/sdk_blue</item>
+        <item name="colorPrimaryDark">@color/sdk_primary_dark_blue</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.0</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+</resources>

@@ -1,0 +1,2 @@
+include ':manticore'
+project(':manticore').projectDir = new File('manticore-android/manticore')

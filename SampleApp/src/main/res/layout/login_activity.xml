@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <WebView
+        android:id="@+id/id_webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:visibility="gone" />
+    <LinearLayout
+        android:id="@+id/main_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/upBanner"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:background="@color/sdk_blue">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14dp"
+            android:text="@string/up_banner"
+            android:textColor="@color/sdk_white"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            android:text="Demo App"
+            android:padding="@dimen/medium"
+            android:textColor="@color/sdk_grey"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/selection"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="vertical"
+        android:layout_below="@+id/upBanner"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        >
+
+        <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/radioSandbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rbtn_selector_left"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Sandbox"
+                android:textColor="@drawable/rbtn_textcolor_selector" />
+
+            <RadioButton
+                android:id="@+id/radioLive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rbtn_selector_right"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Live"
+                android:textColor="@drawable/rbtn_textcolor_selector" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/initSdk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/selection"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:background="@drawable/circle"
+            android:gravity="center"
+            android:shadowColor="@android:color/white"
+            android:shadowRadius="5.0"
+            android:text="1"
+            android:textColor="@color/sdk_grey"
+            android:textSize="20sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/small"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtInitSDK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:shadowColor="@android:color/white"
+                    android:shadowRadius="5.0"
+                    android:text="Initialize SDK"
+                    android:textColor="@color/sdk_blue"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/imageBlueButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/small_bluearrow" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="@dimen/small"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ViewCodeInitSDK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rect_view_code"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center"
+                    android:shadowColor="@android:color/white"
+                    android:shadowRadius="5.0"
+                    android:text="View Code"
+                    android:textColor="@color/sdk_white"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/initSDKcode"
+        android:layout_below="@+id/initSdk"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+        <TextView
+            android:id="@+id/txtInitSDKCode"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:background="@color/sdk_grey"
+            android:textSize="@dimen/regular"
+            android:text="@string/init_sdk_code"
+            android:padding="@dimen/large"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/initMerchant"
+        android:layout_above="@+id/bottomBanner"
+        android:layout_below="@+id/initSDKcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:background="@drawable/circle"
+            android:gravity="center"
+            android:shadowColor="@android:color/white"
+            android:shadowRadius="5.0"
+            android:text="2"
+            android:textColor="@color/sdk_grey"
+            android:textSize="20sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/small"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtInitMerchant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:shadowColor="@android:color/white"
+                    android:shadowRadius="5.0"
+                    android:text="Initialize Merchant"
+                    android:textColor="@color/sdk_dark_gray"
+                    android:textSize="20sp"
+                    android:onClick="onInitMerchantClicked"
+                    android:clickable="false"/>
+
+                <ImageView
+                    android:id="@+id/imageBlueButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/small_bluearrow" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="@dimen/small"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ViewCodeInitMerchant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rect_view_code"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center"
+                    android:shadowColor="@android:color/white"
+                    android:shadowRadius="5.0"
+                    android:text="View Code"
+                    android:textColor="@color/sdk_white"
+                    android:textSize="15sp"
+                android:onClick="onViewCodeInitMerchantClicked"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/initMerchantCode"
+        android:layout_below="@+id/initMerchant"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:id="@+id/txtInitMerchantCode"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:background="@color/sdk_grey"
+            android:textSize="@dimen/regular"
+            android:text="@string/init_merchant_code"
+            android:padding="@dimen/large"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/logout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:visibility="gone"
+        android:background="@color/sdk_grey"
+        android:paddingTop="@dimen/medium"
+        android:paddingBottom="@dimen/medium">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/larger"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:paddingTop="@dimen/medium"
+                android:text="@string/merchant_account"
+                android:textColor="@color/sdk_black"
+                android:textSize="12dp"
+            />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:paddingTop="@dimen/small"
+                android:text="@string/merchant_account_email"
+                android:textSize="10dp"
+                android:textColor="@color/sdk_dark_blue"
+            />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/xxxlarge"
+            android:background="@color/sdk_dark_gray" />
+
+        <TextView
+            android:id="@+id/txtLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/rect_view_code"
+            android:layout_marginLeft="@dimen/xxxlarge"
+            android:gravity="center"
+            android:shadowColor="@android:color/white"
+            android:shadowRadius="5.0"
+            android:text="Logout"
+            android:textColor="@color/sdk_white"
+            android:textSize="15sp"
+            android:onClick="onLogoutClicked"
+        />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:layout_gravity="center"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/large"
+            android:padding="@dimen/large"  />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/bottomBanner"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:background="@color/sdk_blue"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageFwdBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/white_fwdarrow" />
+
+        <TextView
+            android:id="@+id/goToConnectPage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/large"
+            android:text="@string/connect_card_reader"
+            android:padding="@dimen/large"
+            android:textColor="@color/sdk_white"
+            android:onClick="onConnectCardReaderClicked"/>
+    </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
+
