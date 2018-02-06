@@ -24,6 +24,7 @@ import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.TransactionBeginOptions;
 import com.paypal.paypalretailsdk.TransactionContext;
+import com.paypal.paypalretailsdk.TransactionManager;
 import com.paypal.paypalretailsdk.TransactionRecord;
 
 import org.androidannotations.annotations.EActivity;
@@ -156,19 +157,45 @@ public class ChargeActivity extends Activity
     public void onCreateTransactionClicked(View view)
     {
         Log.d(LOG_TAG, "onCreateTransactionClicked");
-        currentTransaction = RetailSDK.createTransaction(currentInvoice);
-
         final ImageView imgView = (ImageView) findViewById(R.id.imageBlueButton2);
         final TextView txtCreateTranx = (TextView) findViewById(R.id.txtCreateTransaction);
         final TextView txtAcceptTranx = (TextView) findViewById(R.id.txtAcceptTransaction);
 
-        imgView.setImageResource(R.drawable.small_greenarrow);
-        imgView.setClickable(false);
-        txtCreateTranx.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
-        txtCreateTranx.setClickable(false);
+        RetailSDK.getTransactionManager().createTransaction(currentInvoice, new TransactionManager.TransactionCallback()
+        {
+            @Override
+            public void transaction(RetailSDKException e, final TransactionContext context)
+            {
+                if (e != null) {
+                    final String errorTxt = e.toString();
+                    ChargeActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "create transaction error: " + errorTxt, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else
+                {
+                    ChargeActivity.this.runOnUiThread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            currentTransaction = context;
 
-        txtAcceptTranx.setClickable(true);
-        txtAcceptTranx.setTextColor(getResources().getColor(R.color.sdk_blue));
+                            imgView.setImageResource(R.drawable.small_greenarrow);
+                            imgView.setClickable(false);
+                            txtCreateTranx.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
+                            txtCreateTranx.setClickable(false);
+
+                            txtAcceptTranx.setClickable(true);
+                            txtAcceptTranx.setTextColor(getResources().getColor(R.color.sdk_blue));
+                        }
+                    });
+                }
+            }
+        });
     }
 
     public void onAcceptTransactionClicked(View view)
@@ -185,37 +212,30 @@ public class ChargeActivity extends Activity
                 public void completed(RetailSDKException e, Boolean aBoolean)
                 {
                     Log.d(LOG_TAG, "device update completed");
-
-                    currentTransaction.setCompletedHandler(new TransactionContext.TransactionCompletedCallback() {
-                        @Override
-                        public void transactionCompleted(RetailSDKException error, TransactionRecord record) {
-                            ChargeActivity.this.transactionCompleted(error, record);
-                        }
-                    });
-
-                    TransactionBeginOptions options = new TransactionBeginOptions();
-                    options.setShowPromptInCardReader(true);
-                    options.setShowPromptInApp(true);
-                    options.setIsAuthCapture(radioAuthCapture.isChecked());
-                    currentTransaction.beginPayment(options);
+                    ChargeActivity.this.beginPayment();
                 }
             });
 
         }
         else {
-            currentTransaction.setCompletedHandler(new TransactionContext.TransactionCompletedCallback() {
-                @Override
-                public void transactionCompleted(RetailSDKException error, TransactionRecord record) {
-                    ChargeActivity.this.transactionCompleted(error, record);
-                }
-            });
-
-            TransactionBeginOptions options = new TransactionBeginOptions();
-            options.setShowPromptInCardReader(true);
-            options.setShowPromptInApp(true);
-            options.setIsAuthCapture(radioAuthCapture.isChecked());
-            currentTransaction.beginPayment(options);
+            beginPayment();
         }
+    }
+
+    private void beginPayment()
+    {
+        currentTransaction.setCompletedHandler(new TransactionContext.TransactionCompletedCallback() {
+            @Override
+            public void transactionCompleted(RetailSDKException error, TransactionRecord record) {
+                ChargeActivity.this.transactionCompleted(error, record);
+            }
+        });
+
+        TransactionBeginOptions options = new TransactionBeginOptions();
+        options.setShowPromptInCardReader(true);
+        options.setShowPromptInApp(true);
+        options.setIsAuthCapture(radioAuthCapture.isChecked());
+        currentTransaction.beginPayment(options);
     }
 
     void transactionCompleted(RetailSDKException error, final TransactionRecord record) {
