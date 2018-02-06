@@ -1,0 +1,141 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <style name="SDKActionBarStyle" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse" tools:ignore="NewApi">
+        <item name="android:background">@color/sdk_actionbar_blue</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
+    </style>
+
+    <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:padding">0dp</item>
+        <item name="android:textColor">@color/sdk_white</item>
+    </style>
+
+    <style name="SDKTheme.AlertDialog" parent="@android:style/Theme.Holo.Light.Dialog" tools:ignore="NewApi">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowTitleStyle">@android:style/TextAppearance.DialogWindowTitle</item>
+    </style>
+
+    <!--SDK Dialog style-->
+    <style name="SDKDialog.TitleText" parent="android:style/Widget.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/medium</item>
+        <item name="android:textColor">@color/sdk_default_text_color</item>
+        <item name="android:textSize">@dimen/text_20</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginTop">@dimen/sdk_alert_dialog_layout_padding_top1</item>
+        <item name="android:layout_marginLeft">@dimen/sdk_alert_dialog_layout_padding</item>
+        <item name="android:layout_marginRight">@dimen/sdk_alert_dialog_layout_padding</item>
+        <item name="android:layout_marginBottom">@dimen/small</item>
+    </style>
+    <style name="SDKDialog.MessageText" parent="android:style/Widget.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/medium</item>
+        <item name="android:textColor">@color/sdk_default_text_color</item>
+        <item name="android:textSize">@dimen/text_20</item>
+        <item name="android:layout_marginTop">@dimen/sdk_alert_dialog_layout_padding_top1</item>
+        <item name="android:layout_marginLeft">@dimen/sdk_alert_dialog_layout_padding</item>
+        <item name="android:layout_marginRight">@dimen/sdk_alert_dialog_layout_padding</item>
+        <item name="android:layout_marginBottom">@dimen/small</item>
+    </style>
+
+    <!-- Action Item Button styles -->
+    <style name="SDKButton" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="SDKButton.ActionItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/sdk_alert_dialog_standard_button_height</item>
+        <item name="android:textColor">@drawable/sdk_alert_dialog_button_text_color</item>
+    </style>
+
+    <style name="SDKButton.ActionItem.Primary">
+        <item name="android:textSize">@dimen/sdk_alert_dialog_button_text_body</item>
+    </style>
+
+    <style name="SDKButton.ActionItem.Primary.Blue">
+        <item name="android:background">@drawable/sdk_alert_dialog_button_blue_selectable</item>
+    </style>
+
+    <style name="SDKButton.ActionItem.Secondary">
+        <item name="android:background">@drawable/sdk_alert_dialog_button_gray_selectable</item>
+        <item name="android:textSize">@dimen/sdk_alert_dialog_button_text_body</item>
+    </style>
+
+    <style name="SDKButton.ActionItem.Tertiary">
+        <item name="android:background">@drawable/sdk_button_tertiary_selectable</item>
+        <item name="android:textSize">@dimen/sdk_alert_dialog_button_text_body</item>
+        <item name="android:textColor">@color/sdk_dark_grey2</item>
+    </style>
+
+    <style name="DialogWindowTitle">
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.DialogWindowTitle</item>
+    </style>
+
+    <style name="DialogWindowTitle.DialogTitle">
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="DialogStyle">
+        <item name="android:windowTitleStyle">@style/DialogWindowTitle.DialogTitle</item>
+    </style>
+
+
+    <style name="DestinationMargin">
+        <item name="android:visibility">gone</item>
+        <item name="android:dropDownListViewStyle">@style/spinner_style</item>
+    </style>
+
+    <style name="spinner_style" parent="android:style/Widget.ListView.DropDown">
+        <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">0dip</item>
+    </style>
+    <style name="ToastHeader">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/text_special3</item>
+        <item name="android:textColor">@color/sdk_dark_blue</item>
+    </style>
+    <style name="Theme.SDK.Dialog.Transparent" parent="android:Theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+    <style name="SdkDialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+    <style name="AppThemeDark" parent="@android:style/Theme.DeviceDefault">
+        <item name="com.paypal.heresdk.sampleapp:switchStyle">@style/switch_dark</item>
+    </style>
+
+    <style name="AppThemeLight" parent="@android:style/Theme.DeviceDefault.Light">
+        <item name="com.paypal.heresdk.sampleapp:switchStyle">@style/switch_light</item>
+    </style>
+
+    <style name="switch_dark">
+        <item name="@attr/colorChecked">#FFFFFF</item>
+        <item name="@attr/colorUnChecked">#808080</item>
+        <item name="@attr/backgroundDrawable">@color/sdk_light_grey</item>
+        <item name="@attr/switchDrawable">@color/sdk_dark_gray</item>
+    </style>
+
+    <style name="switch_light">
+        <item name="@attr/colorChecked">#FFFFFF</item>
+        <item name="@attr/colorUnChecked">#181818</item>
+        <item name="@attr/backgroundDrawable">@color/sdk_light_grey</item>
+        <item name="@attr/switchDrawable">@color/sdk_dark_gray</item>
+    </style>
+</resources>

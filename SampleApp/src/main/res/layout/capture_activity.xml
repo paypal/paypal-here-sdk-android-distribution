@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/main_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/upBanner"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:background="@color/sdk_blue">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="14dp"
+                android:text="@string/up_banner"
+                android:textColor="@color/sdk_white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:text="Demo App"
+                android:padding="@dimen/medium"
+                android:textColor="@color/sdk_grey"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+        >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:shadowColor="@android:color/white"
+                android:shadowRadius="5.0"
+                android:text="Capture Authorization:"
+                android:textColor="@color/sdk_black"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+        >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:shadowColor="@android:color/white"
+                android:shadowRadius="5.0"
+                android:text="Enter the total amount: "
+                android:textColor="@color/sdk_dark_gray"
+                android:textSize="16sp" />
+            <LinearLayout
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:paddingRight="@dimen/small"
+                android:paddingLeft="@dimen/small"
+                android:background="@drawable/rect_view_amount">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/medium"
+                    android:gravity="left"
+                    android:shadowColor="@android:color/white"
+                    android:shadowRadius="5.0"
+                    android:text="$"
+                    android:textColor="@color/sdk_dark_gray"
+                    android:textSize="18sp" />
+                <EditText
+                    android:id="@+id/amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="0.00"
+                    android:textSize="18sp"
+                    android:inputType="numberDecimal"
+                    android:focusableInTouchMode="true"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/logout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:visibility="gone"
+            android:background="@color/sdk_grey"
+            android:paddingTop="@dimen/medium"
+            android:paddingBottom="@dimen/medium">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/larger"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingTop="@dimen/medium"
+                    android:text="@string/merchant_account"
+                    android:textColor="@color/sdk_black"
+                    android:textSize="12dp"
+                />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingTop="@dimen/small"
+                    android:text="@string/merchant_account_email"
+                    android:textSize="10dp"
+                    android:textColor="@color/sdk_dark_blue"
+                />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/xxxlarge"
+                android:background="@color/sdk_dark_gray" />
+
+            <TextView
+                android:id="@+id/txtLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/rect_view_code"
+                android:layout_marginLeft="@dimen/xxxlarge"
+                android:gravity="center"
+                android:shadowColor="@android:color/white"
+                android:shadowRadius="5.0"
+                android:text="Logout"
+                android:textColor="@color/sdk_white"
+                android:textSize="15sp"
+                android:onClick="onLogoutClicked"
+            />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/large"
+                android:padding="@dimen/large"  />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottomBanner"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:background="@color/sdk_blue"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/imageFwdBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/white_fwdarrow" />
+
+            <TextView
+                android:id="@+id/goToChargePage"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/large"
+                android:text="Capture"
+                android:padding="@dimen/large"
+                android:textColor="@color/sdk_white"
+                android:onClick="onCaptureClicked"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>
+

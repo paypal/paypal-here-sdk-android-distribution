@@ -1,0 +1,86 @@
+import java.util.regex.Pattern
+
+buildscript {
+    repositories {
+        jcenter()
+        maven { url 'https://maven.fabric.io/public' }
+        maven { url 'https://maven.google.com' }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+    maven {
+        url 'https://maven.google.com'
+    }
+
+}
+
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion '26.0.2'
+
+    defaultConfig {
+        applicationId "com.paypal.heresdk.sampleapp"
+        minSdkVersion 15
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug{
+            //Don't change the value of release notes as we are searching for the value and replacing it with actual release notes in build jobs
+            ext.betaDistributionReleaseNotes='External SDK Release 1.6.8'
+            ext.betaDistributionGroupAliases='paypalhere-sdk'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    repositories {
+        mavenCentral()
+
+    }
+    compile "org.androidannotations:androidannotations-api:3.3"
+
+    compile 'com.android.support:support-v4:21.0.0'
+    compile 'com.android.support:appcompat-v7:21.0.2'
+    compile 'com.google.android.gms:play-services-location:8.1.0'
+    compile 'com.android.support.constraint:constraint-layout:1.1.0-beta3'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
+        transitive = true;
+    }
+    api('com.paypal.retail:here-sdk-debug:2.0.0@aar'){transitive=true}
+}
+
+task incrementVersionCode << {
+    def manifestFile = file("src/main/AndroidManifest.xml")
+    def patternVersionCode = Pattern.compile("versionCode=\"(\\d+)\"")
+    def manifestText = manifestFile.getText()
+    def matcherVersionCode = patternVersionCode.matcher(manifestText)
+    matcherVersionCode.find()
+    def mVersionCode = Integer.parseInt(matcherVersionCode.group(1))
+    def mNextVersionCode = mVersionCode + 1
+    def manifestContent = matcherVersionCode.replaceAll("versionCode=\"" + mNextVersionCode + "\"")
+    manifestFile.write(manifestContent)
+}
