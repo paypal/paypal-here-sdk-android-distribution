@@ -86,10 +86,9 @@
     <string name="run_more">Run more transactions</string>
     <string name="find_connect">Find &amp; Connect</string>
     <string name="create_invoice">new Invoice(String currencyCode)</string>
-    <string name="create_transaction">RetailSDK.createTransaction(Invoice invoice)</string>
-    <string name="begin_transaction">currentTransaction.beginPaymentWithOptions(TransactionBeginOptions options)</string>
+    <string name="create_transaction">RetailSDK.getTransactionManager().createTransaction(Invoice invoice TransactionManager.TransactionCallback callback)</string>
     <string name="go_back_setup">Go back to initial setup</string>
-    <string name="accept_transaction">transaction.beginPaymentWithOptions(TransactionBeginOptions options)</string>
+    <string name="accept_transaction">transaction.beginPayment(TransactionBeginOptions options)</string>
     <string name="provide_refund">Provide a Refund</string>
     <string name="no_thanks">No Thanks</string>
     <string name="concluding">This concludes the primary transaction flows \nfor payment and refund.</string>
