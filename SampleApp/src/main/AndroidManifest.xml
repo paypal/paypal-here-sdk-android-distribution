@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.paypal.heresdk.sampleapp"
+    android:versionCode="5"
+    android:versionName="1.0">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.SDK.Base" >
+
+        <activity
+            android:name=".ui.MainActivity"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".login.LoginActivity"
+            android:label="@string/title_activity_payment_options"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+        <activity
+            android:name=".ui.ReaderConnectionActivity"
+            android:label="@string/title_activity_reader_connection"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+        <activity
+            android:name=".ui.ChargeActivity"
+            android:label="@string/title_activity_charge"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+        <activity
+            android:name=".ui.RefundActivity"
+            android:label="@string/title_activity_charge"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+        <activity
+            android:name=".ui.AuthCaptureActivity"
+            android:label="AuthCaptureActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+        <activity
+            android:name=".ui.CaptureActivity"
+            android:label="CaptureActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+        <activity
+            android:name=".ui.WebViewActivity"
+            android:label="WebViewActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="6fdee2cd3d6cb98362060d0ac0be20ef1c386ef3" />
+    </application>
+
+</manifest>
