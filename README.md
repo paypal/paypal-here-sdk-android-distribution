@@ -23,9 +23,9 @@ dependencies {
     repositories {
         mavenCentral()
     }
-
-//    api('com.paypal.retail:here-sdk-release:2.0.0@aar'){transitive=true}
-    api('com.paypal.retail:here-sdk-debug:2.0.0@aar'){transitive=true}
+    
+    // api('com.paypal.retail:here-sdk-release:2.0.0.201801@aar'){transitive=true}
+    api('com.paypal.retail:here-sdk-debug:2.0.0.201801@aar'){transitive=true}
 }
 ```
 There's both a Debug and Release build available to be referenced. Please make sure that you switch to the Release build prior to pushing your app to the Play Store otherwise your submission will likely be rejected.
