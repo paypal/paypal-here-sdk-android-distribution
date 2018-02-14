@@ -55,9 +55,6 @@ public class ChargeActivity extends Activity
         setContentView(R.layout.transaction_activity);
 
         radioAuthCapture = ((RadioButton) findViewById(R.id.radioAuthCapture));
-        // Note that radioAuthCapture is disabled since this feature is NOT yet available.
-        // when available, please remove the following line and start using it.
-        radioAuthCapture.setEnabled(false);
     }
 
     @Override
