@@ -8854,28 +8854,6 @@
 <parameter name="invoice" type="com.paypal.paypalretailsdk.Invoice">
 </parameter>
 </method>
-<method name="getAppState"
- return="com.paypal.paypalretailsdk.RetailSDK.AppState"
- abstract="false"
- native="false"
- synchronized="false"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getAudio"
- return="SoundNotification"
- abstract="false"
- native="false"
- synchronized="false"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
 <method name="getDeviceManager"
  return="com.paypal.paypalretailsdk.DeviceManager"
  abstract="false"
