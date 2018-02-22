@@ -48,6 +48,7 @@ android {
 Housekeeping Items
 =====================
 There are a few noteworthy items that should be called out. These include:
+* **Auth/Capture:** Please note that auth/capture processing is currently only available for the US. Support for the other regions will be coming at a later date.
 * **Key-in:** Even though there's not an example in the sample app, please know that the SDK will support this payment method should you need to implement it.
 * **Server:** There will be some server-side work that needs to be done to handle the token management part of the integration. Standard Oauth2 is used for Merchant Onboarding and more information on this piece can be found [here](https://developer.paypal.com/docs/integration/paypal-here/merchant-onboarding/)
 * **Marketing Toolkit:** Within this repo, you'll find downloadable marketing assets – from emails to banner ads – to help you quickly, and effectively, promote your app’s new payments functionality. 
