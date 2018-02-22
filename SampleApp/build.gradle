@@ -69,7 +69,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
-    api('com.paypal.retail:here-sdk-debug:2.0.0.201801@aar'){transitive=true}
+    api('com.paypal.retail:here-sdk-debug:2.0.1.201802@aar'){transitive=true}
 }
 
 task incrementVersionCode << {
