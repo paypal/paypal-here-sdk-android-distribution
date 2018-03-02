@@ -66,6 +66,20 @@
  deprecated="not deprecated"
  visibility="public"
 >
+<constructor name="AuthorizedTransaction"
+ type="com.paypal.paypalretailsdk.AuthorizedTransaction"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="authorizationId" type="java.lang.String">
+</parameter>
+<parameter name="invoiceId" type="java.lang.String">
+</parameter>
+<parameter name="currency" type="java.lang.String">
+</parameter>
+</constructor>
 <method name="captureTransaction"
  return="void"
  abstract="false"
@@ -79,6 +93,25 @@
 <parameter name="totalAmount" type="java.math.BigDecimal">
 </parameter>
 <parameter name="gratuityAmount" type="java.math.BigDecimal">
+</parameter>
+<parameter name="callback" type="com.paypal.paypalretailsdk.AuthorizedTransaction.CaptureCompleteCallback">
+</parameter>
+</method>
+<method name="captureTransaction"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="totalAmount" type="java.math.BigDecimal">
+</parameter>
+<parameter name="gratuityAmount" type="java.math.BigDecimal">
+</parameter>
+<parameter name="base64SignatureJpeg" type="java.lang.String">
 </parameter>
 <parameter name="callback" type="com.paypal.paypalretailsdk.AuthorizedTransaction.CaptureCompleteCallback">
 </parameter>
@@ -437,6 +470,92 @@
 >
 </method>
 </class>
+<class name="CaptureResponse"
+ extends="PayPalRetailObject"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="getCaptureAmount"
+ return="java.math.BigDecimal"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getCaptureId"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getCurrency"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getIsFinalCapture"
+ return="java.lang.Boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getState"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getTransactionFee"
+ return="java.math.BigDecimal"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="toString"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</class>
 <class name="Card"
  extends="PayPalRetailObject"
  abstract="false"
@@ -693,6 +812,102 @@
 >
 </method>
 </class>
+<class name="CardReaderScanAndDiscoverHandler"
+ extends="PayPalRetailObject"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="CardReaderScanAndDiscoverHandler"
+ type="com.paypal.paypalretailsdk.CardReaderScanAndDiscoverHandler"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="discoveredHandler" type="com.paypal.paypalretailsdk.CardReaderScanAndDiscoverHandler.DiscoveredCardReaderCallback">
+</parameter>
+<parameter name="scanHandler" type="com.paypal.paypalretailsdk.CardReaderScanAndDiscoverHandler.ScanCompleteCallback">
+</parameter>
+</constructor>
+<method name="onCardReaderDiscovered"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="pd" type="DiscoveredCardReader">
+</parameter>
+</method>
+<method name="onDeviceScanComplete"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="toString"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</class>
+<interface name="CardReaderScanAndDiscoverHandler.DiscoveredCardReaderCallback"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="discoveredCardReader"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="pd" type="DiscoveredCardReader">
+</parameter>
+</method>
+</interface>
+<interface name="CardReaderScanAndDiscoverHandler.ScanCompleteCallback"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="scanComplete"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</interface>
 <class name="CardStatus"
  extends="java.lang.Enum"
  abstract="false"
@@ -6600,296 +6815,6 @@
 >
 </method>
 </class>
-<class name="InvoicingService"
- extends="PayPalRetailObject"
- abstract="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<constructor name="InvoicingService"
- type="com.paypal.paypalretailsdk.InvoicingService"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</constructor>
-<method name="getAccountSummary"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="completionHandler" type="com.paypal.paypalretailsdk.InvoicingService.GetAccountSummaryCallback">
-</parameter>
-</method>
-<method name="getInvoice"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="invoiceID" type="java.lang.String">
-</parameter>
-<parameter name="completionHandler" type="com.paypal.paypalretailsdk.InvoicingService.GetInvoiceCallback">
-</parameter>
-</method>
-<method name="getInvoices"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="params" type="com.paypal.paypalretailsdk.InvoiceListRequest">
-</parameter>
-<parameter name="completionHandler" type="com.paypal.paypalretailsdk.InvoicingService.GetInvoicesCallback">
-</parameter>
-</method>
-<method name="getNextInvoiceNumber"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="completionHandler" type="com.paypal.paypalretailsdk.InvoicingService.GetNextInvoiceNumberCallback">
-</parameter>
-</method>
-<method name="getTemplates"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="completionHandler" type="com.paypal.paypalretailsdk.InvoicingService.GetTemplatesCallback">
-</parameter>
-</method>
-<method name="searchInvoices"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="params" type="com.paypal.paypalretailsdk.InvoiceSearchRequest">
-</parameter>
-<parameter name="completionHandler" type="com.paypal.paypalretailsdk.InvoicingService.SearchInvoicesCallback">
-</parameter>
-</method>
-<method name="toString"
- return="java.lang.String"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="uploadFile"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="fileHandle" type="java.lang.String">
-</parameter>
-<parameter name="contentType" type="java.lang.String">
-</parameter>
-<parameter name="completionHandler" type="com.paypal.paypalretailsdk.InvoicingService.UploadFileCallback">
-</parameter>
-</method>
-</class>
-<interface name="InvoicingService.GetAccountSummaryCallback"
- abstract="true"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<method name="getAccountSummary"
- return="void"
- abstract="true"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="error" type="PayPalError">
-</parameter>
-<parameter name="response" type="AccountSummary">
-</parameter>
-</method>
-</interface>
-<interface name="InvoicingService.GetInvoiceCallback"
- abstract="true"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<method name="getInvoice"
- return="void"
- abstract="true"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="error" type="PayPalError">
-</parameter>
-<parameter name="response" type="com.paypal.paypalretailsdk.Invoice">
-</parameter>
-</method>
-</interface>
-<interface name="InvoicingService.GetInvoicesCallback"
- abstract="true"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<method name="getInvoices"
- return="void"
- abstract="true"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="error" type="PayPalError">
-</parameter>
-<parameter name="response" type="com.paypal.paypalretailsdk.InvoiceListResponse">
-</parameter>
-</method>
-</interface>
-<interface name="InvoicingService.GetNextInvoiceNumberCallback"
- abstract="true"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<method name="getNextInvoiceNumber"
- return="void"
- abstract="true"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="error" type="PayPalError">
-</parameter>
-<parameter name="response" type="java.lang.String">
-</parameter>
-</method>
-</interface>
-<interface name="InvoicingService.GetTemplatesCallback"
- abstract="true"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<method name="getTemplates"
- return="void"
- abstract="true"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="error" type="PayPalError">
-</parameter>
-<parameter name="response" type="com.paypal.paypalretailsdk.InvoiceTemplatesResponse">
-</parameter>
-</method>
-</interface>
-<interface name="InvoicingService.SearchInvoicesCallback"
- abstract="true"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<method name="searchInvoices"
- return="void"
- abstract="true"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="error" type="PayPalError">
-</parameter>
-<parameter name="response" type="com.paypal.paypalretailsdk.InvoiceListResponse">
-</parameter>
-</method>
-</interface>
-<interface name="InvoicingService.UploadFileCallback"
- abstract="true"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<method name="uploadFile"
- return="void"
- abstract="true"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="error" type="PayPalError">
-</parameter>
-<parameter name="response" type="com.paypal.paypalretailsdk.InvoiceAttachment">
-</parameter>
-</method>
-</interface>
 <class name="MagneticCard"
  extends="com.paypal.paypalretailsdk.Card"
  abstract="false"
@@ -9214,7 +9139,180 @@
  visibility="public"
 >
 </method>
+<method name="getDomain"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
 </class>
+<class name="RetrieveAuthorizedTransactionResponse"
+ extends="PayPalRetailObject"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="RetrieveAuthorizedTransactionResponse"
+ type="com.paypal.paypalretailsdk.RetrieveAuthorizedTransactionResponse"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="getEndTime"
+ return="java.util.Date"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getListOfAuths"
+ return="java.util.List&lt;com.paypal.paypalretailsdk.AuthorizedTransaction&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getPageSize"
+ return="java.lang.Integer"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getStartTime"
+ return="java.util.Date"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="retrieveNextPage"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="pageSize" type="java.lang.Integer">
+</parameter>
+<parameter name="callback" type="com.paypal.paypalretailsdk.RetrieveAuthorizedTransactionResponse.RetrieveAuthorizedTransactionsCallbackCallback">
+</parameter>
+</method>
+<method name="setEndTime"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="value" type="java.util.Date">
+</parameter>
+</method>
+<method name="setListOfAuths"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="value" type="java.util.List&lt;com.paypal.paypalretailsdk.AuthorizedTransaction&gt;">
+</parameter>
+</method>
+<method name="setPageSize"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="value" type="java.lang.Integer">
+</parameter>
+</method>
+<method name="setStartTime"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="value" type="java.util.Date">
+</parameter>
+</method>
+<method name="toString"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</class>
+<interface name="RetrieveAuthorizedTransactionResponse.RetrieveAuthorizedTransactionsCallbackCallback"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="retrieveAuthorizedTransactionsCallback"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="error" type="com.paypal.paypalretailsdk.RetailSDKException">
+</parameter>
+<parameter name="authorizedTransactionsResponse" type="com.paypal.paypalretailsdk.RetrieveAuthorizedTransactionResponse">
+</parameter>
+</method>
+</interface>
 <class name="SdkCredential"
  extends="java.lang.Object"
  abstract="false"
@@ -10564,6 +10662,31 @@
 <parameter name="gratuityAmount" type="java.math.BigDecimal">
 </parameter>
 <parameter name="currency" type="java.lang.String">
+</parameter>
+<parameter name="callback" type="com.paypal.paypalretailsdk.TransactionManager.CaptureAuthorizedTransactionCallback">
+</parameter>
+</method>
+<method name="captureAuthorization"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="authorizationId" type="java.lang.String">
+</parameter>
+<parameter name="invoiceId" type="java.lang.String">
+</parameter>
+<parameter name="totalAmount" type="java.math.BigDecimal">
+</parameter>
+<parameter name="gratuityAmount" type="java.math.BigDecimal">
+</parameter>
+<parameter name="currency" type="java.lang.String">
+</parameter>
+<parameter name="base64SignatureJpeg" type="java.lang.String">
 </parameter>
 <parameter name="callback" type="com.paypal.paypalretailsdk.TransactionManager.CaptureAuthorizedTransactionCallback">
 </parameter>
