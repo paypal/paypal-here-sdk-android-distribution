@@ -252,6 +252,10 @@ public class LoginActivity extends Activity
   {
     RetailSDK.logout();
 
+    // Need to remove tokens from local preferences
+    LocalPreferences.storeSandboxMidTierCredentials(LoginActivity.this, null, null, null);
+    LocalPreferences.storeLiveMidTierCredentials(LoginActivity.this, null, null, null);
+
     Toast.makeText(getApplicationContext(), "Logged out! Please initialize Merchant.", Toast.LENGTH_SHORT).show();
 
     Intent intent = getIntent();
@@ -431,6 +435,9 @@ public class LoginActivity extends Activity
 
           Log.d(LOG_TAG, "merchantReady without any error");
           cancelProgressbar();
+
+          final TextView txtMerchantEmail = (TextView) findViewById(R.id.merchant_email);
+          txtMerchantEmail.setText(merchant.getEmailAddress());
 
           final TextView txtInitMerchantView = (TextView) findViewById(R.id.txtInitMerchant);
           txtInitMerchantView.setClickable(false);

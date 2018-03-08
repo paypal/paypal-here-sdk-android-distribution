@@ -77,7 +77,7 @@
     <string name="init_sdk_code">RetailSDK.initialize(Context context, RetailSDK.AppState appState)</string>
     <string name="init_merchant_code">RetailSDK.initializeMerchant(SdkCredential credentials, RetailSDK.MerchantInitializedCallback callback)</string>
     <string name="merchant_account">Merchant Account:</string>
-    <string name="merchant_account_email">test12312312@test.com</string>
+    <string name="merchant_account_email"></string>
     <string name="connect_card_reader">Connect card reader</string>
     <string name="up_banner">SDK v2.x</string>
     <string name="device_find_connect">DeviceManager.searchAndConnectWithUI(ConnectionCallback callback)</string>
