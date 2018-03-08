@@ -415,7 +415,7 @@ public class LoginActivity extends Activity
   }
 
 
-  void merchantReady(RetailSDKException error, Merchant merchant)
+  void merchantReady(RetailSDKException error, final Merchant merchant)
   {
     if (error == null)
     {
@@ -424,6 +424,11 @@ public class LoginActivity extends Activity
         @Override
         public void run()
         {
+          // Add the BN code for Partner tracking. To obtain this value, contact
+          // your PayPal account representative. Please do not change this value when
+          // using this sample app for testing.
+          merchant.setReferrerCode("PPHSDK_SampleApp_Android");
+
           Log.d(LOG_TAG, "merchantReady without any error");
           cancelProgressbar();
 
