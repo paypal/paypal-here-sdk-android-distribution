@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.heresdk.sampleapp.ui.ReaderConnectionActivity;
+import com.paypal.paypalretailsdk.AppInfo;
 import com.paypal.paypalretailsdk.Merchant;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
@@ -109,6 +110,7 @@ public class LoginActivity extends Activity
       {
         try
         {
+          AppInfo info = new AppInfo("SampleApp", "1.0", "01");
           RetailSDK.initialize(getApplicationContext(), new RetailSDK.AppState()
           {
             @Override
@@ -123,7 +125,7 @@ public class LoginActivity extends Activity
             {
               return false;
             }
-          });
+          }, info);
         }
         catch (RetailSDKException e)
         {
@@ -140,21 +142,6 @@ public class LoginActivity extends Activity
 
       }
     });
-
-    imgView.setOnClickListener(new View.OnClickListener()
-    {
-      @Override
-      public void onClick(View arg0)
-      {
-        imgView.setImageResource(R.drawable.small_greenarrow);
-        imgView.setClickable(false);
-        txtInitSDKView.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
-        txtInitSDKView.setClickable(false);
-        Toast.makeText(getApplicationContext(), "Clicked Second Image",
-                       Toast.LENGTH_SHORT).show();
-      }
-    });
-
   }
 
 
