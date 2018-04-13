@@ -1,0 +1,26 @@
+2.0.1.201808
+	- Instrumentation SDK added as static library
+	- fix for missing serial number for roam swiper devices
+	- Ingenico hot fix, updating the latest firmware
+
+2.0.1.201807
+	- Enable logs in debug builds
+	- Changes to location services code to check if device location is enabled
+
+2.0.1.201806
+	- It fixes the issue with the previous release by not showing a receipt prompt after capture for partners
+
+2.0.1.201805
+	- MI crash fix
+	- Instrumentation added
+	- Added Receipt Screen to Auth Capture flow (optional)
+	- Handle negative value items in invoice.
+	- Tag property added to PPRetailTransactionBeginOptions and beginRefund- reserved for restricted use.
+
+2.0.1.201804
+	- Adding auth for card transactions
+	- Decorating Invoice's addtionalData with device ID
+	- Microphone Run time permissions are now asked when a swiper is plugged in
+
+2.0.1.201803
+	- SDK supports signature as an optional parameter when capture is invoked
