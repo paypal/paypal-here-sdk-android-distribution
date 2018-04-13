@@ -12,14 +12,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.android.gms.auth.api.Auth;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.paypalretailsdk.Invoice;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
-import com.paypal.paypalretailsdk.TransactionContext;
 import com.paypal.paypalretailsdk.TransactionManager;
-import com.paypal.paypalretailsdk.TransactionRecord;
 
 /**
  * Created by muozdemir on 1/8/18.

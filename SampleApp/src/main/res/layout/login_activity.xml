@@ -148,6 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="15dp"
+                    android:clickable="false"
                     android:src="@drawable/small_bluearrow" />
 
             </LinearLayout>
@@ -254,6 +255,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="15dp"
+                    android:clickable="false"
                     android:src="@drawable/small_bluearrow" />
 
             </LinearLayout>
