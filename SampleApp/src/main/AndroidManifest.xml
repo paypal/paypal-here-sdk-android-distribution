@@ -58,9 +58,6 @@
             android:label="WebViewActivity"
             android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="6fdee2cd3d6cb98362060d0ac0be20ef1c386ef3" />
     </application>
 
 </manifest>
