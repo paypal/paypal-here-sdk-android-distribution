@@ -24,7 +24,6 @@ import android.widget.RadioGroup;
 
 import android.widget.TextView;
 import android.widget.Toast;
-import com.crashlytics.android.Crashlytics;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.heresdk.sampleapp.ui.ReaderConnectionActivity;
 import com.paypal.paypalretailsdk.AppInfo;
@@ -32,7 +31,6 @@ import com.paypal.paypalretailsdk.Merchant;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.SdkCredential;
-import io.fabric.sdk.android.Fabric;
 
 public class LoginActivity extends Activity
 {
