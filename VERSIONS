@@ -1,3 +1,19 @@
+2.0.1201810
+  What's new:
+   - Get business name for the merchant.
+   - No minimum amount for refunds.
+   - Do not use iOS SDK private symbols for rotation- UITextEffectsWindow.
+   - Signature screen fixes.
+   - Fix crash in signature/receipt page when the host is portrait only.
+   - New connection flow bug fixes.
+   - Fix invoice url when environment is not live or sandbox (PPH internal).
+   - New connection APIs.
+   - Fix crash due to logging.
+   - UK contactless limit.
+   - Fix signature and receipt screen layout on modal. 
+   - Objc sample app.
+   - Match Android and iOS version numbers.
+   
 2.0.1.201808
 	- Instrumentation SDK added as static library
 	- fix for missing serial number for roam swiper devices
