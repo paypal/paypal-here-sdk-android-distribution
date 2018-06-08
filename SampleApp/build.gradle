@@ -56,7 +56,7 @@ dependencies {
     repositories {
         mavenCentral()
     }
-    api('com.paypal.retail:here-sdk-debug:2.0.1.201808@aar'){transitive=true}
+    api('com.paypal.retail:here-sdk-debug:2.0.1.201812@aar'){transitive=true}
 
     implementation "org.androidannotations:androidannotations-api:3.3"
 
