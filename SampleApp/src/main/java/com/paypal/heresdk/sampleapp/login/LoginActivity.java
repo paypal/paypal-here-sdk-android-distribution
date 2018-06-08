@@ -53,7 +53,6 @@ public class LoginActivity extends Activity
   protected void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
-    Fabric.with(this, new Crashlytics());
     Log.d(LOG_TAG, "onCreate");
     setContentView(R.layout.login_activity);
 
