@@ -1,4 +1,15 @@
-2.0.1201810
+2.0.1.201812
+  What's new:
+  - Fix connection issue
+  - Android TLS 1.2
+  - Contactless activated event
+  - Callback from connectToLastActiveReader when the user selects find another reader
+  - Allow negative item amount, tax and quantity cannot be negative
+  - Add missing header
+  - Instrumentation events added
+  - Added a new API to get list of paired bluetooth devices: getPairedBluetoothDevices
+
+2.0.1.201810
   What's new:
    - Get business name for the merchant.
    - No minimum amount for refunds.
