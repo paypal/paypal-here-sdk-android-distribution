@@ -2,6 +2,9 @@ package com.paypal.heresdk.sampleapp.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,12 +16,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.heresdk.sampleapp.login.LoginActivity;
 import com.paypal.paypalretailsdk.DeviceUpdate;
+import com.paypal.paypalretailsdk.FormFactor;
 import com.paypal.paypalretailsdk.Invoice;
+import com.paypal.paypalretailsdk.PayPalRetailObject;
 import com.paypal.paypalretailsdk.PaymentDevice;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
@@ -45,12 +51,14 @@ public class ChargeActivity extends Activity
     Invoice invoiceForRefund;
 
 
+    OptionsDialogFragment optionsDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate");
         setContentView(R.layout.transaction_activity);
+        optionsDialogFragment = new OptionsDialogFragment();
 
     }
 
@@ -217,8 +225,18 @@ public class ChargeActivity extends Activity
     }
 
     public void onPaymentOptionsClicked(View view){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if (optionsDialogFragment==null){
+
+           optionsDialogFragment = new OptionsDialogFragment();
+        }
+        optionsDialogFragment.show(ft,"OptionsDialog");
 
 
+    }
+
+    public void closeOptionsDialog(View view){
+        optionsDialogFragment.dismiss();
     }
 
     private void beginPayment()
@@ -231,9 +249,13 @@ public class ChargeActivity extends Activity
         });
 
         TransactionBeginOptions options = new TransactionBeginOptions();
-        options.setShowPromptInCardReader(true);
-        options.setShowPromptInApp(true);
-        options.setIsAuthCapture(radioAuthCapture.isChecked());
+        options.setShowPromptInCardReader(optionsDialogFragment.isCardPreaderPromptChecked());
+        options.setShowPromptInApp(optionsDialogFragment.isAppPromptSwitchChecked());
+        options.setIsAuthCapture(optionsDialogFragment.isAuthCaptureChecked());
+        options.setAmountBasedTipping(optionsDialogFragment.isAmountBasedTippingChecked());
+        options.setTippingOnReaderEnabled(optionsDialogFragment.isTippingOnReaderChecked());
+        options.setTag(optionsDialogFragment.getTagValue());
+        options.setPreferredFormFactors(optionsDialogFragment.getPreferredFormFactors());
         currentTransaction.beginPayment(options);
     }
 
@@ -253,7 +275,7 @@ public class ChargeActivity extends Activity
             this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (radioAuthCapture.isChecked()) {
+                    if (optionsDialogFragment.isAuthCaptureChecked()) {
                         goToAuthCaptureActivity(record);
                     }
                     else
@@ -316,4 +338,5 @@ public class ChargeActivity extends Activity
         });
         builder.create().show();
     }
+
 }
