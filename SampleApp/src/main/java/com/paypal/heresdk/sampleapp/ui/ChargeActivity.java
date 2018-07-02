@@ -44,8 +44,6 @@ public class ChargeActivity extends Activity
     Invoice currentInvoice;
     Invoice invoiceForRefund;
 
-    @ViewById
-    RadioButton radioAuthCapture;
 
 
     @Override
@@ -54,7 +52,6 @@ public class ChargeActivity extends Activity
         Log.d(LOG_TAG, "onCreate");
         setContentView(R.layout.transaction_activity);
 
-        radioAuthCapture = ((RadioButton) findViewById(R.id.radioAuthCapture));
     }
 
     @Override
@@ -217,6 +214,11 @@ public class ChargeActivity extends Activity
         else {
             beginPayment();
         }
+    }
+
+    public void onPaymentOptionsClicked(View view){
+
+
     }
 
     private void beginPayment()

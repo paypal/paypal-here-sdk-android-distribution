@@ -95,6 +95,8 @@
     <string name="beginRefund">currentTransaction.beginRefund(Boolean cardPresent, BigDecimal amount)</string>
     <string name="void_auth">RetailSDK.voidAuthorization(String autId, RetailSDK.VoidAuthorizationHandler handler) </string>
     <string name="capture_auth">RetailSDK.captureAuthorization(String authId, String invoiceId, BigDecimal totalAmount, BigDecimal gratuityAmount, String currency, RetailSDK.CaptureAuthorizationHandler handler)</string>
+    <string name="payment_options">Payment Options</string>
+    <string name="offline_mode">Offline Mode</string>
 
 
 </resources>
