@@ -2,8 +2,6 @@ package com.paypal.heresdk.sampleapp.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,16 +13,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import android.widget.RadioButton;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.heresdk.sampleapp.login.LoginActivity;
 import com.paypal.paypalretailsdk.DeviceUpdate;
-import com.paypal.paypalretailsdk.FormFactor;
 import com.paypal.paypalretailsdk.Invoice;
-import com.paypal.paypalretailsdk.PayPalRetailObject;
 import com.paypal.paypalretailsdk.PaymentDevice;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
@@ -34,7 +28,6 @@ import com.paypal.paypalretailsdk.TransactionManager;
 import com.paypal.paypalretailsdk.TransactionRecord;
 
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
 
@@ -52,6 +45,7 @@ public class ChargeActivity extends Activity
 
 
     OptionsDialogFragment optionsDialogFragment;
+    OfflineModeDialogFragment offlineModeDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +53,7 @@ public class ChargeActivity extends Activity
         Log.d(LOG_TAG, "onCreate");
         setContentView(R.layout.transaction_activity);
         optionsDialogFragment = new OptionsDialogFragment();
+        offlineModeDialogFragment = new OfflineModeDialogFragment();
 
     }
 
@@ -225,18 +220,34 @@ public class ChargeActivity extends Activity
     }
 
     public void onPaymentOptionsClicked(View view){
+
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         if (optionsDialogFragment==null){
 
            optionsDialogFragment = new OptionsDialogFragment();
         }
-        optionsDialogFragment.show(ft,"OptionsDialog");
+        optionsDialogFragment.show(ft,"OptionsDialogFragment");
+
+
+    }
+    public void onOfflineModeClicked(View view){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if (offlineModeDialogFragment==null){
+
+            offlineModeDialogFragment = new OfflineModeDialogFragment();
+        }
+        offlineModeDialogFragment.show(ft,"OfflineModeDialogFragment");
 
 
     }
 
     public void closeOptionsDialog(View view){
         optionsDialogFragment.dismiss();
+    }
+
+    public void closeOfflineModeDialog(View view){
+        offlineModeDialogFragment.dismiss();
+
     }
 
     private void beginPayment()

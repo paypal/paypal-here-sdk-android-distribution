@@ -72,6 +72,7 @@
                 android:text="@string/offline_mode"
                 android:textColor="@color/sdk_white"
                 android:layout_weight="1"
+                android:onClick="onOfflineModeClicked"
                 android:background="@drawable/blue_btn_selector"
                 android:layout_marginLeft="@dimen/activity_vertical_margin"
                 />
