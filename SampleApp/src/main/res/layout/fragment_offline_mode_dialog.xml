@@ -68,6 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:onClick="onGetOfflineStatusClicked"
                     android:orientation="horizontal">
 
                     <TextView
@@ -75,10 +76,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:onClick="onCreateInvoiceClicked"
                         android:shadowColor="@android:color/white"
                         android:shadowRadius="5.0"
-                        android:text="Get Offline Status"
+                        android:text="@string/get_offline_status"
                         android:textColor="@color/sdk_blue"
                         android:textSize="20sp" />
 
@@ -126,7 +126,7 @@
                 android:layout_width="match_parent"
                 android:background="@color/sdk_grey"
                 android:textSize="@dimen/regular"
-                android:text="@string/get_offline_status"
+                android:text="@string/get_offline_status_code"
                 android:padding="@dimen/large"
                 android:visibility="gone"/>
 
@@ -143,6 +143,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:onClick="onReplayOfflineTransactionClicked"
                     android:orientation="horizontal">
 
                     <TextView
@@ -153,7 +154,7 @@
                         android:onClick="onReplayOfflineTransactionClicked"
                         android:shadowColor="@android:color/white"
                         android:shadowRadius="5.0"
-                        android:text="Replay Offline Transaction"
+                        android:text="@string/replay_offline_transaction"
                         android:textColor="@color/sdk_blue"
                         android:textSize="20sp" />
 
@@ -192,7 +193,6 @@
                 </LinearLayout>
 
 
-
             </LinearLayout>
 
             <!-- Replay offline transaction code -->
@@ -202,7 +202,7 @@
                 android:layout_width="match_parent"
                 android:background="@color/sdk_grey"
                 android:textSize="@dimen/regular"
-                android:text="@string/replay_offline_transaction"
+                android:text="@string/replay_offline_transaction_code"
                 android:padding="@dimen/large"
                 android:visibility="gone"/>
 
@@ -218,6 +218,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:onClick="onStopReplayClicked"
                     android:orientation="horizontal">
 
                     <TextView
@@ -228,7 +229,7 @@
                         android:onClick="onStopReplayClicked"
                         android:shadowColor="@android:color/white"
                         android:shadowRadius="5.0"
-                        android:text="Stop Replay"
+                        android:text="@string/stop_replay"
                         android:textColor="@color/sdk_blue"
                         android:textSize="20sp" />
 
@@ -277,7 +278,7 @@
                 android:layout_width="match_parent"
                 android:background="@color/sdk_grey"
                 android:textSize="@dimen/regular"
-                android:text="@string/stop_replay"
+                android:text="@string/stop_replay_code"
                 android:padding="@dimen/large"
                 android:visibility="gone"/>
 

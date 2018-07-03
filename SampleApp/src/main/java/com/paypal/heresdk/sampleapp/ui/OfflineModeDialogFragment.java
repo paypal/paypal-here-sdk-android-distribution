@@ -35,7 +35,7 @@ public class OfflineModeDialogFragment extends DialogFragment
   private TextView stopReplayCode;
   private TextView getGetOfflineStatusClickText;
   private TextView replayClickText;
-  private TextView stopReplayText;
+  private TextView stopReplayClickText;
   private ImageView replayArrowImage;
   private ImageView stopReplayArrowImage;
   private ImageView getOfflineArrowImage;
@@ -61,7 +61,7 @@ public class OfflineModeDialogFragment extends DialogFragment
     stopReplayCode = (TextView) view.findViewById(R.id.stop_replay_code);
     getGetOfflineStatusClickText = (TextView)view.findViewById(R.id.txt_get_offline_status);
     replayClickText = (TextView)view.findViewById(R.id.txt_replay_offline_txn);
-    stopReplayText = (TextView) view.findViewById(R.id.txt_stop_replaty);
+    stopReplayClickText = (TextView) view.findViewById(R.id.txt_stop_replaty);
     offlineModeSwitch = (Switch) view.findViewById(R.id.offline_mode_switch);
     replayArrowImage = (ImageView) view.findViewById(R.id.replay_arrow_image);
     getOfflineArrowImage = (ImageView) view.findViewById(R.id.get_offline_status_image);
@@ -159,9 +159,9 @@ public class OfflineModeDialogFragment extends DialogFragment
 
   public void stopReplayClicked()
   {
-    replayArrowImage.setImageResource(R.drawable.small_greenarrow);
-    replayClickText.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
-    replayClickText.setClickable(false);
+    stopReplayArrowImage.setImageResource(R.drawable.small_greenarrow);
+    stopReplayClickText.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
+    stopReplayClickText.setClickable(false);
 
   }
 

@@ -19,6 +19,7 @@ import com.paypal.heresdk.sampleapp.R;
 import com.paypal.heresdk.sampleapp.login.LoginActivity;
 import com.paypal.paypalretailsdk.DeviceUpdate;
 import com.paypal.paypalretailsdk.Invoice;
+import com.paypal.paypalretailsdk.OfflinePaymentStatus;
 import com.paypal.paypalretailsdk.PaymentDevice;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
@@ -30,6 +31,7 @@ import com.paypal.paypalretailsdk.TransactionRecord;
 import org.androidannotations.annotations.EActivity;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @EActivity
 public class ChargeActivity extends Activity
@@ -228,17 +230,29 @@ public class ChargeActivity extends Activity
 
            optionsDialogFragment = new OptionsDialogFragment();
         }
-        optionsDialogFragment.show(ft,"OptionsDialogFragment");
+        if (optionsDialogFragment.isAdded()){
+            ft.show(optionsDialogFragment);
+        }else
+        {
+            optionsDialogFragment.show(ft, "OptionsDialogFragment");
+        }
 
 
     }
     public void onOfflineModeClicked(View view){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        if (offlineModeDialogFragment==null){
+        if (offlineModeDialogFragment==null)
+        {
 
             offlineModeDialogFragment = new OfflineModeDialogFragment();
         }
-        offlineModeDialogFragment.show(ft,"OfflineModeDialogFragment");
+        if (offlineModeDialogFragment.isAdded()){
+            ft.show(offlineModeDialogFragment);
+        }else
+        {
+            offlineModeDialogFragment.show(ft, "OfflineModeDialogFragment");
+        }
+
 
 
     }
@@ -262,11 +276,11 @@ public class ChargeActivity extends Activity
         });
 
         TransactionBeginOptions options = new TransactionBeginOptions();
-        options.setShowPromptInCardReader(optionsDialogFragment.isCardPreaderPromptChecked());
-        options.setShowPromptInApp(optionsDialogFragment.isAppPromptSwitchChecked());
-        options.setIsAuthCapture(optionsDialogFragment.isAuthCaptureChecked());
-        options.setAmountBasedTipping(optionsDialogFragment.isAmountBasedTippingChecked());
-        options.setTippingOnReaderEnabled(optionsDialogFragment.isTippingOnReaderChecked());
+        options.setShowPromptInCardReader(optionsDialogFragment.isCardPreaderPromptEnabled());
+        options.setShowPromptInApp(optionsDialogFragment.isAppPromptSwitchEnabled());
+        options.setIsAuthCapture(optionsDialogFragment.isAuthCaptureEnabled());
+        options.setAmountBasedTipping(optionsDialogFragment.isAmountBasedTippingEnabled());
+        options.setTippingOnReaderEnabled(optionsDialogFragment.isTippingOnReaderEnabled());
         options.setTag(optionsDialogFragment.getTagValue());
         options.setPreferredFormFactors(optionsDialogFragment.getPreferredFormFactors());
         currentTransaction.beginPayment(options);
@@ -288,7 +302,7 @@ public class ChargeActivity extends Activity
             this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (optionsDialogFragment.isAuthCaptureChecked()) {
+                    if (optionsDialogFragment.isAuthCaptureEnabled()) {
                         goToAuthCaptureActivity(record);
                     }
                     else
@@ -355,7 +369,14 @@ public class ChargeActivity extends Activity
 
     public void onGetOfflineStatusClicked(View view)
     {
-
+        RetailSDK.getTransactionManager().getOfflinePaymentStatus(new TransactionManager.OfflinePaymentStatusCallback()
+        {
+            @Override
+            public void offlinePaymentStatus(RetailSDKException e, List<OfflinePaymentStatus> list)
+            {
+                Log.d("hg","gh");
+            }
+        });
     }
 
 
