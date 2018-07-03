@@ -47,6 +47,7 @@ public class ChargeActivity extends Activity
     OptionsDialogFragment optionsDialogFragment;
     OfflineModeDialogFragment offlineModeDialogFragment;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +55,7 @@ public class ChargeActivity extends Activity
         setContentView(R.layout.transaction_activity);
         optionsDialogFragment = new OptionsDialogFragment();
         offlineModeDialogFragment = new OfflineModeDialogFragment();
+
 
     }
 
@@ -349,5 +351,66 @@ public class ChargeActivity extends Activity
         });
         builder.create().show();
     }
+
+
+    public void onGetOfflineStatusClicked(View view)
+    {
+
+    }
+
+
+    public void onReplayOfflineTransactionClicked(View view)
+    {
+
+    }
+
+
+    public void onStopReplayClicked(View view)
+    {
+
+    }
+
+
+    public void viewCode(View view)
+    {
+        int id = view.getId();
+        switch (id)
+        {
+            case R.id.view_code_get_offline_status:
+                if (offlineModeDialogFragment.isGetOfflineStatusCodeVisible())
+                {
+                    offlineModeDialogFragment.hideOfflineStatusCode();
+                }
+                else
+                {
+                    offlineModeDialogFragment.showOfflineStatusCode();
+                }
+                break;
+            case R.id.view_code_replay_offline_txn:
+                if (offlineModeDialogFragment.isReplayOfflineTxnVisible())
+                {
+                    offlineModeDialogFragment.hideReplayCode();
+                }
+                else
+                {
+                    offlineModeDialogFragment.showReplayCode();
+                }
+                break;
+            case R.id.view_code_stop_replay:
+                if (offlineModeDialogFragment.isStopReplayCodeVisible())
+                {
+                    offlineModeDialogFragment.hideStopReplayCode();
+                }
+                else
+                {
+                    offlineModeDialogFragment.showStopReplayCode();
+                }
+                break;
+
+
+        }
+
+    }
+
 
 }
