@@ -26,6 +26,7 @@ import com.paypal.paypalretailsdk.FormFactor;
 public class OptionsDialogFragment extends DialogFragment implements CompoundButton.OnCheckedChangeListener
 {
 
+  private OptionsDialogListener optionDialogListener;
   private boolean isAuthCaptureEnabled = false;
   private boolean isCardReaderPromptEnabled = true;
   private boolean isAppPromptEnabled = true;
@@ -56,6 +57,18 @@ public class OptionsDialogFragment extends DialogFragment implements CompoundBut
   {
     super.onCreate(savedInstanceState);
 
+  }
+
+
+  @Override
+  public void onAttach(Activity activity)
+  {
+    super.onAttach(activity);
+    try {
+      optionDialogListener = (OptionsDialogListener) activity;
+    } catch (ClassCastException e) {
+      throw new ClassCastException(activity.toString() + " must implement OptionsDialogListener");
+    }
   }
 
 
@@ -219,5 +232,9 @@ public class OptionsDialogFragment extends DialogFragment implements CompoundBut
         isSecureManualEnabled = isChecked;
     }
 
+  }
+
+  public interface OptionsDialogListener{
+    void closeOptionsDialog(View view);
   }
 }

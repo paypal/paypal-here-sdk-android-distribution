@@ -34,7 +34,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @EActivity
-public class ChargeActivity extends Activity
+public class ChargeActivity extends Activity implements OfflineModeDialogFragment.OfflineModeDialogListener, OptionsDialogFragment.OptionsDialogListener
 {
     private static final String LOG_TAG = ChargeActivity.class.getSimpleName();
     public static final String INTENT_TRANX_TOTAL_AMOUNT = "TOTAL_AMOUNT";
@@ -382,13 +382,13 @@ public class ChargeActivity extends Activity
 
     public void onReplayOfflineTransactionClicked(View view)
     {
-
+        RetailSDK.getTransactionManager().startReplayOfflineTxns(null);
     }
 
 
     public void onStopReplayClicked(View view)
     {
-
+        RetailSDK.getTransactionManager().stopReplayOfflineTxns(null);
     }
 
 

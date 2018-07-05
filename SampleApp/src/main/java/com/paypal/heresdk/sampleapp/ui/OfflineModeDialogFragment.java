@@ -2,6 +2,7 @@ package com.paypal.heresdk.sampleapp.ui;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -29,6 +31,7 @@ import org.w3c.dom.Text;
 public class OfflineModeDialogFragment extends DialogFragment
 {
 
+  private OfflineModeDialogListener offlineModeDialogListener;
   private Switch offlineModeSwitch;
   private TextView getOfflineStatusCode;
   private TextView replayOfflineStatusCode;
@@ -40,6 +43,9 @@ public class OfflineModeDialogFragment extends DialogFragment
   private ImageView stopReplayArrowImage;
   private ImageView getOfflineArrowImage;
 
+  private Button getOfflineStatusButton;
+  private Button replayOfflineTxnButton;
+  private Button stopReplayButton;
 
 
   @Override
@@ -49,6 +55,15 @@ public class OfflineModeDialogFragment extends DialogFragment
 
   }
 
+  @Override
+  public void onAttach(Activity activity) {
+    super.onAttach(activity);
+    try {
+      offlineModeDialogListener = (OfflineModeDialogListener) activity;
+    } catch (ClassCastException e) {
+      throw new ClassCastException(activity.toString() + " must implement OfflineModeDialogListener");
+    }
+  }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,7 +76,7 @@ public class OfflineModeDialogFragment extends DialogFragment
     stopReplayCode = (TextView) view.findViewById(R.id.stop_replay_code);
     getGetOfflineStatusClickText = (TextView)view.findViewById(R.id.txt_get_offline_status);
     replayClickText = (TextView)view.findViewById(R.id.txt_replay_offline_txn);
-    stopReplayClickText = (TextView) view.findViewById(R.id.txt_stop_replaty);
+    stopReplayClickText = (TextView) view.findViewById(R.id.txt_stop_replay);
     offlineModeSwitch = (Switch) view.findViewById(R.id.offline_mode_switch);
     replayArrowImage = (ImageView) view.findViewById(R.id.replay_arrow_image);
     getOfflineArrowImage = (ImageView) view.findViewById(R.id.get_offline_status_image);
@@ -75,12 +90,13 @@ public class OfflineModeDialogFragment extends DialogFragment
         if (isChecked)
         {
           RetailSDK.getTransactionManager().startOfflinePayment(null);
-          startReplayClicked();
-          stopReplayClicked();
+          onStartReplayClicked();
+          onStopReplayClicked();
         }
         else
         {
           RetailSDK.getTransactionManager().stopOfflinePayment();
+          enableStartReplayOption();
         }
       }
     });
@@ -91,6 +107,22 @@ public class OfflineModeDialogFragment extends DialogFragment
     return view;
 
   }
+
+
+  private void enableStartReplayOption()
+  {
+    replayArrowImage.setImageResource(R.drawable.small_bluearrow);
+    replayClickText.setTextColor(getResources().getColor(R.color.sdk_blue));
+    replayClickText.setClickable(true);
+  }
+
+  private void enableStopReplayOption()
+  {
+    stopReplayArrowImage.setImageResource(R.drawable.small_bluearrow);
+    stopReplayClickText.setTextColor(getResources().getColor(R.color.sdk_blue));
+    stopReplayClickText.setClickable(true);
+  }
+
 
 
   public boolean isGetOfflineStatusCodeVisible()
@@ -141,15 +173,9 @@ public class OfflineModeDialogFragment extends DialogFragment
     stopReplayCode.setVisibility(View.GONE);
   }
 
-  public void getOfflineStatusClicked()
-  {
-    getOfflineArrowImage.setImageResource(R.drawable.small_greenarrow);
-    getGetOfflineStatusClickText.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
-    getGetOfflineStatusClickText.setClickable(false);
 
-  }
 
-  public void startReplayClicked()
+  public void onStartReplayClicked()
   {
     replayArrowImage.setImageResource(R.drawable.small_greenarrow);
     replayClickText.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
@@ -157,12 +183,20 @@ public class OfflineModeDialogFragment extends DialogFragment
 
   }
 
-  public void stopReplayClicked()
+  public void onStopReplayClicked()
   {
     stopReplayArrowImage.setImageResource(R.drawable.small_greenarrow);
     stopReplayClickText.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
     stopReplayClickText.setClickable(false);
 
+  }
+
+
+  public interface OfflineModeDialogListener{
+    void onGetOfflineStatusClicked(View view);
+    void onReplayOfflineTransactionClicked(View view);
+    void onStopReplayClicked(View view);
+    void closeOfflineModeDialog(View view);
   }
 
 

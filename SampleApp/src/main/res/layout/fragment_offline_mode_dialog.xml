@@ -219,10 +219,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:onClick="onStopReplayClicked"
+                    android:clickable="false"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/txt_stop_replaty"
+                        android:id="@+id/txt_stop_replay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -230,7 +231,7 @@
                         android:shadowColor="@android:color/white"
                         android:shadowRadius="5.0"
                         android:text="@string/stop_replay"
-                        android:textColor="@color/sdk_blue"
+                        android:textColor="@color/sdk_dark_gray"
                         android:textSize="20sp" />
 
                     <ImageView
@@ -239,7 +240,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="15dp"
-                        android:src="@drawable/small_bluearrow" />
+                        android:src="@drawable/small_greenarrow" />
 
 
                 </LinearLayout>
