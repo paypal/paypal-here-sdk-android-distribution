@@ -261,12 +261,12 @@ public class ChargeActivity extends Activity implements OfflineModeDialogFragmen
     }
 
     @Override
-    public void closeOptionsDialog(View view){
+    public void onCloseOptionsDialogClicked(){
         optionsDialogFragment.dismiss();
     }
 
     @Override
-    public void closeOfflineModeDialog(View view){
+    public void onCloseOfflineDialogClicked(){
         offlineModeDialogFragment.dismiss();
 
     }
@@ -292,18 +292,23 @@ public class ChargeActivity extends Activity implements OfflineModeDialogFragmen
     }
 
     void transactionCompleted(RetailSDKException error, final TransactionRecord record) {
-        if (isOfflineModeEnabled){
-            goToOfflinePayCompleteActivity();
-        }
-        else if (error != null) {
+        if (error != null) {
             final String errorTxt = error.toString();
-            this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(getApplicationContext(), "transaction error: " + errorTxt, Toast.LENGTH_SHORT).show();
-                    //refundButton.setEnabled(false);
-                }
-            });
+
+            if (errorTxt.toLowerCase().contains("offline payment enabled")){
+                goToOfflinePayCompleteActivity();
+            }else
+            {
+                this.runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        Toast.makeText(getApplicationContext(), "transaction error: " + errorTxt, Toast.LENGTH_SHORT).show();
+                        //refundButton.setEnabled(false);
+                    }
+                });
+            }
         } else {
             invoiceForRefund = currentTransaction.getInvoice();
             final String recordTxt =  record.getTransactionNumber();

@@ -51,6 +51,8 @@ public class OptionsDialogFragment extends DialogFragment implements CompoundBut
   private CheckBox secureManual;
   private EditText tag;
 
+  private Button closeButton;
+
 
   @Override
   public void onCreate(Bundle savedInstanceState)
@@ -98,6 +100,15 @@ public class OptionsDialogFragment extends DialogFragment implements CompoundBut
     manualCard.setOnCheckedChangeListener(this);
     secureManual = (CheckBox) view.findViewById(R.id.secure_manual);
     secureManual.setOnCheckedChangeListener(this);
+    closeButton = (Button)view.findViewById(R.id.close_button);
+    closeButton.setOnClickListener(new View.OnClickListener()
+    {
+      @Override
+      public void onClick(View v)
+      {
+        optionDialogListener.onCloseOptionsDialogClicked();
+      }
+    });
 
     initDefaults();
 
@@ -230,11 +241,13 @@ public class OptionsDialogFragment extends DialogFragment implements CompoundBut
         break;
       case R.id.secure_manual:
         isSecureManualEnabled = isChecked;
+        break;
+
     }
 
   }
 
   public interface OptionsDialogListener{
-    void closeOptionsDialog(View view);
+    void onCloseOptionsDialogClicked();
   }
 }

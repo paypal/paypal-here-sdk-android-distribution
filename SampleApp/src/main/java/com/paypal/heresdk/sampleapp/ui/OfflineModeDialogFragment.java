@@ -47,9 +47,13 @@ public class OfflineModeDialogFragment extends DialogFragment implements View.On
   private TextView viewCodeOfflineStatus;
   private TextView viewCodeReplay;
   private TextView viewCodeStopReplay;
+  private TextView statusText;
 
+  private boolean replayInProgress;
 
   private ProgressBar progressBar;
+
+  private Button closeButton;
 
 
   @Override
@@ -92,8 +96,13 @@ public class OfflineModeDialogFragment extends DialogFragment implements View.On
     viewCodeOfflineStatus = (TextView) view.findViewById(R.id.view_code_get_offline_status);
     viewCodeOfflineStatus.setOnClickListener(this);
 
+    closeButton = (Button) view.findViewById(R.id.close_button);
+    closeButton.setOnClickListener(this);
+
     viewCodeReplay = (TextView)view.findViewById(R.id.view_code_replay_offline_txn);
     viewCodeReplay.setOnClickListener(this);
+
+    statusText = (TextView)view.findViewById(R.id.status_text);
 
     viewCodeStopReplay = (TextView) view.findViewById(R.id.view_code_stop_replay);
     viewCodeStopReplay.setOnClickListener(this);
@@ -118,6 +127,13 @@ public class OfflineModeDialogFragment extends DialogFragment implements View.On
     });
 
     setCancelable(false);
+    if (replayInProgress){
+      startReplayOptionProgressState();
+      stopReplayOptionEnabledState();
+      disableSwitch();
+
+
+    }
 
 
     return view;
@@ -231,24 +247,30 @@ public class OfflineModeDialogFragment extends DialogFragment implements View.On
           @Override
           public void offlinePaymentStatus(RetailSDKException e, List<OfflinePaymentStatus> list)
           {
-            Log.d("hg","gh");
+            int size = 0;
+            if (list!=null){
+              size = list.size();
+            }
+            final int finalSize = size;
             getActivity().runOnUiThread(new Runnable()
             {
               @Override
               public void run()
               {
-                updateStatus();
+                statusText.setText("Status\nPending offline transactions : " + finalSize);
               }
             });
           }
         });
         break;
       case R.id.txt_replay_offline_txn:
+        replayInProgress = true;
         RetailSDK.getTransactionManager().startReplayOfflineTxns(new TransactionManager.OfflinePaymentStatusCallback()
         {
           @Override
           public void offlinePaymentStatus(RetailSDKException e, List<OfflinePaymentStatus> list)
           {
+            replayInProgress = false;
             getActivity().runOnUiThread(new Runnable()
             {
               @Override
@@ -274,6 +296,8 @@ public class OfflineModeDialogFragment extends DialogFragment implements View.On
         startReplayOptionEnabledState();
         stopReplayOptionDisabledState();
         enableSwitch();
+        replayInProgress = false;
+
         break;
       case R.id.view_code_get_offline_status:
         if (isGetOfflineStatusCodeVisible())
@@ -304,13 +328,12 @@ public class OfflineModeDialogFragment extends DialogFragment implements View.On
         {
           showStopReplayCode();
         }
+        break;
+      case R.id.close_button:
+        offlineModeDialogListener.onCloseOfflineDialogClicked();
+        break;
+
     }
-  }
-
-
-  private void updateStatus()
-  {
-
   }
 
 
@@ -327,7 +350,7 @@ public class OfflineModeDialogFragment extends DialogFragment implements View.On
 
   public interface OfflineModeDialogListener{
     void onOfflineModeSwitchToggled(boolean isChecked);
-    void closeOfflineModeDialog(View view);
+    void onCloseOfflineDialogClicked();
   }
 
 
