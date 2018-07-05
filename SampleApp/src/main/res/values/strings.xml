@@ -120,6 +120,7 @@
     <string name="get_offline_status">Get Offline Status</string>
     <string name="stop_replay">Stop Replay</string>
     <string name="replay_offline_transaction">Replay Offline Transaction</string>
+    <string name="offline_payment_successful">Offline Payment\nSuccessful</string>
 
 
 </resources>

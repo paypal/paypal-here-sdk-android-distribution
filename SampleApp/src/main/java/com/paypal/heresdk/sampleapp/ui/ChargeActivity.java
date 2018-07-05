@@ -49,6 +49,8 @@ public class ChargeActivity extends Activity implements OfflineModeDialogFragmen
     OptionsDialogFragment optionsDialogFragment;
     OfflineModeDialogFragment offlineModeDialogFragment;
 
+    private boolean isOfflineModeEnabled;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +157,7 @@ public class ChargeActivity extends Activity implements OfflineModeDialogFragmen
     }
 
 
+
     public void onCreateTransactionClicked(View view)
     {
         Log.d(LOG_TAG, "onCreateTransactionClicked");
@@ -257,10 +260,12 @@ public class ChargeActivity extends Activity implements OfflineModeDialogFragmen
 
     }
 
+    @Override
     public void closeOptionsDialog(View view){
         optionsDialogFragment.dismiss();
     }
 
+    @Override
     public void closeOfflineModeDialog(View view){
         offlineModeDialogFragment.dismiss();
 
@@ -287,7 +292,10 @@ public class ChargeActivity extends Activity implements OfflineModeDialogFragmen
     }
 
     void transactionCompleted(RetailSDKException error, final TransactionRecord record) {
-        if (error != null) {
+        if (isOfflineModeEnabled){
+            goToOfflinePayCompleteActivity();
+        }
+        else if (error != null) {
             final String errorTxt = error.toString();
             this.runOnUiThread(new Runnable() {
                 @Override
@@ -314,6 +322,15 @@ public class ChargeActivity extends Activity implements OfflineModeDialogFragmen
             });
         }
     }
+
+
+    private void goToOfflinePayCompleteActivity()
+    {
+        Intent intent = new Intent(ChargeActivity.this,OfflinePaySuccessActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
 
     public void goToAuthCaptureActivity(TransactionRecord record){
         Log.d(LOG_TAG, "goToAuthCaptureActivity");
@@ -367,69 +384,12 @@ public class ChargeActivity extends Activity implements OfflineModeDialogFragmen
     }
 
 
-    public void onGetOfflineStatusClicked(View view)
-    {
-        RetailSDK.getTransactionManager().getOfflinePaymentStatus(new TransactionManager.OfflinePaymentStatusCallback()
-        {
-            @Override
-            public void offlinePaymentStatus(RetailSDKException e, List<OfflinePaymentStatus> list)
-            {
-                Log.d("hg","gh");
-            }
-        });
-    }
 
+    @Override
+    public void onOfflineModeSwitchToggled(boolean isChecked){
 
-    public void onReplayOfflineTransactionClicked(View view)
-    {
-        RetailSDK.getTransactionManager().startReplayOfflineTxns(null);
-    }
+        isOfflineModeEnabled = isChecked;
 
-
-    public void onStopReplayClicked(View view)
-    {
-        RetailSDK.getTransactionManager().stopReplayOfflineTxns(null);
-    }
-
-
-    public void viewCode(View view)
-    {
-        int id = view.getId();
-        switch (id)
-        {
-            case R.id.view_code_get_offline_status:
-                if (offlineModeDialogFragment.isGetOfflineStatusCodeVisible())
-                {
-                    offlineModeDialogFragment.hideOfflineStatusCode();
-                }
-                else
-                {
-                    offlineModeDialogFragment.showOfflineStatusCode();
-                }
-                break;
-            case R.id.view_code_replay_offline_txn:
-                if (offlineModeDialogFragment.isReplayOfflineTxnVisible())
-                {
-                    offlineModeDialogFragment.hideReplayCode();
-                }
-                else
-                {
-                    offlineModeDialogFragment.showReplayCode();
-                }
-                break;
-            case R.id.view_code_stop_replay:
-                if (offlineModeDialogFragment.isStopReplayCodeVisible())
-                {
-                    offlineModeDialogFragment.hideStopReplayCode();
-                }
-                else
-                {
-                    offlineModeDialogFragment.showStopReplayCode();
-                }
-                break;
-
-
-        }
 
     }
 

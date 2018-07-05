@@ -68,7 +68,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:onClick="onGetOfflineStatusClicked"
                     android:orientation="horizontal">
 
                     <TextView
@@ -111,7 +110,6 @@
                     android:text="@string/view_code"
                     android:textColor="@color/sdk_white"
                     android:textSize="15sp"
-                    android:onClick="viewCode"
                     />
 
                 </LinearLayout>
@@ -143,7 +141,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:onClick="onReplayOfflineTransactionClicked"
                     android:orientation="horizontal">
 
                     <TextView
@@ -151,20 +148,33 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:onClick="onReplayOfflineTransactionClicked"
                         android:shadowColor="@android:color/white"
                         android:shadowRadius="5.0"
                         android:text="@string/replay_offline_transaction"
                         android:textColor="@color/sdk_blue"
                         android:textSize="20sp" />
 
-                    <ImageView
+                    <RelativeLayout
+                        android:id="@+id/progress_container"
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
                         android:id="@+id/replay_arrow_image"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="15dp"
+                        android:layout_centerInParent="true"
                         android:src="@drawable/small_bluearrow" />
+                        <ProgressBar
+                            android:id="@+id/progress"
+                            style="?android:attr/progressBarStyleSmall"
+                            android:visibility="gone"
+                            android:layout_centerInParent="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
 
 
                 </LinearLayout>
@@ -187,7 +197,6 @@
                         android:text="@string/view_code"
                         android:textColor="@color/sdk_white"
                         android:textSize="15sp"
-                        android:onClick="viewCode"
                         />
 
                 </LinearLayout>
@@ -218,8 +227,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:onClick="onStopReplayClicked"
-                    android:clickable="false"
                     android:orientation="horizontal">
 
                     <TextView
@@ -227,10 +234,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:onClick="onStopReplayClicked"
                         android:shadowColor="@android:color/white"
                         android:shadowRadius="5.0"
                         android:text="@string/stop_replay"
+                        android:clickable="false"
                         android:textColor="@color/sdk_dark_gray"
                         android:textSize="20sp" />
 
@@ -263,7 +270,6 @@
                         android:text="@string/view_code"
                         android:textColor="@color/sdk_white"
                         android:textSize="15sp"
-                        android:onClick="viewCode"
                         />
 
                 </LinearLayout>
