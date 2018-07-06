@@ -1,6 +1,8 @@
 package com.paypal.heresdk.sampleapp.ui;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.paypalretailsdk.OfflinePaymentStatus;
+import com.paypal.paypalretailsdk.OfflineTransactionState;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.TransactionManager;
@@ -135,6 +138,7 @@ public class OfflineModeDialogFragment extends DialogFragment implements View.On
 
     }
 
+    getOfflineStatus();
 
     return view;
 
@@ -242,26 +246,7 @@ public class OfflineModeDialogFragment extends DialogFragment implements View.On
     int id = v.getId();
     switch (id){
       case R.id.txt_get_offline_status:
-        RetailSDK.getTransactionManager().getOfflinePaymentStatus(new TransactionManager.OfflinePaymentStatusCallback()
-        {
-          @Override
-          public void offlinePaymentStatus(RetailSDKException e, List<OfflinePaymentStatus> list)
-          {
-            int size = 0;
-            if (list!=null){
-              size = list.size();
-            }
-            final int finalSize = size;
-            getActivity().runOnUiThread(new Runnable()
-            {
-              @Override
-              public void run()
-              {
-                statusText.setText("Status\nPending offline transactions : " + finalSize);
-              }
-            });
-          }
-        });
+        getOfflineStatus();
         break;
       case R.id.txt_replay_offline_txn:
         replayInProgress = true;
@@ -271,6 +256,7 @@ public class OfflineModeDialogFragment extends DialogFragment implements View.On
           public void offlinePaymentStatus(RetailSDKException e, List<OfflinePaymentStatus> list)
           {
             replayInProgress = false;
+            final String toPrint = getStringToPrint(list);
             getActivity().runOnUiThread(new Runnable()
             {
               @Override
@@ -279,6 +265,8 @@ public class OfflineModeDialogFragment extends DialogFragment implements View.On
                 startReplayOptionEnabledState();
                 stopReplayOptionDisabledState();
                 enableSwitch();
+                statusText.setText(toPrint);
+
 
               }
             });
@@ -334,6 +322,82 @@ public class OfflineModeDialogFragment extends DialogFragment implements View.On
         break;
 
     }
+  }
+
+
+  private void getOfflineStatus()
+  {
+    RetailSDK.getTransactionManager().getOfflinePaymentStatus(new TransactionManager.OfflinePaymentStatusCallback()
+    {
+      @Override
+      public void offlinePaymentStatus(RetailSDKException e, List<OfflinePaymentStatus> list)
+      {
+
+
+        final String toPrint = getStringToPrint(list);
+        getActivity().runOnUiThread(new Runnable()
+        {
+          @Override
+          public void run()
+          {
+            statusText.setText(toPrint);
+          }
+        });
+      }
+    });
+  }
+
+
+  private String getStringToPrint(List<OfflinePaymentStatus> list)
+  {
+    String toPrint = "No pending offline transactions";
+    if(list!=null && list.size()>0){
+      toPrint = "Status\n";
+      HashMap<OfflineTransactionState,Integer> statusMap = new HashMap<>();
+      statusMap.put(OfflineTransactionState.Active,0);
+      statusMap.put(OfflineTransactionState.Completed,0);
+      statusMap.put(OfflineTransactionState.Declined,0);
+      statusMap.put(OfflineTransactionState.Deleted,0);
+      statusMap.put(OfflineTransactionState.Failed,0);
+      for (OfflinePaymentStatus status:list){
+        OfflineTransactionState state = status.getState();
+        if (statusMap.containsKey(state)){
+          int count = statusMap.get(state);
+          statusMap.put(state,count+1);
+        }
+        else{
+          statusMap.put(state,1);
+        }
+      }
+
+      Set<OfflineTransactionState> keys = statusMap.keySet();
+      for(OfflineTransactionState offlineTransactionState : keys){
+        String stateString = getStateString(offlineTransactionState);
+        int count = statusMap.get(offlineTransactionState);
+        toPrint += stateString + " : " + count + "\n";
+      }
+
+
+    }
+    return toPrint;
+  }
+
+
+  private String getStateString(OfflineTransactionState state){
+
+    switch (state){
+      case Active:
+        return "Active";
+      case Completed:
+        return "Completed";
+      case Failed:
+        return "Failed";
+      case Declined:
+        return "Declined";
+      case Deleted:
+        return "Deleted";
+    }
+    return "";
   }
 
 
