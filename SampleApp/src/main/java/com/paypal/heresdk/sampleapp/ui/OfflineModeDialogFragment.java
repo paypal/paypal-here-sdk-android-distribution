@@ -3,35 +3,25 @@ package com.paypal.heresdk.sampleapp.ui;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
 import android.app.Activity;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.view.Window;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.paypalretailsdk.OfflinePaymentStatus;
 import com.paypal.paypalretailsdk.OfflineTransactionState;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.TransactionManager;
-import org.w3c.dom.Text;
 
 
 public class OfflineModeDialogFragment extends DialogFragment implements View.OnClickListener
@@ -81,7 +71,7 @@ public class OfflineModeDialogFragment extends DialogFragment implements View.On
                            Bundle savedInstanceState)
   {
     View view = inflater.inflate(R.layout.fragment_offline_mode_dialog, container, false);
-
+    getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     getOfflineStatusCode = (TextView) view.findViewById(R.id.get_offline_status_code);
     replayOfflineStatusCode = (TextView) view.findViewById(R.id.replay_offline_transaction_code);
     stopReplayCode = (TextView) view.findViewById(R.id.stop_replay_code);

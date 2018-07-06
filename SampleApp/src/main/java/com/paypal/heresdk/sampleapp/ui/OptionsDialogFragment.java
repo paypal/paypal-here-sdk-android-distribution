@@ -2,18 +2,13 @@ package com.paypal.heresdk.sampleapp.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -79,6 +74,7 @@ public class OptionsDialogFragment extends DialogFragment implements CompoundBut
                            Bundle savedInstanceState)
   {
     View view = inflater.inflate(R.layout.fragment_options_dialog, container, false);
+    getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     authCaptureSwitch = (Switch) view.findViewById(R.id.auth_capture_switch);
     authCaptureSwitch.setOnCheckedChangeListener(this);
     cardReaderPromptSwitch = (Switch) view.findViewById(R.id.show_prompt_card_reader_switch);
