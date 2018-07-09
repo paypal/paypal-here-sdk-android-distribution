@@ -95,6 +95,32 @@
     <string name="beginRefund">currentTransaction.beginRefund(Boolean cardPresent, BigDecimal amount)</string>
     <string name="void_auth">RetailSDK.voidAuthorization(String autId, RetailSDK.VoidAuthorizationHandler handler) </string>
     <string name="capture_auth">RetailSDK.captureAuthorization(String authId, String invoiceId, BigDecimal totalAmount, BigDecimal gratuityAmount, String currency, RetailSDK.CaptureAuthorizationHandler handler)</string>
+    <string name="payment_options">Payment Options</string>
+    <string name="offline_mode">Offline Mode</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="preferred_form_factors">Preferred Form Factors:</string>
+    <string name="magnetic_swipe">Magnetic Swipe</string>
+    <string name="chip">Chip</string>
+    <string name="contactless">Contactless</string>
+    <string name="secure_manual">Secure Manual</string>
+    <string name="manual_card">Manual Card</string>
+    <string name="close">Close</string>
+    <string name="auth_capture">Auth/Capture</string>
+    <string name="show_prompt_in_card_reader">Show prompt in card reader</string>
+    <string name="show_prompt_in_app">Show prompt in app</string>
+    <string name="tipping_on_reader">Tipping on reader</string>
+    <string name="amount_based_tipping">Amount based tipping</string>
+    <string name="tag">Tag</string>
+    <string name="view_code">View Code</string>
+    <string name="get_offline_status_code">RetailSDK.getTransactionManager().getOfflinePaymentStatus(OfflinePaymentStatusCallback callback)</string>
+    <string name="replay_offline_transaction_code">RetailSDK.getTransactionManager().startReplayOfflineTxns (OfflinePaymentStatusCallback callback)</string>
+    <string name="stop_replay_code">RetailSDK.getTransactionManager().stopReplayOfflineTxns (OfflinePaymentStatusCallback callback)</string>
+    <string name="get_offline_status">Get Offline Status</string>
+    <string name="stop_replay">Stop Replay</string>
+    <string name="replay_offline_transaction">Replay Offline Transaction</string>
+    <string name="offline_payment_successful">Offline Payment\nSuccessful</string>
 
 
 </resources>

@@ -44,47 +44,39 @@
             android:id="@+id/selection"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:orientation="vertical"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="2"
             android:layout_below="@+id/upBanner"
+            android:textAllCaps="false"
             android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/activity_vertical_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
         >
 
-            <RadioGroup
-                android:id="@+id/radioGroup"
-                android:layout_width="150dp"
+            <Button
+                android:id="@+id/payment_options"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                android:orientation="horizontal" >
+                android:text="@string/payment_options"
+                android:textColor="@color/sdk_white"
+                android:layout_weight="1"
+                android:onClick="onPaymentOptionsClicked"
+                android:background="@drawable/blue_btn_selector"
+                />
+            <Button
+                android:id="@+id/offline_mode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/offline_mode"
+                android:textColor="@color/sdk_white"
+                android:layout_weight="1"
+                android:onClick="onOfflineModeClicked"
+                android:background="@drawable/blue_btn_selector"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                />
 
-                <RadioButton
-                    android:id="@+id/radioSale"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/rbtn_selector_left"
-                    android:button="@null"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="Sale"
-                    android:textColor="@drawable/rbtn_textcolor_selector" />
-
-                <RadioButton
-                    android:id="@+id/radioAuthCapture"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/rbtn_selector_right"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="Auth"
-                    android:textColor="@drawable/rbtn_textcolor_selector" />
-            </RadioGroup>
 
         </LinearLayout>
 

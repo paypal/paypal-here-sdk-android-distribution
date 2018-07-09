@@ -2,6 +2,7 @@ package com.paypal.heresdk.sampleapp.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,13 +13,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.heresdk.sampleapp.login.LoginActivity;
 import com.paypal.paypalretailsdk.DeviceUpdate;
 import com.paypal.paypalretailsdk.Invoice;
+import com.paypal.paypalretailsdk.OfflinePaymentStatus;
 import com.paypal.paypalretailsdk.PaymentDevice;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
@@ -28,12 +29,12 @@ import com.paypal.paypalretailsdk.TransactionManager;
 import com.paypal.paypalretailsdk.TransactionRecord;
 
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @EActivity
-public class ChargeActivity extends Activity
+public class ChargeActivity extends Activity implements OfflineModeDialogFragment.OfflineModeDialogListener, OptionsDialogFragment.OptionsDialogListener
 {
     private static final String LOG_TAG = ChargeActivity.class.getSimpleName();
     public static final String INTENT_TRANX_TOTAL_AMOUNT = "TOTAL_AMOUNT";
@@ -44,8 +45,11 @@ public class ChargeActivity extends Activity
     Invoice currentInvoice;
     Invoice invoiceForRefund;
 
-    @ViewById
-    RadioButton radioAuthCapture;
+
+    OptionsDialogFragment optionsDialogFragment;
+    OfflineModeDialogFragment offlineModeDialogFragment;
+
+    private boolean isOfflineModeEnabled;
 
 
     @Override
@@ -53,8 +57,10 @@ public class ChargeActivity extends Activity
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate");
         setContentView(R.layout.transaction_activity);
+        optionsDialogFragment = new OptionsDialogFragment();
+        offlineModeDialogFragment = new OfflineModeDialogFragment();
 
-        radioAuthCapture = ((RadioButton) findViewById(R.id.radioAuthCapture));
+
     }
 
     @Override
@@ -151,6 +157,7 @@ public class ChargeActivity extends Activity
     }
 
 
+
     public void onCreateTransactionClicked(View view)
     {
         Log.d(LOG_TAG, "onCreateTransactionClicked");
@@ -219,6 +226,51 @@ public class ChargeActivity extends Activity
         }
     }
 
+    public void onPaymentOptionsClicked(View view){
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if (optionsDialogFragment==null){
+
+           optionsDialogFragment = new OptionsDialogFragment();
+        }
+        if (optionsDialogFragment.isAdded()){
+            ft.show(optionsDialogFragment);
+        }else
+        {
+            optionsDialogFragment.show(ft, "OptionsDialogFragment");
+        }
+
+
+    }
+    public void onOfflineModeClicked(View view){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if (offlineModeDialogFragment==null)
+        {
+
+            offlineModeDialogFragment = new OfflineModeDialogFragment();
+        }
+        if (offlineModeDialogFragment.isAdded()){
+            ft.show(offlineModeDialogFragment);
+        }else
+        {
+            offlineModeDialogFragment.show(ft, "OfflineModeDialogFragment");
+        }
+
+
+
+    }
+
+    @Override
+    public void onCloseOptionsDialogClicked(){
+        optionsDialogFragment.dismiss();
+    }
+
+    @Override
+    public void onCloseOfflineDialogClicked(){
+        offlineModeDialogFragment.dismiss();
+
+    }
+
     private void beginPayment()
     {
         currentTransaction.setCompletedHandler(new TransactionContext.TransactionCompletedCallback() {
@@ -229,29 +281,41 @@ public class ChargeActivity extends Activity
         });
 
         TransactionBeginOptions options = new TransactionBeginOptions();
-        options.setShowPromptInCardReader(true);
-        options.setShowPromptInApp(true);
-        options.setIsAuthCapture(radioAuthCapture.isChecked());
+        options.setShowPromptInCardReader(optionsDialogFragment.isCardPreaderPromptEnabled());
+        options.setShowPromptInApp(optionsDialogFragment.isAppPromptSwitchEnabled());
+        options.setIsAuthCapture(optionsDialogFragment.isAuthCaptureEnabled());
+        options.setAmountBasedTipping(optionsDialogFragment.isAmountBasedTippingEnabled());
+        options.setTippingOnReaderEnabled(optionsDialogFragment.isTippingOnReaderEnabled());
+        options.setTag(optionsDialogFragment.getTagValue());
+        options.setPreferredFormFactors(optionsDialogFragment.getPreferredFormFactors());
         currentTransaction.beginPayment(options);
     }
 
     void transactionCompleted(RetailSDKException error, final TransactionRecord record) {
         if (error != null) {
             final String errorTxt = error.toString();
-            this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(getApplicationContext(), "transaction error: " + errorTxt, Toast.LENGTH_SHORT).show();
-                    //refundButton.setEnabled(false);
-                }
-            });
+
+            if (errorTxt.toLowerCase().contains("offline payment enabled")){
+                goToOfflinePayCompleteActivity();
+            }else
+            {
+                this.runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        Toast.makeText(getApplicationContext(), "transaction error: " + errorTxt, Toast.LENGTH_SHORT).show();
+                        //refundButton.setEnabled(false);
+                    }
+                });
+            }
         } else {
             invoiceForRefund = currentTransaction.getInvoice();
             final String recordTxt =  record.getTransactionNumber();
             this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (radioAuthCapture.isChecked()) {
+                    if (optionsDialogFragment.isAuthCaptureEnabled()) {
                         goToAuthCaptureActivity(record);
                     }
                     else
@@ -263,6 +327,15 @@ public class ChargeActivity extends Activity
             });
         }
     }
+
+
+    private void goToOfflinePayCompleteActivity()
+    {
+        Intent intent = new Intent(ChargeActivity.this,OfflinePaySuccessActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
 
     public void goToAuthCaptureActivity(TransactionRecord record){
         Log.d(LOG_TAG, "goToAuthCaptureActivity");
@@ -314,4 +387,16 @@ public class ChargeActivity extends Activity
         });
         builder.create().show();
     }
+
+
+
+    @Override
+    public void onOfflineModeSwitchToggled(boolean isChecked){
+
+        isOfflineModeEnabled = isChecked;
+
+
+    }
+
+
 }
