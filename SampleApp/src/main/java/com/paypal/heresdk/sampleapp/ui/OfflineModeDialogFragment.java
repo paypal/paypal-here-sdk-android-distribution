@@ -341,31 +341,41 @@ public class OfflineModeDialogFragment extends DialogFragment implements View.On
   private String getStringToPrint(List<OfflinePaymentStatus> list)
   {
     String toPrint = "No pending offline transactions";
+    int activeTransactionsCount = 0;
+    int completedTransactionsCount = 0;
+    int declinedTransactionsCount = 0;
+    int deletedTransactionsCount = 0;
+    int failedTransactionsCount = 0;
     if(list!=null && list.size()>0){
       toPrint = "Status\n";
-      HashMap<OfflineTransactionState,Integer> statusMap = new HashMap<>();
-      statusMap.put(OfflineTransactionState.Active,0);
-      statusMap.put(OfflineTransactionState.Completed,0);
-      statusMap.put(OfflineTransactionState.Declined,0);
-      statusMap.put(OfflineTransactionState.Deleted,0);
-      statusMap.put(OfflineTransactionState.Failed,0);
       for (OfflinePaymentStatus status:list){
         OfflineTransactionState state = status.getState();
-        if (statusMap.containsKey(state)){
-          int count = statusMap.get(state);
-          statusMap.put(state,count+1);
-        }
-        else{
-          statusMap.put(state,1);
-        }
+          switch (state){
+            case Active:
+              activeTransactionsCount += 1;
+              break;
+            case Completed:
+              completedTransactionsCount += 1;
+              break;
+            case Declined:
+              declinedTransactionsCount += 1;
+              break;
+            case Deleted:
+              deletedTransactionsCount += 1;
+              break;
+            case Failed:
+              failedTransactionsCount += 1;
+              break;
+
+          }
       }
 
-      Set<OfflineTransactionState> keys = statusMap.keySet();
-      for(OfflineTransactionState offlineTransactionState : keys){
-        String stateString = getStateString(offlineTransactionState);
-        int count = statusMap.get(offlineTransactionState);
-        toPrint += stateString + " : " + count + "\n";
-      }
+      toPrint += "Active : " + activeTransactionsCount + "\n"
+                + "Completed : " + completedTransactionsCount + "\n"
+                + "Declined : " + declinedTransactionsCount + "\n"
+                + "Deleted : " + deletedTransactionsCount + "\n"
+                + "Failed : " + failedTransactionsCount;
+
 
 
     }
@@ -373,22 +383,6 @@ public class OfflineModeDialogFragment extends DialogFragment implements View.On
   }
 
 
-  private String getStateString(OfflineTransactionState state){
-
-    switch (state){
-      case Active:
-        return "Active";
-      case Completed:
-        return "Completed";
-      case Failed:
-        return "Failed";
-      case Declined:
-        return "Declined";
-      case Deleted:
-        return "Deleted";
-    }
-    return "";
-  }
 
 
   private void enableSwitch()
