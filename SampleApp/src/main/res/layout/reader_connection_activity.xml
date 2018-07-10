@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/main_layout"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <LinearLayout
+            android:layout_alignParentTop="true"
             android:id="@+id/upBanner"
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -41,16 +37,30 @@
         </LinearLayout>
 
 
+    <!-- connect, connect last reader, autoconnect container -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/upBanner"
+        android:layout_above="@+id/readerIdLayout"
+        >
+        <LinearLayout
+            android:id="@+id/main_layout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
         <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_above="@+id/bottomBanner"
         android:layout_below="@+id/selection"
-        android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/xxxlarge">
+        android:paddingTop="@dimen/activity_horizontal_margin">
 
         <TextView
             android:layout_width="wrap_content"
@@ -146,7 +156,7 @@
         android:layout_below="@+id/initSdk"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/findConnectCode"
@@ -156,7 +166,7 @@
             android:textSize="@dimen/regular"
             android:text="@string/device_find_connect"
             android:padding="@dimen/large"
-            android:visibility="gone"/>
+            android:visibility="invisible"/>
     </LinearLayout>
 
     <LinearLayout
@@ -267,54 +277,127 @@
             android:textSize="@dimen/regular"
             android:text="@string/device_connect_last"
             android:padding="@dimen/large"
-            android:visibility="gone" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/readerIdLayout"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:textStyle="bold"
-            android:text="Connected:"
-            android:textSize="@dimen/large"
-            android:padding="@dimen/large" />
-        <TextView
-            android:id="@+id/textReaderId"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:text="ReaderId"
-            android:textSize="@dimen/large"
-            android:padding="@dimen/large"  />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.0"
-        android:layout_gravity="center"
-        android:layout_alignParentBottom="true">
-
-        <TextView
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:textSize="@dimen/large"
-            android:padding="@dimen/large"  />
+            android:visibility="invisible" />
     </LinearLayout>
 
 
+        <!-- Auto connect container -->
+        <LinearLayout
+            android:id="@+id/autoConnect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="@dimen/small"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="190dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:shadowColor="@android:color/white"
+                            android:shadowRadius="5.0"
+                            android:layout_marginLeft="15dp"
+                            android:text="Auto Connect"
+                            android:textColor="@color/sdk_blue"
+                            android:textSize="20sp"
+                            android:id="@+id/auto_connect_text"
+                            android:onClick="onAutoConnectClicked"/>
+
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/small_bluearrow" />
+
+                    <ProgressBar
+                        android:id="@+id/auto_connect_progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"
+                        android:layout_marginLeft="16dp"
+                        android:layout_gravity="center_vertical"
+                        style="?android:attr/progressBarStyleSmall"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="@dimen/small"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/rect_view_code"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center"
+                        android:shadowColor="@android:color/white"
+                        android:shadowRadius="5.0"
+                        android:text="View Code"
+                        android:textColor="@color/sdk_white"
+                        android:textSize="15sp"
+                        android:onClick="onAutoConnectViewCodeClicked"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/auto_connect_code"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:background="@color/sdk_grey"
+                android:textSize="@dimen/regular"
+                android:text="@string/auto_connect_code"
+                android:padding="@dimen/large"
+                android:visibility="invisible" />
+        </LinearLayout>
+        <!-- Auto connect container end -->
+
+
+
+
+    </LinearLayout>
+    </ScrollView>
+
+
+
+    <!-- Run transactions button -->
     <LinearLayout
         android:id="@+id/bottomBanner"
         android:orientation="horizontal"
@@ -344,7 +427,34 @@
             android:onClick="onRunTransactionClicked"/>
     </LinearLayout>
 
+    <!-- "Connected to : " container -->
+    <LinearLayout
+        android:id="@+id/readerIdLayout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_above="@id/bottomBanner"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:text="Connected:"
+            android:textSize="@dimen/large"
+            android:padding="@dimen/large" />
+        <TextView
+            android:id="@+id/textReaderId"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:text="ReaderId"
+            android:textSize="@dimen/large"
+            android:padding="@dimen/large"  />
     </LinearLayout>
 
-</LinearLayout>
+
+</RelativeLayout>
 
