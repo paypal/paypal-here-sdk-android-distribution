@@ -165,35 +165,25 @@ public class ReaderConnectionActivity extends Activity
     startActivity(loginIntent);
   }
 
-  public void onAutoConnectClicked(View view){
+  public void onAutoConnectClicked(View view) {
 
-    final ProgressBar autoConnectProgress = (ProgressBar)findViewById(R.id.auto_connect_progress);
+    final ProgressBar autoConnectProgress = (ProgressBar) findViewById(R.id.auto_connect_progress);
     autoConnectProgress.setVisibility(View.VISIBLE);
     String lastKnowReader = RetailSDK.getDeviceManager().getLastActiveBluetoothReader();
-    if (lastKnowReader != null){
-      RetailSDK.getDeviceManager().scanAndAutoConnectToBluetoothReader(lastKnowReader, new DeviceManager.ConnectionCallback()
-      {
+    RetailSDK.getDeviceManager().scanAndAutoConnectToBluetoothReader(lastKnowReader, new DeviceManager.ConnectionCallback() {
         @Override
-        public void connection(final RetailSDKException error, final PaymentDevice cardReader)
-        {
-          ReaderConnectionActivity.this.runOnUiThread(new Runnable()
-          {
+        public void connection(final RetailSDKException error, final PaymentDevice cardReader) {
+          ReaderConnectionActivity.this.runOnUiThread(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
               autoConnectProgress.setVisibility(View.INVISIBLE);
-              if (error == null && cardReader != null)
-              {
+              if (error == null && cardReader != null) {
                 Toast.makeText(getApplicationContext(), "Connected to last active device " + cardReader.getId(), Toast.LENGTH_SHORT).show();
                 onReaderConnected(cardReader);
-              }
-              else if (error != null)
-              {
+              } else if (error != null) {
                 Toast.makeText(getApplicationContext(), "Connection to a reader failed with error: " + error, Toast.LENGTH_SHORT).show();
                 Log.e(LOG_TAG, "Connection to a reader failed with error: " + error);
-              }
-              else
-              {
+              } else {
                 Toast.makeText(getApplicationContext(), "Could not find the last card reader to connect to", Toast.LENGTH_SHORT).show();
                 Log.d(LOG_TAG, "Could not find the last card reader to connect to");
               }
@@ -202,13 +192,6 @@ public class ReaderConnectionActivity extends Activity
 
         }
       });
-    }else{
-      autoConnectProgress.setVisibility(View.INVISIBLE);
-      Toast.makeText(getApplicationContext(), "Could not find the last card reader to connect to", Toast.LENGTH_SHORT).show();
-
-    }
-
-
   }
 
   public void onAutoConnectViewCodeClicked(View view){
