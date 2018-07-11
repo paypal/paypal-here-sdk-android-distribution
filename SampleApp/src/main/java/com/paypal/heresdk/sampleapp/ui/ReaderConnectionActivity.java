@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.paypal.heresdk.sampleapp.R;
@@ -46,13 +47,13 @@ public class ReaderConnectionActivity extends Activity
   {
     final TextView txtFindConnectCode = (TextView) findViewById(R.id.findConnectCode);
 
-    if (txtFindConnectCode.getVisibility() == View.GONE)
+    if (txtFindConnectCode.getVisibility() == View.INVISIBLE)
     {
       txtFindConnectCode.setVisibility(View.VISIBLE);
     }
     else
     {
-      txtFindConnectCode.setVisibility(View.GONE);
+      txtFindConnectCode.setVisibility(View.INVISIBLE);
     }
   }
 
@@ -61,13 +62,13 @@ public class ReaderConnectionActivity extends Activity
   {
     final TextView txtConnectLast = (TextView) findViewById(R.id.connectLastReaderCode);
 
-    if (txtConnectLast.getVisibility() == View.GONE)
+    if (txtConnectLast.getVisibility() == View.INVISIBLE)
     {
       txtConnectLast.setVisibility(View.VISIBLE);
     }
     else
     {
-      txtConnectLast.setVisibility(View.GONE);
+      txtConnectLast.setVisibility(View.INVISIBLE);
     }
   }
 
@@ -162,5 +163,60 @@ public class ReaderConnectionActivity extends Activity
     Intent loginIntent = new Intent(ReaderConnectionActivity.this, LoginActivity.class);
     loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     startActivity(loginIntent);
+  }
+
+  public void onAutoConnectClicked(View view){
+
+    final ProgressBar autoConnectProgress = (ProgressBar)findViewById(R.id.auto_connect_progress);
+    autoConnectProgress.setVisibility(View.VISIBLE);
+    String lastKnowReader = RetailSDK.getDeviceManager().getLastActiveBluetoothReader();
+    if (lastKnowReader != null){
+      RetailSDK.getDeviceManager().scanAndAutoConnectToBluetoothReader(lastKnowReader, new DeviceManager.ConnectionCallback()
+      {
+        @Override
+        public void connection(final RetailSDKException error, final PaymentDevice cardReader)
+        {
+          ReaderConnectionActivity.this.runOnUiThread(new Runnable()
+          {
+            @Override
+            public void run()
+            {
+              autoConnectProgress.setVisibility(View.INVISIBLE);
+              if (error == null && cardReader != null)
+              {
+                Toast.makeText(getApplicationContext(), "Connected to last active device " + cardReader.getId(), Toast.LENGTH_SHORT).show();
+                onReaderConnected(cardReader);
+              }
+              else if (error != null)
+              {
+                Toast.makeText(getApplicationContext(), "Connection to a reader failed with error: " + error, Toast.LENGTH_SHORT).show();
+                Log.e(LOG_TAG, "Connection to a reader failed with error: " + error);
+              }
+              else
+              {
+                Toast.makeText(getApplicationContext(), "Could not find the last card reader to connect to", Toast.LENGTH_SHORT).show();
+                Log.d(LOG_TAG, "Could not find the last card reader to connect to");
+              }
+            }
+          });
+
+        }
+      });
+    }else{
+      autoConnectProgress.setVisibility(View.INVISIBLE);
+      Toast.makeText(getApplicationContext(), "Could not find the last card reader to connect to", Toast.LENGTH_SHORT).show();
+
+    }
+
+
+  }
+
+  public void onAutoConnectViewCodeClicked(View view){
+    final TextView autoConnectCode = (TextView)findViewById(R.id.auto_connect_code);
+    if (autoConnectCode.getVisibility() == View.VISIBLE){
+      autoConnectCode.setVisibility(View.INVISIBLE);
+    }else{
+      autoConnectCode.setVisibility(View.VISIBLE);
+    }
   }
 }
