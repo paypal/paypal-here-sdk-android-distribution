@@ -13,26 +13,32 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.heresdk.sampleapp.ui.ReaderConnectionActivity;
+import com.paypal.heresdk.sampleapp.ui.StepView;
 import com.paypal.paypalretailsdk.AppInfo;
 import com.paypal.paypalretailsdk.Merchant;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.SdkCredential;
 
-public class LoginActivity extends Activity
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener
 {
   private static final String LOG_TAG = LoginActivity.class.getSimpleName();
   public static final String PREFS_NAME = "SDKSampleAppPreferences";
@@ -48,6 +54,10 @@ public class LoginActivity extends Activity
   private ProgressDialog mProgressDialog = null;
   private RadioGroup radioGroup1;
 
+  private StepView step1;
+  private StepView step2;
+
+  private Button connectButton;
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -55,6 +65,12 @@ public class LoginActivity extends Activity
     super.onCreate(savedInstanceState);
     Log.d(LOG_TAG, "onCreate");
     setContentView(R.layout.login_activity);
+
+    Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
+    getSupportActionBar().setDisplayShowTitleEnabled(false);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
 
@@ -78,67 +94,32 @@ public class LoginActivity extends Activity
       }
     });
 
-    final TextView txtInitSDKView = (TextView) findViewById(R.id.txtInitSDK);
-    final TextView initSDKCodeView = (TextView) findViewById(R.id.ViewCodeInitSDK);
-    final TextView txtInitSDKCodeView = (TextView) findViewById(R.id.txtInitSDKCode);
     final ImageView imgView = (ImageView) findViewById(R.id.imageBlueButton);
-    final TextView txtInitMerchantView = (TextView) findViewById(R.id.txtInitMerchant);
-
-    initSDKCodeView.setOnClickListener(new View.OnClickListener()
-    {
-      @Override
-      public void onClick(View v)
-      {
-        if (txtInitSDKCodeView.getVisibility() == View.GONE)
-        {
-          txtInitSDKCodeView.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-          txtInitSDKCodeView.setVisibility(View.GONE);
-        }
-      }
-    });
-
-    txtInitSDKView.setOnClickListener(new View.OnClickListener()
-    {
-      @Override
-      public void onClick(View v)
-      {
-        try
-        {
-          AppInfo info = new AppInfo("SampleApp", "1.0", "01");
-          RetailSDK.initialize(getApplicationContext(), new RetailSDK.AppState()
-          {
-            @Override
-            public Activity getCurrentActivity()
-            {
-              return LoginActivity.this;
-            }
+    connectButton = (Button) findViewById(R.id.connect_reader_button);
 
 
-            @Override
-            public boolean getIsTabletMode()
-            {
-              return false;
-            }
-          }, info);
-        }
-        catch (RetailSDKException e)
-        {
-          e.printStackTrace();
-        }
 
-        imgView.setImageResource(R.drawable.small_greenarrow);
-        imgView.setClickable(false);
-        txtInitSDKView.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
-        txtInitSDKView.setClickable(false);
 
-        txtInitMerchantView.setClickable(true);
-        txtInitMerchantView.setTextColor(getResources().getColor(R.color.sdk_blue));
+    step1 = (StepView)findViewById(R.id.step1);
+    step1.setStepEnabled();
+    step1.setOnButtonClickListener(this);
 
-      }
-    });
+    step2 = (StepView)findViewById(R.id.step2);
+    step2.setStepDisabled();
+    step2.setOnButtonClickListener(this);
+
+  }
+
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item)
+  {
+    int id  = item.getItemId();
+    if (id == android.R.id.home){
+      onBackPressed();
+      return true;
+    }
+    return false;
   }
 
 
@@ -150,21 +131,8 @@ public class LoginActivity extends Activity
   }
 
 
-  public void onViewCodeInitMerchantClicked(View view)
-  {
-    final TextView txtInitMerchantCodeView = (TextView) findViewById(R.id.txtInitMerchantCode);
 
-    if (txtInitMerchantCodeView.getVisibility() == View.GONE)
-    {
-      txtInitMerchantCodeView.setVisibility(View.VISIBLE);
-    }
-    else
-    {
-      txtInitMerchantCodeView.setVisibility(View.GONE);
-    }
-  }
-
-  public void onInitMerchantClicked(View view)
+  public void onInitMerchantClicked()
   {
     RadioButton sandboxButton = (RadioButton) findViewById(R.id.radioSandbox);
     RadioButton liveButton = (RadioButton) findViewById(R.id.radioLive);
@@ -260,8 +228,6 @@ public class LoginActivity extends Activity
   {
     Log.d(LOG_TAG, "startWebView url: " + url + " isSandbox: " + isSandBox + " isLive: " + isLive);
 
-    final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.main_layout);
-    mainLayout.setVisibility(View.GONE);
 
     final WebView webView = (WebView) findViewById(R.id.id_webView);
     webView.setVisibility(View.VISIBLE);
@@ -314,7 +280,6 @@ public class LoginActivity extends Activity
               initializeMerchant(credential);
             }
             webView.setVisibility(View.GONE);
-            mainLayout.setVisibility(View.VISIBLE);
             return true;
           }
         }
@@ -420,22 +385,13 @@ public class LoginActivity extends Activity
           Log.d(LOG_TAG, "merchantReady without any error");
           cancelProgressbar();
 
+          step2.setStepCompleted();
           final TextView txtMerchantEmail = (TextView) findViewById(R.id.merchant_email);
           txtMerchantEmail.setText(merchant.getEmailAddress());
+          final RelativeLayout logoutContainer = (RelativeLayout) findViewById(R.id.logout);
+          logoutContainer.setVisibility(View.VISIBLE);
+          connectButton.setVisibility(View.VISIBLE);
 
-          final TextView txtInitMerchantView = (TextView) findViewById(R.id.txtInitMerchant);
-          txtInitMerchantView.setClickable(false);
-          txtInitMerchantView.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
-
-          final ImageView imgView = (ImageView) findViewById(R.id.imageBlueButton2);
-          imgView.setImageResource(R.drawable.small_greenarrow);
-          imgView.setClickable(false);
-
-          final LinearLayout lnLayout = (LinearLayout) findViewById(R.id.logout);
-          lnLayout.setVisibility(View.VISIBLE);
-
-          final LinearLayout btmLayout = (LinearLayout) findViewById(R.id.bottomBanner);
-          btmLayout.setVisibility(View.VISIBLE);
         }
       });
     }
@@ -487,5 +443,45 @@ public class LoginActivity extends Activity
       mProgressDialog = null;
 
     }
+  }
+
+
+  @Override
+  public void onClick(View v)
+  {
+    if (v == step1.getButton()){
+      initSDK();
+    }else if(v == step2.getButton()){
+      onInitMerchantClicked();
+    }
+  }
+
+  public void initSDK()
+  {
+    try
+    {
+      AppInfo info = new AppInfo("SampleApp", "1.0", "01");
+      RetailSDK.initialize(getApplicationContext(), new RetailSDK.AppState()
+      {
+        @Override
+        public Activity getCurrentActivity()
+        {
+          return LoginActivity.this;
+        }
+
+
+        @Override
+        public boolean getIsTabletMode()
+        {
+          return false;
+        }
+      }, info);
+    }
+    catch (RetailSDKException e)
+    {
+      e.printStackTrace();
+    }
+    step1.setStepCompleted();
+    step2.setStepEnabled();
   }
 }

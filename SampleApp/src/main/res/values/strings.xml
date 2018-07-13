@@ -125,6 +125,11 @@
     <string name="demo_app">Demo App</string>
     <string name="sdk_v2_x">SDK v2.x</string>
     <string name="get_started">Get Started</string>
+    <string name="initial_setup">Initial Setup</string>
+    <string name="init_sdk_title">Initialize SDK</string>
+    <string name="step_1">Step 1</string>
+    <string name="step_2">Step 2</string>
+    <string name="init_merchant_title">Initialize merchant</string>
 
 
 </resources>

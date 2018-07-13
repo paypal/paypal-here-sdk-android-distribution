@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/blue_btn_radius"
+        android:layout_margin="@dimen/dp_32"
         android:background="@drawable/blue_btn_selector"
         android:onClick="onStartClicked"
         android:text="@string/get_started"

@@ -2,10 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-    <style name="SDKActionBarStyle" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse" tools:ignore="NewApi">
-        <item name="android:background">@color/sdk_actionbar_blue</item>
+    <style name="SDKActionBarStyle" parent="Theme.AppCompat.Light.NoActionBar" tools:ignore="NewApi">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
     </style>
+
 
     <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Medium">
         <item name="android:padding">0dp</item>
