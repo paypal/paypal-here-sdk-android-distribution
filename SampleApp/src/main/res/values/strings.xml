@@ -122,6 +122,9 @@
     <string name="replay_offline_transaction">Replay Offline Transaction</string>
     <string name="offline_payment_successful">Offline Payment\nSuccessful</string>
     <string name="auto_connect_code">DeviceManager.scanAndAutoConnectToBluetoothReader(String readerName, ConnectionCallback callback)</string>
+    <string name="demo_app">Demo App</string>
+    <string name="sdk_v2_x">SDK v2.x</string>
+    <string name="get_started">Get Started</string>
 
 
 </resources>
