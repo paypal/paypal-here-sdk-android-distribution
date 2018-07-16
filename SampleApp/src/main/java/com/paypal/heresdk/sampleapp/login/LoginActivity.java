@@ -32,13 +32,14 @@ import android.support.v7.widget.Toolbar;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.heresdk.sampleapp.ui.ReaderConnectionActivity;
 import com.paypal.heresdk.sampleapp.ui.StepView;
+import com.paypal.heresdk.sampleapp.ui.ToolbarActivity;
 import com.paypal.paypalretailsdk.AppInfo;
 import com.paypal.paypalretailsdk.Merchant;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.SdkCredential;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener
+public class LoginActivity extends ToolbarActivity implements View.OnClickListener
 {
   private static final String LOG_TAG = LoginActivity.class.getSimpleName();
   public static final String PREFS_NAME = "SDKSampleAppPreferences";
@@ -59,18 +60,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
   private Button connectButton;
 
+
+  // abstract method from ToolbarActivity
+  @Override
+  public int getLayoutResId()
+  {
+    return R.layout.login_activity;
+  }
+
+
   @Override
   protected void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     Log.d(LOG_TAG, "onCreate");
-    setContentView(R.layout.login_activity);
 
-    Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
-    getSupportActionBar().setDisplayShowTitleEnabled(false);
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
 
@@ -110,17 +114,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
   }
 
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item)
-  {
-    int id  = item.getItemId();
-    if (id == android.R.id.home){
-      onBackPressed();
-      return true;
-    }
-    return false;
-  }
 
 
   @Override
@@ -429,20 +422,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
   private void showProcessingProgressbar()
   {
-    mProgressDialog = new ProgressDialog(LoginActivity.this);
-    mProgressDialog.setMessage(getString(R.string.initializing_processing_msg));
-    mProgressDialog.show();
+    step2.showProgressBar();
+
   }
 
 
   private void cancelProgressbar()
   {
-    if (null != mProgressDialog && mProgressDialog.isShowing())
-    {
-      mProgressDialog.dismiss();
-      mProgressDialog = null;
-
-    }
+    step2.hideProgressBarShowTick();
   }
 
 

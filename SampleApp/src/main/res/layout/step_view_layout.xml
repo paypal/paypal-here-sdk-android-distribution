@@ -8,7 +8,6 @@
     <RelativeLayout
         android:id="@+id/row1"
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content">
 
         <TextView
@@ -16,12 +15,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/title"
             android:layout_centerVertical="true"
-            android:textSize="24sp"
-
+            android:textSize="20sp"
+            android:textColor="@color/sdk_black"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/btn_and_tick_container"
 
             />
 
         <RelativeLayout
+            android:id="@id/btn_and_tick_container"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
@@ -44,8 +46,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:visibility="gone"
                 android:src="@drawable/small_greenarrow"
                 />
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_centerInParent="true"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 
@@ -55,6 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/code_text"
+        android:textColor="@color/sdk_black"
         android:fontFamily="sans-serif-thin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         />

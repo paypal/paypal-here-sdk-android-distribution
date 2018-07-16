@@ -130,6 +130,12 @@
     <string name="step_1">Step 1</string>
     <string name="step_2">Step 2</string>
     <string name="init_merchant_title">Initialize merchant</string>
+    <string name="connect_a_reader">Connect a reader</string>
+    <string name="choose_one">Choose One</string>
+    <string name="connect_to_last_title">Connect to last known reader</string>
+    <string name="connect">Connect</string>
+    <string name="auto_connect">Auto connect</string>
+    <string name="connected">"Connected: "</string>
 
 
 </resources>

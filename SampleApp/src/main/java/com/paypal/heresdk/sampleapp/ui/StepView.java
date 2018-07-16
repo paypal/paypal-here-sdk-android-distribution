@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.paypal.heresdk.sampleapp.R;
 import org.w3c.dom.Text;
@@ -21,6 +22,7 @@ public class StepView extends LinearLayout
   private TextView codeTextView;
   private Context context;
   private LinearLayout container;
+  private ProgressBar progress;
   public StepView(Context context)
   {
     super(context);
@@ -49,6 +51,7 @@ public class StepView extends LinearLayout
     codeTextView = (TextView)container.findViewById(R.id.code_text);
     button = (Button)container.findViewById(R.id.button);
     tick = (ImageView)container.findViewById(R.id.done_tick);
+    progress = (ProgressBar)container.findViewById(R.id.progress);
 
     titleTextView.setText(title);
     codeTextView.setText(code);
@@ -92,5 +95,25 @@ public class StepView extends LinearLayout
 
   public void setOnButtonClickListener(OnClickListener clickListener){
     button.setOnClickListener(clickListener);
+  }
+
+
+  public void showProgressBar()
+  {
+    button.setVisibility(GONE);
+    tick.setVisibility(GONE);
+    progress.setVisibility(VISIBLE);
+  }
+
+  public void hideProgressBarShowButton(){
+    progress.setVisibility(GONE);
+    tick.setVisibility(GONE);
+    button.setVisibility(VISIBLE);
+  }
+
+  public void hideProgressBarShowTick(){
+    progress.setVisibility(GONE);
+    button.setVisibility(GONE);
+    tick.setVisibility(VISIBLE);
   }
 }
