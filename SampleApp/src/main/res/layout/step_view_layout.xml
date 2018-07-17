@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:visibility="gone"
-                android:src="@drawable/small_greenarrow"
+                android:src="@drawable/small_blue_tick"
                 />
             <ProgressBar
                 android:id="@+id/progress"

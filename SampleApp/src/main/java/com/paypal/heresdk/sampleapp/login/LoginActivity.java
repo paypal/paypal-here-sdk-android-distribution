@@ -105,11 +105,9 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
 
 
     step1 = (StepView)findViewById(R.id.step1);
-    step1.setStepEnabled();
     step1.setOnButtonClickListener(this);
 
     step2 = (StepView)findViewById(R.id.step2);
-    step2.setStepDisabled();
     step2.setOnButtonClickListener(this);
 
   }

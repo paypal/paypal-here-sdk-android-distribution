@@ -136,6 +136,13 @@
     <string name="connect">Connect</string>
     <string name="auto_connect">Auto connect</string>
     <string name="connected">"Connected: "</string>
+    <string name="payments">Payments</string>
+    <string name="payment_amount">Payment Amount</string>
+    <string name="create_invoice_title">Create Invoice</string>
+    <string name="create_transaction_title">Create transaction</string>
+    <string name="step_3">Step 3</string>
+    <string name="accept_transaction_title">Accept transaction</string>
+    <string name="step_4">Step 4</string>
 
 
 </resources>

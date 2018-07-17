@@ -53,13 +53,6 @@ public class ReaderConnectionActivity extends ToolbarActivity implements View.On
   }
 
 
-  @Override
-  public void onBackPressed()
-  {
-    Log.d(LOG_TAG, "onBackPressed");
-    goBackToLoginActivity(null);
-  }
-
 
 
   public void onFindAndConnectClicked()
@@ -76,7 +69,7 @@ public class ReaderConnectionActivity extends ToolbarActivity implements View.On
           {
             if (error == null)
             {
-              Toast.makeText(getApplicationContext(), "Connected to card reader" + cardReader.getId(), Toast.LENGTH_SHORT).show();
+              //Toast.makeText(getApplicationContext(), "Connected to card reader" + cardReader.getId(), Toast.LENGTH_SHORT).show();
               onReaderConnected(cardReader);
             }
             else
@@ -139,19 +132,9 @@ public class ReaderConnectionActivity extends ToolbarActivity implements View.On
   public void onRunTransactionClicked(View view)
   {
     Intent transactionIntent = new Intent(ReaderConnectionActivity.this, ChargeActivity.class);
-    transactionIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     startActivity(transactionIntent);
   }
 
-
-  public void goBackToLoginActivity(View view)
-  {
-    Log.d(LOG_TAG, "goBackToLoginActivity");
-    RetailSDK.logout();
-    Intent loginIntent = new Intent(ReaderConnectionActivity.this, LoginActivity.class);
-    loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-    startActivity(loginIntent);
-  }
 
   public void onAutoConnectClicked() {
 

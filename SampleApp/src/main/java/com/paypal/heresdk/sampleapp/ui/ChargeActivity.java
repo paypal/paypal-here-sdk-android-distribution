@@ -1,25 +1,25 @@
 package com.paypal.heresdk.sampleapp.ui;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.heresdk.sampleapp.login.LoginActivity;
 import com.paypal.paypalretailsdk.DeviceUpdate;
 import com.paypal.paypalretailsdk.Invoice;
-import com.paypal.paypalretailsdk.OfflinePaymentStatus;
 import com.paypal.paypalretailsdk.PaymentDevice;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
@@ -31,10 +31,9 @@ import com.paypal.paypalretailsdk.TransactionRecord;
 import org.androidannotations.annotations.EActivity;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @EActivity
-public class ChargeActivity extends Activity implements OfflineModeDialogFragment.OfflineModeDialogListener, OptionsDialogFragment.OptionsDialogListener
+public class ChargeActivity extends ToolbarActivity implements OfflineModeDialogFragment.OfflineModeDialogListener, OptionsDialogFragment.OptionsDialogListener, View.OnClickListener
 {
     private static final String LOG_TAG = ChargeActivity.class.getSimpleName();
     public static final String INTENT_TRANX_TOTAL_AMOUNT = "TOTAL_AMOUNT";
@@ -50,23 +49,83 @@ public class ChargeActivity extends Activity implements OfflineModeDialogFragmen
     OfflineModeDialogFragment offlineModeDialogFragment;
 
     private boolean isOfflineModeEnabled;
+    private EditText amountEditText;
+    private StepView createInvoiceStep;
+    private StepView createTxnStep;
+    private StepView acceptTxnStep;
+    private LinearLayout paymentOptionsStep;
+    private TextView step3Text;
+    private TextView paymentOptionsText;
+    private ImageView paymentOptionsArrow;
+
+
+    @Override
+    public int getLayoutResId()
+    {
+        return R.layout.transaction_activity;
+    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate");
-        setContentView(R.layout.transaction_activity);
         optionsDialogFragment = new OptionsDialogFragment();
         offlineModeDialogFragment = new OfflineModeDialogFragment();
+        amountEditText = (EditText)findViewById(R.id.amount);
+        createInvoiceStep = (StepView)findViewById(R.id.create_invoice_step);
+        createInvoiceStep.setOnButtonClickListener(this);
+        createTxnStep = (StepView)findViewById(R.id.create_txn_step);
+        createTxnStep.setOnButtonClickListener(this);
+        acceptTxnStep = (StepView)findViewById(R.id.accept_txn_step);
+        acceptTxnStep.setOnButtonClickListener(this);
+
+        paymentOptionsStep = (LinearLayout) findViewById(R.id.payment_options_container);
+        paymentOptionsStep.setOnClickListener(this);
+        paymentOptionsText = (TextView) findViewById(R.id.payment_options_text);
+        step3Text = (TextView) findViewById(R.id.step3_text);
+        paymentOptionsArrow = (ImageView) findViewById(R.id.payment_options_arrow);
+        disablePaymentOptionsStep();
+
+      amountEditText.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+          @Override
+          public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+          {
+
+            if (actionId == EditorInfo.IME_ACTION_DONE){
+                if (TextUtils.isEmpty(amountEditText.getText().toString()))
+                {
+                    Toast.makeText(ChargeActivity.this, "Amount cannot be empty", Toast.LENGTH_SHORT).show();
+                    return true;
+                }else
+                {
+                    createInvoiceStep.setStepEnabled();
+                    createTxnStep.setStepDisabled();
+                    disablePaymentOptionsStep();
+                    acceptTxnStep.setStepDisabled();
+                    return false;
+
+                }
+            }
+            return false;
+          }
+        });
 
 
     }
 
-    @Override
-    public void onBackPressed() {
-        Log.d(LOG_TAG, "onBackPressed");
-        goBackToLoginActivity(null);
+    public void enablePaymentOptionsStep(){
+        paymentOptionsArrow.setAlpha(1f);
+        paymentOptionsText.setTextColor(getResources().getColor(R.color.sdk_black));
+        step3Text.setTextColor(getResources().getColor(R.color.sdk_black));
+
+    }
+    public void disablePaymentOptionsStep(){
+        paymentOptionsArrow.setAlpha(0.5f);
+        paymentOptionsText.setTextColor(getResources().getColor(R.color.sdk_gray));
+        step3Text.setTextColor(getResources().getColor(R.color.sdk_gray));
+
     }
 
     public void onCreateInvoiceViewCodeClicked(View view)
@@ -108,15 +167,12 @@ public class ChargeActivity extends Activity implements OfflineModeDialogFragmen
       }
     }
 
-    public void onCreateInvoiceClicked(View view)
+    public void onCreateInvoiceClicked()
     {
         Log.d(LOG_TAG, "onCreateInvoiceClicked");
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
 
-        EditText amountEditText = (EditText) findViewById(R.id.amount);
+
+        amountEditText = (EditText) findViewById(R.id.amount);
         String amountText = amountEditText.getText().toString();
         BigDecimal amount = BigDecimal.ZERO;
         if (null != amountText && amountText.length() > 0) {
@@ -158,7 +214,7 @@ public class ChargeActivity extends Activity implements OfflineModeDialogFragmen
 
 
 
-    public void onCreateTransactionClicked(View view)
+    public void onCreateTransactionClicked()
     {
         Log.d(LOG_TAG, "onCreateTransactionClicked");
         final ImageView imgView = (ImageView) findViewById(R.id.imageBlueButton2);
@@ -202,7 +258,7 @@ public class ChargeActivity extends Activity implements OfflineModeDialogFragmen
         });
     }
 
-    public void onAcceptTransactionClicked(View view)
+    public void onAcceptTransactionClicked()
     {
         Log.d(LOG_TAG, "onAcceptTransactionClicked");
 
@@ -399,4 +455,28 @@ public class ChargeActivity extends Activity implements OfflineModeDialogFragmen
     }
 
 
+
+    @Override
+    public void onClick(View v)
+    {
+        if (v == createInvoiceStep.getButton())
+        {
+            onCreateInvoiceClicked();
+            createInvoiceStep.setStepCompleted();
+            createTxnStep.setStepEnabled();
+        }
+        else if(v == createTxnStep.getButton())
+        {
+            onCreateTransactionClicked();
+            createTxnStep.setStepCompleted();
+            enablePaymentOptionsStep();
+
+        }
+        else if(v == acceptTxnStep.getButton())
+        {
+            onAcceptTransactionClicked();
+        }
+
+
+    }
 }

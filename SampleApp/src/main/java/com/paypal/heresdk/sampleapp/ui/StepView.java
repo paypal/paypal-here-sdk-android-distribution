@@ -1,6 +1,5 @@
 package com.paypal.heresdk.sampleapp.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -11,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.paypal.heresdk.sampleapp.R;
-import org.w3c.dom.Text;
 
 public class StepView extends LinearLayout
 {
@@ -38,6 +36,8 @@ public class StepView extends LinearLayout
     String title = attrArray.getString(R.styleable.step_view_styleable_title_text);
     String code = attrArray.getString(R.styleable.step_view_styleable_code_text);
     String buttonText = attrArray.getString(R.styleable.step_view_styleable_button_text);
+    boolean enabled = attrArray.getBoolean(R.styleable.step_view_styleable_enabled,true);
+
 
     title = title == null ? "" : title;
     code = code == null ? "" : code;
@@ -56,16 +56,17 @@ public class StepView extends LinearLayout
     titleTextView.setText(title);
     codeTextView.setText(code);
     button.setText(buttonText);
+    if (enabled){
+      setStepEnabled();
+    }else{
+      setStepDisabled();
+    }
 
     attrArray.recycle();
 
 
   }
 
-  public void showDoneTick(){
-    button.setVisibility(GONE);
-    tick.setVisibility(VISIBLE);
-  }
 
   public void setStepDisabled(){
     button.setVisibility(GONE);
@@ -85,6 +86,7 @@ public class StepView extends LinearLayout
   public void setStepCompleted(){
     button.setVisibility(GONE);
     tick.setVisibility(VISIBLE);
+    tick.setImageResource(R.drawable.small_blue_tick);
     titleTextView.setTextColor(getResources().getColor(R.color.sdk_black));
     codeTextView.setTextColor(getResources().getColor(R.color.sdk_black));
   }
@@ -95,6 +97,10 @@ public class StepView extends LinearLayout
 
   public void setOnButtonClickListener(OnClickListener clickListener){
     button.setOnClickListener(clickListener);
+  }
+
+  public void setOnStepClickListener(OnClickListener clickListener){
+    container.setOnClickListener(clickListener);
   }
 
 
