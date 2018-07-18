@@ -2,8 +2,10 @@ package com.paypal.heresdk.sampleapp.ui;
 
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,7 +35,7 @@ import org.androidannotations.annotations.EActivity;
 import java.math.BigDecimal;
 
 @EActivity
-public class ChargeActivity extends ToolbarActivity implements OfflineModeDialogFragment.OfflineModeDialogListener, OptionsDialogFragment.OptionsDialogListener, View.OnClickListener
+public class ChargeActivity extends ToolbarActivity implements OptionsDialogFragment.OptionsDialogListener, View.OnClickListener
 {
     private static final String LOG_TAG = ChargeActivity.class.getSimpleName();
     public static final String INTENT_TRANX_TOTAL_AMOUNT = "TOTAL_AMOUNT";
@@ -48,7 +50,6 @@ public class ChargeActivity extends ToolbarActivity implements OfflineModeDialog
     OptionsDialogFragment optionsDialogFragment;
     OfflineModeDialogFragment offlineModeDialogFragment;
 
-    private boolean isOfflineModeEnabled;
     private EditText amountEditText;
     private StepView createInvoiceStep;
     private StepView createTxnStep;
@@ -57,6 +58,9 @@ public class ChargeActivity extends ToolbarActivity implements OfflineModeDialog
     private TextView step3Text;
     private TextView paymentOptionsText;
     private ImageView paymentOptionsArrow;
+    private LinearLayout offlineModeContainer;
+    private TextView enabledText;
+    private SharedPreferences sharedPrefs;
 
 
     @Override
@@ -87,6 +91,14 @@ public class ChargeActivity extends ToolbarActivity implements OfflineModeDialog
         paymentOptionsArrow = (ImageView) findViewById(R.id.payment_options_arrow);
         disablePaymentOptionsStep();
 
+        offlineModeContainer = (LinearLayout) findViewById(R.id.offline_mode_container);
+        offlineModeContainer.setOnClickListener(this);
+
+        sharedPrefs = getSharedPreferences(OfflinePayActivity.PREF_NAME, Context.MODE_PRIVATE);
+        enabledText = (TextView) findViewById(R.id.offline_mode_status_text);
+
+
+
       amountEditText.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
           @Override
@@ -103,6 +115,7 @@ public class ChargeActivity extends ToolbarActivity implements OfflineModeDialog
                     createInvoiceStep.setStepEnabled();
                     createTxnStep.setStepDisabled();
                     disablePaymentOptionsStep();
+                    paymentOptionsStep.setOnClickListener(null);
                     acceptTxnStep.setStepDisabled();
                     return false;
 
@@ -115,10 +128,28 @@ public class ChargeActivity extends ToolbarActivity implements OfflineModeDialog
 
     }
 
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        if(sharedPrefs.getBoolean(OfflinePayActivity.OFFLINE_MODE,false))
+        {
+            enabledText.setText("ENABLED");
+            enabledText.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+        }else{
+            enabledText.setText("DISABLED");
+            enabledText.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+
+        }
+    }
+
+
     public void enablePaymentOptionsStep(){
         paymentOptionsArrow.setAlpha(1f);
         paymentOptionsText.setTextColor(getResources().getColor(R.color.sdk_black));
         step3Text.setTextColor(getResources().getColor(R.color.sdk_black));
+        paymentOptionsStep.setOnClickListener(this);
 
     }
     public void disablePaymentOptionsStep(){
@@ -321,11 +352,6 @@ public class ChargeActivity extends ToolbarActivity implements OfflineModeDialog
         optionsDialogFragment.dismiss();
     }
 
-    @Override
-    public void onCloseOfflineDialogClicked(){
-        offlineModeDialogFragment.dismiss();
-
-    }
 
     private void beginPayment()
     {
@@ -446,14 +472,6 @@ public class ChargeActivity extends ToolbarActivity implements OfflineModeDialog
 
 
 
-    @Override
-    public void onOfflineModeSwitchToggled(boolean isChecked){
-
-        isOfflineModeEnabled = isChecked;
-
-
-    }
-
 
 
     @Override
@@ -475,6 +493,13 @@ public class ChargeActivity extends ToolbarActivity implements OfflineModeDialog
         else if(v == acceptTxnStep.getButton())
         {
             onAcceptTransactionClicked();
+        }else if(v == paymentOptionsStep){
+            // go to payment options screen
+        }else if(v == offlineModeContainer){
+            // go to offline mode screen
+            Intent offlineActivity = new Intent(this,OfflinePayActivity.class);
+            offlineActivity.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(offlineActivity);
         }
 
 

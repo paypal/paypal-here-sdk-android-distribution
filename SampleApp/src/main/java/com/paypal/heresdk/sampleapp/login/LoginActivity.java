@@ -78,25 +78,6 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
 
     radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
 
-    // Checked change Listener for RadioGroup 1
-    radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-    {
-      @Override
-      public void onCheckedChanged(RadioGroup group, int checkedId)
-      {
-        switch (checkedId)
-        {
-          case R.id.radioSandbox:
-            Toast.makeText(getApplicationContext(), "Sandbox checked", Toast.LENGTH_SHORT).show();
-            break;
-          case R.id.radioLive:
-            Toast.makeText(getApplicationContext(), "Live checked", Toast.LENGTH_SHORT).show();
-            break;
-          default:
-            break;
-        }
-      }
-    });
 
     final ImageView imgView = (ImageView) findViewById(R.id.imageBlueButton);
     connectButton = (Button) findViewById(R.id.connect_reader_button);

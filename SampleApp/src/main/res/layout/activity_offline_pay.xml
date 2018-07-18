@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:stepview="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    tools:context=".ui.OfflinePayActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="?attr/actionBarSize"
+            android:gravity="center"
+            android:text="@string/offline_payments"
+            android:textColor="@color/sdk_black"
+            android:textSize="16sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- offline mode swith container -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@color/sdk_dark_grey"></View>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/offline_mode" />
+
+                    <Switch
+                        android:id="@+id/offline_mode_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:background="@color/sdk_dark_grey"></View>
+
+
+            </LinearLayout>
+
+            <com.paypal.heresdk.sampleapp.ui.StepView
+                android:id="@+id/offline_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                stepview:button_text="@string/get_offline_status"
+                stepview:code_text="@string/get_offline_status_code"
+                stepview:enabled="true"
+                stepview:title_text="@string/offline_status" />
+
+            <com.paypal.heresdk.sampleapp.ui.StepView
+                android:id="@+id/replay_offline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                stepview:button_text="@string/start_replay"
+                stepview:code_text="@string/replay_offline_transaction_code"
+                stepview:enabled="true"
+                stepview:title_text="@string/replay_offline_transaction" />
+
+            <com.paypal.heresdk.sampleapp.ui.StepView
+                android:id="@+id/stop_replay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                stepview:button_text="@string/stop_replay"
+                stepview:code_text="@string/stop_replay_code"
+                stepview:enabled="true"
+                stepview:title_text="@string/stop_replay" />
+
+            <!-- status text contianer -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="@dimen/activity_vertical_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/sdk_black"
+                    android:text="@string/transaction_results"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/status_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/sdk_black" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

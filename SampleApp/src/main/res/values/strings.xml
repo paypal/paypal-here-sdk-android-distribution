@@ -117,9 +117,9 @@
     <string name="get_offline_status_code">RetailSDK.getTransactionManager().getOfflinePaymentStatus(OfflinePaymentStatusCallback callback)</string>
     <string name="replay_offline_transaction_code">RetailSDK.getTransactionManager().startReplayOfflineTxns (OfflinePaymentStatusCallback callback)</string>
     <string name="stop_replay_code">RetailSDK.getTransactionManager().stopReplayOfflineTxns (OfflinePaymentStatusCallback callback)</string>
-    <string name="get_offline_status">Get Offline Status</string>
+    <string name="get_offline_status">Get offline status</string>
     <string name="stop_replay">Stop Replay</string>
-    <string name="replay_offline_transaction">Replay Offline Transaction</string>
+    <string name="replay_offline_transaction">Replay Transaction</string>
     <string name="offline_payment_successful">Offline Payment\nSuccessful</string>
     <string name="auto_connect_code">DeviceManager.scanAndAutoConnectToBluetoothReader(String readerName, ConnectionCallback callback)</string>
     <string name="demo_app">Demo App</string>
@@ -143,6 +143,10 @@
     <string name="step_3">Step 3</string>
     <string name="accept_transaction_title">Accept transaction</string>
     <string name="step_4">Step 4</string>
+    <string name="offline_payments">Offline Payments</string>
+    <string name="offline_status">Offline status</string>
+    <string name="start_replay">Start replay</string>
+    <string name="transaction_results">Transaction results</string>
 
 
 </resources>
