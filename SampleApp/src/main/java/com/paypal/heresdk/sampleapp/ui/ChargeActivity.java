@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.heresdk.sampleapp.login.LoginActivity;
 import com.paypal.paypalretailsdk.DeviceUpdate;
+import com.paypal.paypalretailsdk.FormFactor;
 import com.paypal.paypalretailsdk.Invoice;
 import com.paypal.paypalretailsdk.PaymentDevice;
 import com.paypal.paypalretailsdk.RetailSDK;
@@ -33,6 +34,8 @@ import com.paypal.paypalretailsdk.TransactionRecord;
 import org.androidannotations.annotations.EActivity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @EActivity
 public class ChargeActivity extends ToolbarActivity implements OptionsDialogFragment.OptionsDialogListener, View.OnClickListener
@@ -41,11 +44,11 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
     public static final String INTENT_TRANX_TOTAL_AMOUNT = "TOTAL_AMOUNT";
     public static final String INTENT_AUTH_ID = "AUTH_ID";
     public static final String INTENT_INVOICE_ID = "INVOICE_ID";
+    private static final int REQUEST_OPTIONS_ACTIVITY = 1;
 
     TransactionContext currentTransaction;
     Invoice currentInvoice;
     Invoice invoiceForRefund;
-
 
     OptionsDialogFragment optionsDialogFragment;
     OfflineModeDialogFragment offlineModeDialogFragment;
@@ -61,6 +64,33 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
     private LinearLayout offlineModeContainer;
     private TextView enabledText;
     private SharedPreferences sharedPrefs;
+
+    // payment option constants
+    public static final String OPTION_AUTH_CAPTURE = "authCapture";
+    public static final String OPTION_CARD_READER_PROMPT = "cardReader";
+    public static final String OPTION_APP_PROMPT= "appPrompt";
+    public static final String OPTION_TIP_ON_READER = "tipReader";
+    public static final String OPTION_AMOUNT_TIP = "amountTip";
+    public static final String OPTION_MAGNETIC_SWIPE = "magneticSwipe";
+    public static final String OPTION_CHIP = "chip";
+    public static final String OPTION_CONTACTLESS = "contactless";
+    public static final String OPTION_MANUAL_CARD= "manualCard";
+    public static final String OPTION_SECURE_MANUAL= "secureManual";
+    public static final String OPTION_TAG= "tag";
+
+    // payment option booleans
+    private boolean isAuthCaptureEnabled = false;
+    private boolean isCardReaderPromptEnabled = true;
+    private boolean isAppPromptEnabled = true;
+    private boolean isTippingOnReaderEnabled = false;
+    private boolean isAmountBasedTippingEnabled = false;
+    private boolean isMagneticSwipeEnabled = true;
+    private boolean isChipEnabled = true;
+    private boolean isContactlessEnabled = true;
+    private boolean isManualCardEnabled = true;
+    private boolean isSecureManualEnabled = true;
+    private String tagString = "";
+
 
 
     @Override
@@ -363,13 +393,13 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
         });
 
         TransactionBeginOptions options = new TransactionBeginOptions();
-        options.setShowPromptInCardReader(optionsDialogFragment.isCardPreaderPromptEnabled());
-        options.setShowPromptInApp(optionsDialogFragment.isAppPromptSwitchEnabled());
-        options.setIsAuthCapture(optionsDialogFragment.isAuthCaptureEnabled());
-        options.setAmountBasedTipping(optionsDialogFragment.isAmountBasedTippingEnabled());
-        options.setTippingOnReaderEnabled(optionsDialogFragment.isTippingOnReaderEnabled());
-        options.setTag(optionsDialogFragment.getTagValue());
-        options.setPreferredFormFactors(optionsDialogFragment.getPreferredFormFactors());
+        options.setShowPromptInCardReader(isCardReaderPromptEnabled);
+        options.setShowPromptInApp(isAppPromptEnabled);
+        options.setIsAuthCapture(isAuthCaptureEnabled);
+        options.setAmountBasedTipping(isAmountBasedTippingEnabled);
+        options.setTippingOnReaderEnabled(isTippingOnReaderEnabled);
+        options.setTag(tagString);
+        options.setPreferredFormFactors(getPreferredFormFactors());
         currentTransaction.beginPayment(options);
     }
 
@@ -471,7 +501,32 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK)
+        {
+            if (requestCode == REQUEST_OPTIONS_ACTIVITY)
+            {
+                Bundle optionsBundle = data.getExtras();
+                isAuthCaptureEnabled = optionsBundle.getBoolean(OPTION_AUTH_CAPTURE);
+                isAppPromptEnabled = optionsBundle.getBoolean(OPTION_APP_PROMPT);
+                isTippingOnReaderEnabled = optionsBundle.getBoolean(OPTION_TIP_ON_READER);
+                isAmountBasedTippingEnabled = optionsBundle.getBoolean(OPTION_AMOUNT_TIP);
+                isMagneticSwipeEnabled = optionsBundle.getBoolean(OPTION_MAGNETIC_SWIPE);
+                isChipEnabled = optionsBundle.getBoolean(OPTION_CHIP);
+                isContactlessEnabled = optionsBundle.getBoolean(OPTION_CONTACTLESS);
+                isManualCardEnabled = optionsBundle.getBoolean(OPTION_MANUAL_CARD);
+                isSecureManualEnabled = optionsBundle.getBoolean(OPTION_SECURE_MANUAL);
+                tagString = optionsBundle.getString(OPTION_TAG);
 
+                acceptTxnStep.setStepEnabled();
+            }
+        }else{
+            Toast.makeText(this,"Click done please",Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
     @Override
@@ -494,14 +549,67 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
         {
             onAcceptTransactionClicked();
         }else if(v == paymentOptionsStep){
-            // go to payment options screen
+            Intent optionsActivity = new Intent(this,PaymentOptionsActivity.class);
+            optionsActivity.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            optionsActivity.putExtras(getOptionsBundle());
+            startActivityForResult(optionsActivity,REQUEST_OPTIONS_ACTIVITY);
         }else if(v == offlineModeContainer){
-            // go to offline mode screen
             Intent offlineActivity = new Intent(this,OfflinePayActivity.class);
             offlineActivity.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(offlineActivity);
         }
 
 
+    }
+
+    public List<FormFactor> getPreferredFormFactors()
+    {
+        List<FormFactor> formFactors = new ArrayList<>();
+        if (isMagneticSwipeEnabled)
+        {
+            formFactors.add(FormFactor.MagneticCardSwipe);
+        }
+        if (isChipEnabled)
+        {
+            formFactors.add(FormFactor.Chip);
+        }
+        if (isContactlessEnabled)
+        {
+            formFactors.add(FormFactor.EmvCertifiedContactless);
+        }
+        if (isSecureManualEnabled)
+        {
+            formFactors.add(FormFactor.SecureManualEntry);
+        }
+        if (isManualCardEnabled)
+        {
+            formFactors.add(FormFactor.ManualCardEntry);
+        }
+
+        if (formFactors.size() == 0)
+        {
+            formFactors.add(FormFactor.None);
+        }
+        return formFactors;
+
+    }
+
+
+
+    private Bundle getOptionsBundle()
+    {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(OPTION_AUTH_CAPTURE,isAuthCaptureEnabled);
+        bundle.putBoolean(OPTION_CARD_READER_PROMPT,isCardReaderPromptEnabled);
+        bundle.putBoolean(OPTION_APP_PROMPT,isAppPromptEnabled);
+        bundle.putBoolean(OPTION_TIP_ON_READER,isTippingOnReaderEnabled);
+        bundle.putBoolean(OPTION_AMOUNT_TIP,isAmountBasedTippingEnabled);
+        bundle.putBoolean(OPTION_MAGNETIC_SWIPE,isMagneticSwipeEnabled);
+        bundle.putBoolean(OPTION_CHIP,isChipEnabled);
+        bundle.putBoolean(OPTION_CONTACTLESS,isContactlessEnabled);
+        bundle.putBoolean(OPTION_MANUAL_CARD,isManualCardEnabled);
+        bundle.putBoolean(OPTION_SECURE_MANUAL,isSecureManualEnabled);
+        bundle.putString(OPTION_TAG,tagString);
+        return bundle;
     }
 }

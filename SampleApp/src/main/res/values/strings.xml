@@ -108,8 +108,8 @@
     <string name="manual_card">Manual Card</string>
     <string name="close">Close</string>
     <string name="auth_capture">Auth/Capture</string>
-    <string name="show_prompt_in_card_reader">Show prompt in card reader</string>
-    <string name="show_prompt_in_app">Show prompt in app</string>
+    <string name="show_prompt_in_card_reader">Prompt in reader</string>
+    <string name="show_prompt_in_app">Prompt in app</string>
     <string name="tipping_on_reader">Tipping on reader</string>
     <string name="amount_based_tipping">Amount based tipping</string>
     <string name="tag">Tag</string>
@@ -147,6 +147,8 @@
     <string name="offline_status">Offline status</string>
     <string name="start_replay">Start replay</string>
     <string name="transaction_results">Transaction results</string>
+    <string name="done">Done</string>
+    <string name="edit_text_pref">editTextPreference</string>
 
 
 </resources>

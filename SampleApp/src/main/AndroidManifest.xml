@@ -15,7 +15,6 @@
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
-
             android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +24,6 @@
         </activity>
         <activity
             android:name=".login.LoginActivity"
-
             android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
         <activity
@@ -56,6 +54,11 @@
         <activity
             android:name=".ui.WebViewActivity"
             android:label="WebViewActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+        <activity android:name=".ui.PaymentOptionsActivity" >
+        </activity>
+        <activity android:name=".ui.OfflinePayActivity"
             android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
     </application>
