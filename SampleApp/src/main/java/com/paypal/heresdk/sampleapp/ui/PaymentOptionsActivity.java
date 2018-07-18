@@ -1,11 +1,14 @@
 package com.paypal.heresdk.sampleapp.ui;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import com.paypal.heresdk.sampleapp.R;
 
@@ -38,6 +41,14 @@ public class PaymentOptionsActivity extends ToolbarActivity
   }
 
 
+  @Override
+  protected void onPause()
+  {
+    super.onPause();
+    hideSoftKeyboard();
+
+  }
+
 
   public void onDoneClicked(View view){
     Intent data = new Intent();
@@ -45,6 +56,12 @@ public class PaymentOptionsActivity extends ToolbarActivity
     setResult(RESULT_OK,data);
     onBackPressed();
 
+  }
+
+  public void hideSoftKeyboard() {
+
+    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
   }
 
   @Override

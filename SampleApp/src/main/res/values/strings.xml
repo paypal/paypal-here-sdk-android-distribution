@@ -149,6 +149,11 @@
     <string name="transaction_results">Transaction results</string>
     <string name="done">Done</string>
     <string name="edit_text_pref">editTextPreference</string>
+    <string name="success_payment">Successful Payment</string>
+    <string name="would_you_like_a_refund">Would you like a refund?</string>
+    <string name="option_1">Option 1</string>
+    <string name="issue_refund">Issue refund</string>
+    <string name="skip_refund">Skip refund</string>
 
 
 </resources>

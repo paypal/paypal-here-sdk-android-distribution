@@ -189,44 +189,7 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
 
     }
 
-    public void onCreateInvoiceViewCodeClicked(View view)
-    {
-        final TextView txtViewCode = (TextView) findViewById(R.id.txtCreateInvoiceCode);
 
-        if (txtViewCode.getVisibility() == View.GONE)
-        {
-            txtViewCode.setVisibility(View.VISIBLE);
-        } else
-        {
-            txtViewCode.setVisibility(View.GONE);
-        }
-
-    }
-    public void onCreateTranxViewCodeClicked(View view)
-    {
-        final TextView txtViewCode = (TextView) findViewById(R.id.txtCreateTranxCode);
-
-        if (txtViewCode.getVisibility() == View.GONE)
-        {
-            txtViewCode.setVisibility(View.VISIBLE);
-        } else
-        {
-            txtViewCode.setVisibility(View.GONE);
-        }
-    }
-
-    public void onViewCodeAcceptTranxClicked(View view)
-    {
-      final TextView txtViewCode = (TextView) findViewById(R.id.txtAcceptTransactionCode);
-
-      if (txtViewCode.getVisibility() == View.GONE)
-      {
-        txtViewCode.setVisibility(View.VISIBLE);
-      } else
-      {
-        txtViewCode.setVisibility(View.GONE);
-      }
-    }
 
     public void onCreateInvoiceClicked()
     {
@@ -260,17 +223,6 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
         //    invoice.setGratuityAmount(gratuityAmt);
         // }
 
-        final ImageView imgView = (ImageView) findViewById(R.id.imageBlueButton1);
-        final TextView txtCreateInvoice = (TextView) findViewById(R.id.txtCreateInvoice);
-        final TextView txtCreateTranx = (TextView) findViewById(R.id.txtCreateTransaction);
-
-        imgView.setImageResource(R.drawable.small_greenarrow);
-        imgView.setClickable(false);
-        txtCreateInvoice.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
-        txtCreateInvoice.setClickable(false);
-
-        txtCreateTranx.setClickable(true);
-        txtCreateTranx.setTextColor(getResources().getColor(R.color.sdk_blue));
     }
 
 
@@ -278,9 +230,7 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
     public void onCreateTransactionClicked()
     {
         Log.d(LOG_TAG, "onCreateTransactionClicked");
-        final ImageView imgView = (ImageView) findViewById(R.id.imageBlueButton2);
-        final TextView txtCreateTranx = (TextView) findViewById(R.id.txtCreateTransaction);
-        final TextView txtAcceptTranx = (TextView) findViewById(R.id.txtAcceptTransaction);
+
 
         RetailSDK.getTransactionManager().createTransaction(currentInvoice, new TransactionManager.TransactionCallback()
         {
@@ -295,25 +245,8 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
                             Toast.makeText(getApplicationContext(), "create transaction error: " + errorTxt, Toast.LENGTH_SHORT).show();
                         }
                     });
-                }
-                else
-                {
-                    ChargeActivity.this.runOnUiThread(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            currentTransaction = context;
-
-                            imgView.setImageResource(R.drawable.small_greenarrow);
-                            imgView.setClickable(false);
-                            txtCreateTranx.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
-                            txtCreateTranx.setClickable(false);
-
-                            txtAcceptTranx.setClickable(true);
-                            txtAcceptTranx.setTextColor(getResources().getColor(R.color.sdk_blue));
-                        }
-                    });
+                }else{
+                    currentTransaction = context;
                 }
             }
         });
@@ -523,8 +456,6 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
 
                 acceptTxnStep.setStepEnabled();
             }
-        }else{
-            Toast.makeText(this,"Click done please",Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -79,7 +79,6 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
     radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
 
 
-    final ImageView imgView = (ImageView) findViewById(R.id.imageBlueButton);
     connectButton = (Button) findViewById(R.id.connect_reader_button);
 
 

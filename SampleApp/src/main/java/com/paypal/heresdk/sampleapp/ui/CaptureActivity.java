@@ -156,7 +156,7 @@ public class CaptureActivity extends Activity
     Intent refundIntent = new Intent(CaptureActivity.this, RefundActivity.class);
     Log.d(LOG_TAG, "goToRefundActivity total: " + captureAmount);
     refundIntent.putExtra(INTENT_CAPTURE_TOTAL_AMOUNT, captureAmount);
-    refundIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    refundIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
     startActivity(refundIntent);
   }
 
