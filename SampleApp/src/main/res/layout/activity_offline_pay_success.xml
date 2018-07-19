@@ -7,41 +7,27 @@
     android:orientation="vertical"
     tools:context=".ui.OfflinePaySuccessActivity">
 
-    <LinearLayout
-        android:id="@+id/upBanner"
-        android:orientation="horizontal"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:background="@color/sdk_blue">
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="14dp"
-            android:text="@string/up_banner"
-            android:textColor="@color/sdk_white"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="14dp"
-            android:textStyle="bold"
-            android:text="Demo App"
-            android:padding="@dimen/medium"
-            android:textColor="@color/sdk_grey"/>
-    </LinearLayout>
+            android:text="@string/success_payment"
+            android:textColor="@color/sdk_black"
+            android:textSize="16sp" />
+
+    </android.support.v7.widget.Toolbar>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/big_greenarrow"
-        android:layout_margin="@dimen/activity_vertical_margin"
+        android:layout_margin="@dimen/dp_32"
         android:layout_gravity="center_horizontal"
         />
 
@@ -50,36 +36,23 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
+        android:layout_margin="@dimen/activity_vertical_margin"
         android:text="@string/offline_payment_successful"
         android:textSize="26sp"
         />
 
-    <LinearLayout
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        android:orientation="horizontal">
+        android:background="@drawable/blue_btn_selector"
+        android:textAllCaps="false"
+        android:textColor="@color/sdk_white"
+        android:text="New Sale"
+        android:layout_margin="@dimen/dp_32"
+        android:onClick="onNewSaleClicked"
+        />
 
-        <TextView
-            android:id="@+id/txt_stop_replay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:shadowColor="@android:color/white"
-            android:shadowRadius="5.0"
-            android:text="New Sale"
-            android:onClick="onNewSaleClicked"
-            android:textColor="@color/sdk_blue"
-            android:textSize="20sp" />
 
-        <ImageView
-            android:id="@+id/stop_replay_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
 
-            android:src="@drawable/small_bluearrow" />
-    </LinearLayout>
 
 </LinearLayout>

@@ -127,6 +127,7 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
 
   private void stopReplay()
   {
+    sharedPrefs.edit().putBoolean(REPLAY_IN_PROGRESS,false).apply();
     RetailSDK.getTransactionManager().stopReplayOfflineTxns(null);
     stopReplayStep.setStepDisabled();
     offlineModeSwitch.setEnabled(true);

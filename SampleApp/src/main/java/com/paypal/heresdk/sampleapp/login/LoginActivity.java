@@ -77,16 +77,9 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
 
 
     radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
-
-
     connectButton = (Button) findViewById(R.id.connect_reader_button);
-
-
-
-
     step1 = (StepView)findViewById(R.id.step1);
     step1.setOnButtonClickListener(this);
-
     step2 = (StepView)findViewById(R.id.step2);
     step2.setOnButtonClickListener(this);
 

@@ -63,6 +63,7 @@
         <activity android:name=".ui.OfflinePayActivity"
             android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
+        <activity android:name=".ui.OfflinePaySuccessActivity"></activity>
     </application>
 
 </manifest>

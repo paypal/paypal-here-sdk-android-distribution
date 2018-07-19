@@ -21,23 +21,22 @@
             android:textColor="@color/sdk_black"
             android:textSize="16sp" />
 
+        <TextView
+            android:id="@+id/done_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/done"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:textColor="@color/sdk_primary_dark_blue"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:onClick="onDoneClicked"
+            />
+
 
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/done_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/done"
-        android:layout_gravity="right"
-        android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:textColor="@color/sdk_primary_dark_blue"
-        android:textStyle="bold"
-        android:clickable="true"
-        android:onClick="onDoneClicked"
-
-        />
 
     <fragment
         android:id="@+id/options_fragment"

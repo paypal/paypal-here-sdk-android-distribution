@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EActivity
-public class ChargeActivity extends ToolbarActivity implements OptionsDialogFragment.OptionsDialogListener, View.OnClickListener
+public class ChargeActivity extends ToolbarActivity implements View.OnClickListener
 {
     private static final String LOG_TAG = ChargeActivity.class.getSimpleName();
     public static final String INTENT_TRANX_TOTAL_AMOUNT = "TOTAL_AMOUNT";
@@ -49,9 +49,6 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
     TransactionContext currentTransaction;
     Invoice currentInvoice;
     Invoice invoiceForRefund;
-
-    OptionsDialogFragment optionsDialogFragment;
-    OfflineModeDialogFragment offlineModeDialogFragment;
 
     private EditText amountEditText;
     private StepView createInvoiceStep;
@@ -104,8 +101,6 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate");
-        optionsDialogFragment = new OptionsDialogFragment();
-        offlineModeDialogFragment = new OfflineModeDialogFragment();
         amountEditText = (EditText)findViewById(R.id.amount);
         createInvoiceStep = (StepView)findViewById(R.id.create_invoice_step);
         createInvoiceStep.setOnButtonClickListener(this);
@@ -186,6 +181,7 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
         paymentOptionsArrow.setAlpha(0.5f);
         paymentOptionsText.setTextColor(getResources().getColor(R.color.sdk_gray));
         step3Text.setTextColor(getResources().getColor(R.color.sdk_gray));
+        paymentOptionsStep.setOnClickListener(null);
 
     }
 
@@ -276,44 +272,7 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
         }
     }
 
-    public void onPaymentOptionsClicked(View view){
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        if (optionsDialogFragment==null){
-
-           optionsDialogFragment = new OptionsDialogFragment();
-        }
-        if (optionsDialogFragment.isAdded()){
-            ft.show(optionsDialogFragment);
-        }else
-        {
-            optionsDialogFragment.show(ft, "OptionsDialogFragment");
-        }
-
-
-    }
-    public void onOfflineModeClicked(View view){
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        if (offlineModeDialogFragment==null)
-        {
-
-            offlineModeDialogFragment = new OfflineModeDialogFragment();
-        }
-        if (offlineModeDialogFragment.isAdded()){
-            ft.show(offlineModeDialogFragment);
-        }else
-        {
-            offlineModeDialogFragment.show(ft, "OfflineModeDialogFragment");
-        }
-
-
-
-    }
-
-    @Override
-    public void onCloseOptionsDialogClicked(){
-        optionsDialogFragment.dismiss();
-    }
 
 
     private void beginPayment()
@@ -360,7 +319,7 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
             this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (optionsDialogFragment.isAuthCaptureEnabled()) {
+                    if (isAuthCaptureEnabled) {
                         goToAuthCaptureActivity(record);
                     }
                     else
@@ -408,14 +367,6 @@ public class ChargeActivity extends ToolbarActivity implements OptionsDialogFrag
         startActivity(refundIntent);
     }
 
-
-    public void goBackToLoginActivity(View view){
-        Log.d(LOG_TAG, "goBackToLoginActivity");
-        RetailSDK.logout();
-        Intent loginIntent = new Intent(ChargeActivity.this, LoginActivity.class);
-        loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(loginIntent);
-    }
 
     private void showInvalidAmountAlertDialog(){
         Log.d(LOG_TAG, "showInvalidAmountAlertDialog");

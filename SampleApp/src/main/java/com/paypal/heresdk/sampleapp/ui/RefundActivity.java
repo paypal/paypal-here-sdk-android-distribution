@@ -74,9 +74,8 @@ public class RefundActivity extends ToolbarActivity
       currentAmount = (BigDecimal) intent.getSerializableExtra(INTENT_CAPTURE_TOTAL_AMOUNT);
       Log.d(LOG_TAG, "onCreate captur amount:" + currentAmount);
       final TextView txtAmount = (TextView) findViewById(R.id.amount);
-      txtAmount.setText(currencyFormat(currentAmount));
-      final TextView txt5 = (TextView) findViewById(R.id.textView5);
-      txt5.setText("was successfully captured.");
+      txtAmount.setText("Your payment of " + currencyFormat(currentAmount) +" was successfully captured.");
+
     }
 
     issueRefundStep = (StepView) findViewById(R.id.refund_step);
