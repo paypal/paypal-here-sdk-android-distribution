@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,7 +24,7 @@ import com.paypal.paypalretailsdk.TransactionManager;
  */
 
 
-public class AuthCaptureActivity extends Activity
+public class AuthCaptureActivity extends ToolbarActivity implements View.OnClickListener
 {
   private static final String LOG_TAG = AuthCaptureActivity.class.getSimpleName();
   public static final String INTENT_AUTH_TOTAL_AMOUNT = "TOTAL_AMOUNT";
@@ -36,14 +37,26 @@ public class AuthCaptureActivity extends Activity
   String authId;
   String invoiceId;
 
+  private StepView voidAuthStep;
+  private StepView captureAuthStep;
+
+  @Override
+  public int getLayoutResId()
+  {
+    return R.layout.authorization_activity;
+  }
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     Log.d(LOG_TAG, "onCreate");
-    setContentView(R.layout.authorization_activity);
 
+    voidAuthStep = (StepView)findViewById(R.id.void_auth_step);
+    captureAuthStep = (StepView)findViewById(R.id.capture_auth_step);
+    voidAuthStep.setOnButtonClickListener(this);
+    captureAuthStep.setOnButtonClickListener(this);
     Intent intent = getIntent();
     authAmount = new BigDecimal(0.0);
     if (intent.hasExtra(INTENT_AUTH_TOTAL_AMOUNT))
@@ -53,38 +66,10 @@ public class AuthCaptureActivity extends Activity
       invoiceId = (String) intent.getSerializableExtra(INTENT_INVOICE_ID);
       Log.d(LOG_TAG, "onCreate amount:" + authAmount);
       final TextView txtAmount = (TextView) findViewById(R.id.amount);
-      txtAmount.setText(currencyFormat(authAmount));
+      txtAmount.setText("Your authorization of " + currencyFormat(authAmount) + " was successful");
     }
 
-  }
 
-
-  public void onVoidAuthViewCodeClicked(View view)
-  {
-    final TextView txtViewCode = (TextView) findViewById(R.id.txtVoidAuthCode);
-
-    if (txtViewCode.getVisibility() == View.GONE)
-    {
-      txtViewCode.setVisibility(View.VISIBLE);
-    }
-    else
-    {
-      txtViewCode.setVisibility(View.GONE);
-    }
-  }
-
-  public void onCaptureAuthViewCodeClicked(View view)
-  {
-    final TextView txtViewCode = (TextView) findViewById(R.id.txtCaptureAuthCode);
-
-    if (txtViewCode.getVisibility() == View.GONE)
-    {
-      txtViewCode.setVisibility(View.VISIBLE);
-    }
-    else
-    {
-      txtViewCode.setVisibility(View.GONE);
-    }
   }
 
 
@@ -96,7 +81,7 @@ public class AuthCaptureActivity extends Activity
   }
 
 
-  public void onVoidAuthClicked(View view)
+  public void onVoidAuthClicked()
   {
 
     RetailSDK.getTransactionManager().voidAuthorization(authId, new TransactionManager.VoidAuthorizationCallback()
@@ -123,19 +108,10 @@ public class AuthCaptureActivity extends Activity
             }
             else
             {
+              captureAuthStep.setStepDisabled();
+              voidAuthStep.setStepCompleted();
               Toast.makeText(getApplicationContext(), authId + " voided ", Toast.LENGTH_SHORT).show();
-              final ImageView imgView = (ImageView) findViewById(R.id.imageBlueButtonVoid);
-              final TextView txtVoidView = (TextView) findViewById(R.id.txtVoidAuth);
-              final TextView txtCaptureView = (TextView) findViewById(R.id.txtCaptureAuth);
-              final LinearLayout bottomBammer = (LinearLayout) findViewById(R.id.bottomBanner);
 
-              imgView.setImageResource(R.drawable.small_greenarrow);
-              imgView.setClickable(false);
-              txtVoidView.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
-              txtVoidView.setClickable(false);
-              txtCaptureView.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
-              txtCaptureView.setClickable(false);
-              bottomBammer.setVisibility(View.VISIBLE);
             }
           }
         });
@@ -143,7 +119,7 @@ public class AuthCaptureActivity extends Activity
     });
   }
 
-  public void onCaptureAuthClicked(View view)
+  public void onCaptureAuthClicked()
   {
     Log.d(LOG_TAG, "goToCaptureActivity");
     // CaptureActivity.invoiceForRefund = invoiceForRefund;
@@ -156,7 +132,7 @@ public class AuthCaptureActivity extends Activity
     startActivity(intent);
   }
 
-  public void onRunMoreClicked(View view)
+  public void goToChargeActivity()
   {
     Log.d(LOG_TAG, "goToChargeActivity");
     Intent intent = new Intent(AuthCaptureActivity.this, ChargeActivity.class);
@@ -164,4 +140,24 @@ public class AuthCaptureActivity extends Activity
     startActivity(intent);
   }
 
+
+  @Override
+  public void onClick(View v)
+  {
+    if (v == voidAuthStep.getButton()){
+      onVoidAuthClicked();
+    }else if(v == captureAuthStep.getButton()){
+      onCaptureAuthClicked();
+    }
+  }
+
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item)
+  {
+    if(item.getItemId()==android.R.id.home){
+      goToChargeActivity();
+    }
+    return true;
+  }
 }

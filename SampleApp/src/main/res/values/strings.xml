@@ -154,6 +154,10 @@
     <string name="option_1">Option 1</string>
     <string name="issue_refund">Issue refund</string>
     <string name="skip_refund">Skip refund</string>
+    <string name="what_next">What would you like to do next?</string>
+    <string name="void_auth_text">Void Authorization</string>
+    <string name="option_2">Option 2</string>
+    <string name="capture_auth_text">Capture Authorization</string>
 
 
 </resources>
