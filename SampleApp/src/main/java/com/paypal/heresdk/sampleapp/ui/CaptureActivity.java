@@ -8,11 +8,15 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +36,7 @@ import com.paypal.paypalretailsdk.TransactionRecord;
  * Created by muozdemir on 1/9/18.
  */
 
-public class CaptureActivity extends Activity
+public class CaptureActivity extends ToolbarActivity
 {
   private static final String LOG_TAG = CaptureActivity.class.getSimpleName();
   public static final String INTENT_AUTH_TOTAL_AMOUNT = "TOTAL_AMOUNT";
@@ -49,23 +53,34 @@ public class CaptureActivity extends Activity
   String invoiceId;
   String captureId;
 
+  Button captureButton;
+
+  EditText amountEditText;
+
+
+  @Override
+  public int getLayoutResId()
+  {
+    return R.layout.capture_activity;
+  }
+
+
   @Override
   protected void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     Log.d(LOG_TAG, "onCreate");
-    setContentView(R.layout.capture_activity);
 
     Intent intent = getIntent();
     authAmount = new BigDecimal(0.0);
+    amountEditText = (EditText)findViewById(R.id.amount);
     if (intent.hasExtra(INTENT_AUTH_TOTAL_AMOUNT))
     {
       authAmount = (BigDecimal) intent.getSerializableExtra(INTENT_AUTH_TOTAL_AMOUNT);
       authId = (String) intent.getSerializableExtra(INTENT_AUTH_ID);
       invoiceId = (String) intent.getSerializableExtra(INTENT_INVOICE_ID);
       Log.d(LOG_TAG, "onCreate amount:" + authAmount);
-      final TextView txtAmount = (TextView) findViewById(R.id.amount);
-      //txtAmount.setText(authAmount.toString());
+
     }
 
 
@@ -74,7 +89,6 @@ public class CaptureActivity extends Activity
   public void onCaptureClicked(View view)
   {
     showProcessingProgressbar();
-    EditText amountEditText = (EditText) findViewById(R.id.amount);
     String amountText = amountEditText.getText().toString();
     captureAmount = BigDecimal.ZERO;
     if (null != amountText && amountText.length() > 0) {
@@ -199,5 +213,15 @@ public class CaptureActivity extends Activity
       mProgressDialog = null;
 
     }
+  }
+
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item)
+  {
+    if(item.getItemId() == android.R.id.home){
+      goBackToChargeActivity();
+    }
+    return true;
   }
 }

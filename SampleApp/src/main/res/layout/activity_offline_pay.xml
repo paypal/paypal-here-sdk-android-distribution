@@ -15,10 +15,9 @@
         android:gravity="center">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="?attr/actionBarSize"
-            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="@string/offline_payments"
             android:textColor="@color/sdk_black"
             android:textSize="16sp" />
