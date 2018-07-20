@@ -53,7 +53,6 @@ public class CaptureActivity extends ToolbarActivity
   String invoiceId;
   String captureId;
 
-  Button captureButton;
 
   EditText amountEditText;
 
@@ -74,6 +73,7 @@ public class CaptureActivity extends ToolbarActivity
     Intent intent = getIntent();
     authAmount = new BigDecimal(0.0);
     amountEditText = (EditText)findViewById(R.id.amount);
+    amountEditText.setHint(getString(R.string.authorization_amount) + " (" + NumberFormat.getCurrencyInstance().getCurrency().getSymbol() + ")");
     if (intent.hasExtra(INTENT_AUTH_TOTAL_AMOUNT))
     {
       authAmount = (BigDecimal) intent.getSerializableExtra(INTENT_AUTH_TOTAL_AMOUNT);
@@ -216,12 +216,4 @@ public class CaptureActivity extends ToolbarActivity
   }
 
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item)
-  {
-    if(item.getItemId() == android.R.id.home){
-      goBackToChargeActivity();
-    }
-    return true;
-  }
 }

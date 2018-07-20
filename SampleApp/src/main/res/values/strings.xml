@@ -158,6 +158,7 @@
     <string name="void_auth_text">Void Authorization</string>
     <string name="option_2">Option 2</string>
     <string name="capture_auth_text">Capture Authorization</string>
+    <string name="authorization_amount">Authorization amount</string>
 
 
 </resources>

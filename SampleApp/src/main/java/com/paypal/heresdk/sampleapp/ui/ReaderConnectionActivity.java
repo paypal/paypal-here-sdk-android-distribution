@@ -99,7 +99,7 @@ public class ReaderConnectionActivity extends ToolbarActivity implements View.On
           {
             if (error == null && cardReader != null)
             {
-              Toast.makeText(getApplicationContext(), "Connected to last active device " + cardReader.getId(), Toast.LENGTH_SHORT).show();
+              //Toast.makeText(getApplicationContext(), "Connected to last active device " + cardReader.getId(), Toast.LENGTH_SHORT).show();
               onReaderConnected(cardReader);
             }
             else if (error != null)
@@ -148,7 +148,7 @@ public class ReaderConnectionActivity extends ToolbarActivity implements View.On
             public void run() {
               autoConnectStep.hideProgressBarShowButton();
               if (error == null && cardReader != null) {
-                Toast.makeText(getApplicationContext(), "Connected to last active device " + cardReader.getId(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Connected to last active device " + cardReader.getId(), Toast.LENGTH_SHORT).show();
                 onReaderConnected(cardReader);
               } else if (error != null) {
                 Toast.makeText(getApplicationContext(), "Connection to a reader failed with error: " + error, Toast.LENGTH_SHORT).show();

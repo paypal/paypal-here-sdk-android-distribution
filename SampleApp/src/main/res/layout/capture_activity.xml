@@ -37,7 +37,7 @@
             android:id="@+id/amount"
             android:focusedByDefault="true"
             android:inputType="number"
-            android:hint="Authorization amount"/>
+            android:hint="@string/authorization_amount"/>
 
     </android.support.design.widget.TextInputLayout>
 

@@ -1,7 +1,6 @@
 package com.paypal.heresdk.sampleapp.ui;
 
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.paypal.heresdk.sampleapp.R;
-import com.paypal.heresdk.sampleapp.login.LoginActivity;
 import com.paypal.paypalretailsdk.DeviceUpdate;
 import com.paypal.paypalretailsdk.FormFactor;
 import com.paypal.paypalretailsdk.Invoice;
@@ -34,6 +32,7 @@ import com.paypal.paypalretailsdk.TransactionRecord;
 import org.androidannotations.annotations.EActivity;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,6 +101,8 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate");
         amountEditText = (EditText)findViewById(R.id.amount);
+        TextView paymentAmountText = (TextView) findViewById(R.id.payment_amount_text);
+        paymentAmountText.setText(getString(R.string.payment_amount) + " (" + NumberFormat.getCurrencyInstance().getCurrency().getSymbol() + ")");
         createInvoiceStep = (StepView)findViewById(R.id.create_invoice_step);
         createInvoiceStep.setOnButtonClickListener(this);
         createTxnStep = (StepView)findViewById(R.id.create_txn_step);

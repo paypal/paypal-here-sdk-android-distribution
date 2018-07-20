@@ -83,6 +83,7 @@ public class AuthCaptureActivity extends ToolbarActivity implements View.OnClick
 
   public void onVoidAuthClicked()
   {
+    voidAuthStep.showProgressBar();
 
     RetailSDK.getTransactionManager().voidAuthorization(authId, new TransactionManager.VoidAuthorizationCallback()
     {
@@ -109,8 +110,9 @@ public class AuthCaptureActivity extends ToolbarActivity implements View.OnClick
             else
             {
               captureAuthStep.setStepDisabled();
-              voidAuthStep.setStepCompleted();
+              voidAuthStep.hideProgressBarShowTick();
               Toast.makeText(getApplicationContext(), authId + " voided ", Toast.LENGTH_SHORT).show();
+              goToChargeActivity();
 
             }
           }
@@ -128,7 +130,6 @@ public class AuthCaptureActivity extends ToolbarActivity implements View.OnClick
     intent.putExtra(INTENT_AUTH_TOTAL_AMOUNT, authAmount);
     intent.putExtra(INTENT_AUTH_ID, authId);
     intent.putExtra(INTENT_INVOICE_ID, invoiceId);
-    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     startActivity(intent);
   }
 
