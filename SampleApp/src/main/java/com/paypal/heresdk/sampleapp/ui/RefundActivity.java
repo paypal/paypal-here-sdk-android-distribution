@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +24,7 @@ import com.paypal.paypalretailsdk.TransactionRecord;
  * Created by muozdemir on 12/19/17.
  */
 
-public class RefundActivity extends Activity
+public class RefundActivity extends ToolbarActivity
 {
   private static final String LOG_TAG = RefundActivity.class.getSimpleName();
   public static final String INTENT_TRANX_TOTAL_AMOUNT = "TOTAL_AMOUNT";
@@ -37,13 +38,25 @@ public class RefundActivity extends Activity
   BigDecimal currentAmount;
   boolean isCaptured = false;
 
+  private StepView issueRefundStep;
+
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item)
+  {
+    if(item.getItemId()==android.R.id.home){
+      goBackToChargeActivity();
+
+    }
+    return true;
+  }
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     Log.d(LOG_TAG, "onCreate");
-    setContentView(R.layout.refund_activity);
 
     Intent intent = getIntent();
     currentAmount = new BigDecimal(0.0);
@@ -53,7 +66,7 @@ public class RefundActivity extends Activity
       currentAmount = (BigDecimal) intent.getSerializableExtra(INTENT_TRANX_TOTAL_AMOUNT);
       Log.d(LOG_TAG, "onCreate amount:" + currentAmount);
       final TextView txtAmount = (TextView) findViewById(R.id.amount);
-      txtAmount.setText(currencyFormat(currentAmount));
+      txtAmount.setText("Your payment of " + currencyFormat(currentAmount) +" was successful");
     }
     else if (intent.hasExtra(INTENT_CAPTURE_TOTAL_AMOUNT))
     {
@@ -61,28 +74,30 @@ public class RefundActivity extends Activity
       currentAmount = (BigDecimal) intent.getSerializableExtra(INTENT_CAPTURE_TOTAL_AMOUNT);
       Log.d(LOG_TAG, "onCreate captur amount:" + currentAmount);
       final TextView txtAmount = (TextView) findViewById(R.id.amount);
-      txtAmount.setText(currencyFormat(currentAmount));
-      final TextView txt5 = (TextView) findViewById(R.id.textView5);
-      txt5.setText("was successfully captured.");
+      txtAmount.setText("Your payment of " + currencyFormat(currentAmount) +" was successfully captured.");
+
     }
+
+    issueRefundStep = (StepView) findViewById(R.id.refund_step);
+    issueRefundStep.setOnButtonClickListener(new View.OnClickListener()
+    {
+      @Override
+      public void onClick(View v)
+      {
+        onProvideRefundClicked();
+      }
+    });
 
   }
 
 
-  public void onProvideRefundViewCodeClicked(View view)
+  @Override
+  public int getLayoutResId()
   {
-    final TextView txtViewCode = (TextView) findViewById(R.id.provideRefundCode);
-
-    if (txtViewCode.getVisibility() == View.GONE)
-    {
-      txtViewCode.setVisibility(View.VISIBLE);
-    }
-    else
-    {
-      txtViewCode.setVisibility(View.GONE);
-    }
-
+    return R.layout.refund_activity;
   }
+
+
 
 
   public static String currencyFormat(BigDecimal n)
@@ -91,13 +106,13 @@ public class RefundActivity extends Activity
   }
 
 
-  public void onNoThanksClicked(View view)
+  public void onSkipRefundClicked(View view)
   {
     goBackToChargeActivity();
   }
 
 
-  public void onProvideRefundClicked(View view)
+  public void onProvideRefundClicked()
   {
     RetailSDK.setCurrentApplicationActivity(this);
 

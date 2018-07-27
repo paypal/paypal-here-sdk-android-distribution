@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="step_view_styleable">
+        <attr name="title_text" format="string"></attr>
+        <attr name="code_text" format="string"></attr>
+        <attr name="button_text" format="string"></attr>
+        <attr name="enabled" format="boolean"></attr>
+    </declare-styleable>
+</resources>

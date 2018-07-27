@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.text.LoginFilter;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.heresdk.sampleapp.login.LoginActivity;
 import com.paypal.paypalretailsdk.DeviceManager;
@@ -19,61 +21,41 @@ import com.paypal.paypalretailsdk.PaymentDevice;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
 
-public class ReaderConnectionActivity extends Activity
+public class ReaderConnectionActivity extends ToolbarActivity implements View.OnClickListener
 {
 
   private static final String LOG_TAG = ReaderConnectionActivity.class.getSimpleName();
   public static final String INTENT_STRING_EMV_READER = "EMV_READER";
   public static final String INTENT_STRING_AUDIO_JACK_READER = "AUDIO_JACK_READER";
 
+  private StepView findConnectStep;
+  private StepView connectLastStep;
+  private StepView autoConnectStep;
+
+  @Override
+  public int getLayoutResId()
+  {
+    return R.layout.reader_connection_activity;
+  }
+
+
   @Override
   protected void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     Log.d(LOG_TAG, "onCreate");
-    setContentView(R.layout.reader_connection_activity);
+    findConnectStep = (StepView)findViewById(R.id.find_connect_step);
+    findConnectStep.setOnButtonClickListener(this);
+    connectLastStep = (StepView)findViewById(R.id.connect_last_step);
+    connectLastStep.setOnButtonClickListener(this);
+    autoConnectStep = (StepView)findViewById(R.id.auto_connect_step);
+    autoConnectStep.setOnButtonClickListener(this);
   }
 
 
-  @Override
-  public void onBackPressed()
-  {
-    Log.d(LOG_TAG, "onBackPressed");
-    goBackToLoginActivity(null);
-  }
 
 
-  public void onFindAndConnectViewCodeClicked(View view)
-  {
-    final TextView txtFindConnectCode = (TextView) findViewById(R.id.findConnectCode);
-
-    if (txtFindConnectCode.getVisibility() == View.INVISIBLE)
-    {
-      txtFindConnectCode.setVisibility(View.VISIBLE);
-    }
-    else
-    {
-      txtFindConnectCode.setVisibility(View.INVISIBLE);
-    }
-  }
-
-
-  public void onConnectLastViewCodeClicked(View view)
-  {
-    final TextView txtConnectLast = (TextView) findViewById(R.id.connectLastReaderCode);
-
-    if (txtConnectLast.getVisibility() == View.INVISIBLE)
-    {
-      txtConnectLast.setVisibility(View.VISIBLE);
-    }
-    else
-    {
-      txtConnectLast.setVisibility(View.INVISIBLE);
-    }
-  }
-
-
-  public void onFindAndConnectClicked(View view)
+  public void onFindAndConnectClicked()
   {
     RetailSDK.getDeviceManager().searchAndConnect(new DeviceManager.ConnectionCallback()
     {
@@ -87,7 +69,7 @@ public class ReaderConnectionActivity extends Activity
           {
             if (error == null)
             {
-              Toast.makeText(getApplicationContext(), "Connected to card reader" + cardReader.getId(), Toast.LENGTH_SHORT).show();
+              //Toast.makeText(getApplicationContext(), "Connected to card reader" + cardReader.getId(), Toast.LENGTH_SHORT).show();
               onReaderConnected(cardReader);
             }
             else
@@ -103,7 +85,7 @@ public class ReaderConnectionActivity extends Activity
   }
 
 
-  public void onConnectToLastClicked(View view)
+  public void onConnectToLastClicked()
   {
     RetailSDK.getDeviceManager().connectToLastActiveReader(new DeviceManager.ConnectionCallback()
     {
@@ -117,7 +99,7 @@ public class ReaderConnectionActivity extends Activity
           {
             if (error == null && cardReader != null)
             {
-              Toast.makeText(getApplicationContext(), "Connected to last active device " + cardReader.getId(), Toast.LENGTH_SHORT).show();
+              //Toast.makeText(getApplicationContext(), "Connected to last active device " + cardReader.getId(), Toast.LENGTH_SHORT).show();
               onReaderConnected(cardReader);
             }
             else if (error != null)
@@ -140,35 +122,23 @@ public class ReaderConnectionActivity extends Activity
   private void onReaderConnected(PaymentDevice cardReader)
   {
     Log.d(LOG_TAG, "Connected to device " + cardReader.getId());
-    final LinearLayout btmLayout = (LinearLayout) findViewById(R.id.bottomBanner);
-    btmLayout.setVisibility(View.VISIBLE);
-    final LinearLayout readerIdLayout = (LinearLayout) findViewById(R.id.readerIdLayout);
-    readerIdLayout.setVisibility(View.VISIBLE);
     final TextView readerIdTxt = (TextView) findViewById(R.id.textReaderId);
-    readerIdTxt.setText(cardReader.getId());
+    readerIdTxt.setText(getString(R.string.connected) + " " + cardReader.getId());
+
+    final LinearLayout runTxnButtonContainer = (LinearLayout) findViewById(R.id.run_txn_btn_container);
+    runTxnButtonContainer.setVisibility(View.VISIBLE);
   }
 
   public void onRunTransactionClicked(View view)
   {
     Intent transactionIntent = new Intent(ReaderConnectionActivity.this, ChargeActivity.class);
-    transactionIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     startActivity(transactionIntent);
   }
 
 
-  public void goBackToLoginActivity(View view)
-  {
-    Log.d(LOG_TAG, "goBackToLoginActivity");
-    RetailSDK.logout();
-    Intent loginIntent = new Intent(ReaderConnectionActivity.this, LoginActivity.class);
-    loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-    startActivity(loginIntent);
-  }
+  public void onAutoConnectClicked() {
 
-  public void onAutoConnectClicked(View view) {
-
-    final ProgressBar autoConnectProgress = (ProgressBar) findViewById(R.id.auto_connect_progress);
-    autoConnectProgress.setVisibility(View.VISIBLE);
+    autoConnectStep.showProgressBar();
     String lastKnowReader = RetailSDK.getDeviceManager().getLastActiveBluetoothReader();
     RetailSDK.getDeviceManager().scanAndAutoConnectToBluetoothReader(lastKnowReader, new DeviceManager.ConnectionCallback() {
         @Override
@@ -176,9 +146,9 @@ public class ReaderConnectionActivity extends Activity
           ReaderConnectionActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-              autoConnectProgress.setVisibility(View.INVISIBLE);
+              autoConnectStep.hideProgressBarShowButton();
               if (error == null && cardReader != null) {
-                Toast.makeText(getApplicationContext(), "Connected to last active device " + cardReader.getId(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Connected to last active device " + cardReader.getId(), Toast.LENGTH_SHORT).show();
                 onReaderConnected(cardReader);
               } else if (error != null) {
                 Toast.makeText(getApplicationContext(), "Connection to a reader failed with error: " + error, Toast.LENGTH_SHORT).show();
@@ -194,12 +164,16 @@ public class ReaderConnectionActivity extends Activity
       });
   }
 
-  public void onAutoConnectViewCodeClicked(View view){
-    final TextView autoConnectCode = (TextView)findViewById(R.id.auto_connect_code);
-    if (autoConnectCode.getVisibility() == View.VISIBLE){
-      autoConnectCode.setVisibility(View.INVISIBLE);
-    }else{
-      autoConnectCode.setVisibility(View.VISIBLE);
+
+  @Override
+  public void onClick(View v)
+  {
+    if (v == findConnectStep.getButton()){
+      onFindAndConnectClicked();
+    }else if(v == connectLastStep.getButton()){
+      onConnectToLastClicked();
+    }else if(v == autoConnectStep.getButton()){
+      onAutoConnectClicked();
     }
   }
 }
