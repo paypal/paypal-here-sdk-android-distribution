@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.paypalretailsdk.OfflinePaymentStatus;
 import com.paypal.paypalretailsdk.OfflineTransactionState;
@@ -60,8 +62,29 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
       {
         sharedPrefs.edit().putBoolean(OFFLINE_MODE,isChecked).apply();
         if (isChecked){
-          RetailSDK.getTransactionManager().startOfflinePayment(null);
-          replayStep.setStepDisabled();
+          // Before we start offline Payment, we want to check if the merchant is eligible
+          // to take offline Payments. Then we call the startOfflinePayment() API.
+          // This API will have a callback which will return an error if there was one and a list
+          // of offline transactions.
+          if (RetailSDK.getTransactionManager().getOfflinePaymentEligibility()){
+            RetailSDK.getTransactionManager().startOfflinePayment(new TransactionManager.OfflinePaymentStatusCallback() {
+              @Override
+              public void offlinePaymentStatus(RetailSDKException error, List<OfflinePaymentStatus> statusList) {
+                if (error != null) {
+                  Toast.makeText(getApplicationContext(), error.getDeveloperMessage(), Toast.LENGTH_LONG).show();
+                } else {
+                  runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                      replayStep.setStepDisabled();
+                    }
+                  });
+                }
+              }
+            });
+          } else {
+            Toast.makeText(getApplicationContext(), "Merchant not whitelisted for offline payments", Toast.LENGTH_LONG).show();
+          }
         }else{
           RetailSDK.getTransactionManager().stopOfflinePayment();
           replayStep.setStepEnabled();
@@ -128,7 +151,14 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
   private void stopReplay()
   {
     sharedPrefs.edit().putBoolean(REPLAY_IN_PROGRESS,false).apply();
-    RetailSDK.getTransactionManager().stopReplayOfflineTxns(null);
+    RetailSDK.getTransactionManager().stopReplayOfflineTxns(new TransactionManager.OfflinePaymentStatusCallback() {
+      @Override
+      public void offlinePaymentStatus(RetailSDKException error, List<OfflinePaymentStatus> statusList) {
+        if (error != null) {
+          Toast.makeText(getApplicationContext(), error.getDeveloperMessage(), Toast.LENGTH_LONG).show();
+        }
+      }
+    });
     stopReplayStep.setStepDisabled();
     offlineModeSwitch.setEnabled(true);
     replayStep.hideProgressBarShowButton();
