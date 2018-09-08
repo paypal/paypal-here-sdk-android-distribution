@@ -67,6 +67,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
     public static final String OPTION_APP_PROMPT= "appPrompt";
     public static final String OPTION_TIP_ON_READER = "tipReader";
     public static final String OPTION_AMOUNT_TIP = "amountTip";
+    public static final String OPTION_QUICK_CHIP_ENABLED = "quickChipEnabled";
     public static final String OPTION_MAGNETIC_SWIPE = "magneticSwipe";
     public static final String OPTION_CHIP = "chip";
     public static final String OPTION_CONTACTLESS = "contactless";
@@ -80,6 +81,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
     private boolean isAppPromptEnabled = true;
     private boolean isTippingOnReaderEnabled = false;
     private boolean isAmountBasedTippingEnabled = false;
+    private boolean isQuickChipEnabled = false;
     private boolean isMagneticSwipeEnabled = true;
     private boolean isChipEnabled = true;
     private boolean isContactlessEnabled = true;
@@ -290,6 +292,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         options.setShowPromptInApp(isAppPromptEnabled);
         options.setIsAuthCapture(isAuthCaptureEnabled);
         options.setAmountBasedTipping(isAmountBasedTippingEnabled);
+        options.setEnableQuickChip(isQuickChipEnabled);
         options.setTippingOnReaderEnabled(isTippingOnReaderEnabled);
         options.setTag(tagString);
         options.setPreferredFormFactors(getPreferredFormFactors());
@@ -399,6 +402,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
                 isAppPromptEnabled = optionsBundle.getBoolean(OPTION_APP_PROMPT);
                 isTippingOnReaderEnabled = optionsBundle.getBoolean(OPTION_TIP_ON_READER);
                 isAmountBasedTippingEnabled = optionsBundle.getBoolean(OPTION_AMOUNT_TIP);
+                isQuickChipEnabled = optionsBundle.getBoolean(OPTION_QUICK_CHIP_ENABLED);
                 isMagneticSwipeEnabled = optionsBundle.getBoolean(OPTION_MAGNETIC_SWIPE);
                 isChipEnabled = optionsBundle.getBoolean(OPTION_CHIP);
                 isContactlessEnabled = optionsBundle.getBoolean(OPTION_CONTACTLESS);
@@ -487,6 +491,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         bundle.putBoolean(OPTION_APP_PROMPT,isAppPromptEnabled);
         bundle.putBoolean(OPTION_TIP_ON_READER,isTippingOnReaderEnabled);
         bundle.putBoolean(OPTION_AMOUNT_TIP,isAmountBasedTippingEnabled);
+        bundle.putBoolean(OPTION_QUICK_CHIP_ENABLED, isQuickChipEnabled);
         bundle.putBoolean(OPTION_MAGNETIC_SWIPE,isMagneticSwipeEnabled);
         bundle.putBoolean(OPTION_CHIP,isChipEnabled);
         bundle.putBoolean(OPTION_CONTACTLESS,isContactlessEnabled);

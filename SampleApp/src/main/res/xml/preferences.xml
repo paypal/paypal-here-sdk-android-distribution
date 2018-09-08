@@ -8,6 +8,7 @@
         <SwitchPreferenceCompat android:key="@string/show_prompt_in_app" android:title="@string/show_prompt_in_app"></SwitchPreferenceCompat>
         <SwitchPreferenceCompat android:key="@string/show_prompt_in_card_reader" android:title="@string/show_prompt_in_card_reader"></SwitchPreferenceCompat>
         <SwitchPreferenceCompat android:key="@string/amount_based_tipping" android:title="@string/amount_based_tipping"></SwitchPreferenceCompat>
+        <SwitchPreferenceCompat android:key="@string/enable_quick_chip" android:title="@string/enable_quick_chip"></SwitchPreferenceCompat>
         <SwitchPreferenceCompat android:key="@string/tipping_on_reader" android:title="@string/tipping_on_reader"></SwitchPreferenceCompat>
 
     </PreferenceCategory>
