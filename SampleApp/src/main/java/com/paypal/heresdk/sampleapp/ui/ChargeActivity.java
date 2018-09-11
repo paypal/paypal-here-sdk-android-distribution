@@ -292,7 +292,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         options.setShowPromptInApp(isAppPromptEnabled);
         options.setIsAuthCapture(isAuthCaptureEnabled);
         options.setAmountBasedTipping(isAmountBasedTippingEnabled);
-        options.setEnableQuickChip(isQuickChipEnabled);
+        options.setQuickChipEnabled(isQuickChipEnabled);
         options.setTippingOnReaderEnabled(isTippingOnReaderEnabled);
         options.setTag(tagString);
         options.setPreferredFormFactors(getPreferredFormFactors());
