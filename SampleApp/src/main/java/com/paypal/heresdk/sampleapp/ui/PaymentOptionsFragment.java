@@ -13,6 +13,7 @@ public class PaymentOptionsFragment extends PreferenceFragmentCompat
   SwitchPreferenceCompat promptAppPreference;
   SwitchPreferenceCompat promptReaderPreference;
   SwitchPreferenceCompat amountTippingPreference;
+  SwitchPreferenceCompat enableQuickChipPreference;
   SwitchPreferenceCompat readerTipPreference;
   SwitchPreferenceCompat chipPreference;
   SwitchPreferenceCompat contactlessPreference;
@@ -30,6 +31,7 @@ public class PaymentOptionsFragment extends PreferenceFragmentCompat
     promptAppPreference = (SwitchPreferenceCompat) findPreference(getString(R.string.show_prompt_in_app));
     promptReaderPreference = (SwitchPreferenceCompat) findPreference(getString(R.string.show_prompt_in_card_reader));
     amountTippingPreference = (SwitchPreferenceCompat) findPreference(getString(R.string.amount_based_tipping));
+    enableQuickChipPreference = (SwitchPreferenceCompat) findPreference(getString(R.string.enable_quick_chip));
     readerTipPreference = (SwitchPreferenceCompat) findPreference(getString(R.string.tipping_on_reader));
     chipPreference = (SwitchPreferenceCompat) findPreference(getString(R.string.chip));
     contactlessPreference = (SwitchPreferenceCompat) findPreference(getString(R.string.contactless));
@@ -63,6 +65,11 @@ public class PaymentOptionsFragment extends PreferenceFragmentCompat
   public boolean getAmountTippingPreference()
   {
     return amountTippingPreference.isChecked();
+  }
+
+  public boolean getQuickChipEnabledPreference()
+  {
+    return enableQuickChipPreference.isChecked();
   }
 
   public boolean getTipOnReaderPreference()
@@ -128,6 +135,10 @@ public class PaymentOptionsFragment extends PreferenceFragmentCompat
   public void setAmountTippingPreference(boolean isChecked)
   {
     amountTippingPreference.setChecked(isChecked);
+  }
+
+  public void setQuickChipEnabledPreference(boolean isChecked){
+    enableQuickChipPreference.setChecked(isChecked);
   }
 
   public void setReaderTipPreference(boolean isChecked)

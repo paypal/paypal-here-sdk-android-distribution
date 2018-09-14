@@ -30,6 +30,7 @@ public class PaymentOptionsActivity extends ToolbarActivity
       paymentOptionsFragment.setPromptAppPreference(options.getBoolean(ChargeActivity.OPTION_APP_PROMPT));
       paymentOptionsFragment.setReaderTipPreference(options.getBoolean(ChargeActivity.OPTION_TIP_ON_READER));
       paymentOptionsFragment.setAmountTippingPreference(options.getBoolean(ChargeActivity.OPTION_AMOUNT_TIP));
+      paymentOptionsFragment.setQuickChipEnabledPreference(options.getBoolean(ChargeActivity.OPTION_QUICK_CHIP_ENABLED));
       paymentOptionsFragment.setChipPreference(options.getBoolean(ChargeActivity.OPTION_CHIP));
       paymentOptionsFragment.setContactlessPreference(options.getBoolean(ChargeActivity.OPTION_CONTACTLESS));
       paymentOptionsFragment.setMagneticSwipePreference(options.getBoolean(ChargeActivity.OPTION_MAGNETIC_SWIPE));
@@ -77,6 +78,7 @@ public class PaymentOptionsActivity extends ToolbarActivity
     bundle.putBoolean(ChargeActivity.OPTION_APP_PROMPT,paymentOptionsFragment.getPromptAppPreference());
     bundle.putBoolean(ChargeActivity.OPTION_TIP_ON_READER,paymentOptionsFragment.getTipOnReaderPreference());
     bundle.putBoolean(ChargeActivity.OPTION_AMOUNT_TIP,paymentOptionsFragment.getAmountTippingPreference());
+    bundle.putBoolean(ChargeActivity.OPTION_QUICK_CHIP_ENABLED, paymentOptionsFragment.getQuickChipEnabledPreference());
     bundle.putBoolean(ChargeActivity.OPTION_MAGNETIC_SWIPE,paymentOptionsFragment.getMagneticSwipePreference());
     bundle.putBoolean(ChargeActivity.OPTION_CHIP,paymentOptionsFragment.getChipPreference());
     bundle.putBoolean(ChargeActivity.OPTION_CONTACTLESS,paymentOptionsFragment.getContactlessPreference());

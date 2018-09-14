@@ -135,6 +135,25 @@
             android:layout_alignParentRight="true"
             />
     </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_vertical_margin"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enable_quick_chip"
+                />
+
+            <Switch
+                android:id="@+id/enable_quick_chip_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                />
+        </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
