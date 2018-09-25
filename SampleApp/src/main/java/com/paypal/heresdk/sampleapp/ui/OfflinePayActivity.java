@@ -86,7 +86,16 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
             Toast.makeText(getApplicationContext(), "Merchant not whitelisted for offline payments", Toast.LENGTH_LONG).show();
           }
         }else{
-          RetailSDK.getTransactionManager().stopOfflinePayment();
+          RetailSDK.getTransactionManager().stopOfflinePayment(new TransactionManager.OfflinePaymentStatusCallback()
+          {
+            @Override
+            public void offlinePaymentStatus(RetailSDKException error, List<OfflinePaymentStatus> list)
+            {
+              if (error != null) {
+                Toast.makeText(getApplicationContext(), error.getDeveloperMessage(), Toast.LENGTH_LONG).show();
+              }
+            }
+          });
           replayStep.setStepEnabled();
 
         }

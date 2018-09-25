@@ -21,6 +21,7 @@ import com.paypal.heresdk.sampleapp.R;
 import com.paypal.paypalretailsdk.DeviceUpdate;
 import com.paypal.paypalretailsdk.FormFactor;
 import com.paypal.paypalretailsdk.Invoice;
+import com.paypal.paypalretailsdk.OfflinePaymentStatus;
 import com.paypal.paypalretailsdk.PaymentDevice;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
@@ -165,10 +166,31 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         {
             enabledText.setText("ENABLED");
             enabledText.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+            if (RetailSDK.getTransactionManager().getOfflinePaymentEligibility()){
+                RetailSDK.getTransactionManager().startOfflinePayment(new TransactionManager.OfflinePaymentStatusCallback() {
+                    @Override
+                    public void offlinePaymentStatus(RetailSDKException error, List<OfflinePaymentStatus> statusList) {
+                        if (error != null) {
+                            Toast.makeText(getApplicationContext(), error.getDeveloperMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            } else {
+                Toast.makeText(getApplicationContext(), "Merchant not whitelisted for offline payments", Toast.LENGTH_LONG).show();
+            }
         }else{
             enabledText.setText("DISABLED");
             enabledText.setTextColor(getResources().getColor(android.R.color.holo_red_light));
-
+            RetailSDK.getTransactionManager().stopOfflinePayment(new TransactionManager.OfflinePaymentStatusCallback()
+            {
+                @Override
+                public void offlinePaymentStatus(RetailSDKException error, List<OfflinePaymentStatus> list)
+                {
+                    if (error != null) {
+                        Toast.makeText(getApplicationContext(), error.getDeveloperMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }
     }
 
@@ -214,7 +236,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         }
         Log.d(LOG_TAG, "onCreateInvoiceClicked amount:" + amount);
 
-        currentInvoice = new Invoice(null);
+        currentInvoice = new Invoice(RetailSDK.getMerchant().getCurrency());
         BigDecimal quantity = new BigDecimal(1);
         currentInvoice.addItem("Item", quantity, amount, 1, null);
         // BigDecimal gratuityAmt = new BigDecimal(gratuityField.getText().toString());

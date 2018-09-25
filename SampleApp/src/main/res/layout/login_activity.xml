@@ -57,11 +57,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/rbtn_selector_right"
+            android:background="@drawable/rbtn_selector_center"
             android:button="@null"
             android:gravity="center"
             android:padding="5dp"
             android:text="Live"
+            android:textColor="@drawable/rbtn_textcolor_selector" />
+
+        <RadioButton
+            android:id="@+id/radioOffline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rbtn_selector_right"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Offline"
             android:textColor="@drawable/rbtn_textcolor_selector" />
     </RadioGroup>
 

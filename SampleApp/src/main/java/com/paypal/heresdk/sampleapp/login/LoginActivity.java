@@ -7,6 +7,7 @@ import java.util.Set;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,6 +40,9 @@ import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.SdkCredential;
 
+import static com.paypal.heresdk.sampleapp.ui.OfflinePayActivity.OFFLINE_MODE;
+import static com.paypal.heresdk.sampleapp.ui.OfflinePayActivity.PREF_NAME;
+
 public class LoginActivity extends ToolbarActivity implements View.OnClickListener
 {
   private static final String LOG_TAG = LoginActivity.class.getSimpleName();
@@ -57,6 +61,7 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
 
   private StepView step1;
   private StepView step2;
+  private Boolean offlineClicked;
 
   private Button connectButton;
 
@@ -83,6 +88,7 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
     step2 = (StepView)findViewById(R.id.step2);
     step2.setOnButtonClickListener(this);
 
+    offlineClicked = false;
   }
 
 
@@ -100,6 +106,7 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
   {
     RadioButton sandboxButton = (RadioButton) findViewById(R.id.radioSandbox);
     RadioButton liveButton = (RadioButton) findViewById(R.id.radioLive);
+    RadioButton offlineButton = (RadioButton) findViewById(R.id.radioOffline);
 
     if (sandboxButton.isChecked())
     {
@@ -124,6 +131,10 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
         initializeMerchant(credential);
 
       }
+    }
+    else if (offlineButton.isChecked())
+    {
+      initializeMerchantOffline();
     }
     else
     {
@@ -331,6 +342,30 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
     }
   }
 
+  private void initializeMerchantOffline()
+  {
+    try {
+      showProcessingProgressbar();
+      RetailSDK.initializeMerchantOffline(new RetailSDK.MerchantInitializedCallback()
+      {
+        @Override
+        public void merchantInitialized(RetailSDKException error, Merchant merchant)
+        {
+          if (error == null) {
+            offlineClicked = true;
+            getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putBoolean(OFFLINE_MODE, true).apply();
+          }
+          LoginActivity.this.merchantReady(error, merchant);
+        }
+      });
+    }
+    catch (Exception x)
+    {
+      Log.e(LOG_TAG, "Exception: " + x.toString());
+      x.printStackTrace();
+    }
+  }
+
 
   void merchantReady(RetailSDKException error, final Merchant merchant)
   {
@@ -351,7 +386,13 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
 
           step2.setStepCompleted();
           final TextView txtMerchantEmail = (TextView) findViewById(R.id.merchant_email);
-          txtMerchantEmail.setText(merchant.getEmailAddress());
+          if (offlineClicked) {
+            txtMerchantEmail.setText("Offline Merchant loaded");
+          }
+          else
+          {
+            txtMerchantEmail.setText(merchant.getEmailAddress());
+          }
           final RelativeLayout logoutContainer = (RelativeLayout) findViewById(R.id.logout);
           logoutContainer.setVisibility(View.VISIBLE);
           connectButton.setVisibility(View.VISIBLE);
