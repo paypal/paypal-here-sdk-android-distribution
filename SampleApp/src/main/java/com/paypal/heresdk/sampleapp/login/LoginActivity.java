@@ -41,6 +41,7 @@ import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.SdkCredential;
 
 import static com.paypal.heresdk.sampleapp.ui.OfflinePayActivity.OFFLINE_MODE;
+import static com.paypal.heresdk.sampleapp.ui.OfflinePayActivity.OFFLINE_INIT;
 import static com.paypal.heresdk.sampleapp.ui.OfflinePayActivity.PREF_NAME;
 
 public class LoginActivity extends ToolbarActivity implements View.OnClickListener
@@ -323,6 +324,11 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
         @Override
         public void merchantInitialized(RetailSDKException error, Merchant merchant)
         {
+          SharedPreferences pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+          SharedPreferences.Editor editor = pref.edit();
+          editor.putBoolean(OFFLINE_INIT, false);
+          editor.apply();
+          editor.commit();
           LoginActivity.this.merchantReady(error, merchant);
         }
       });
@@ -353,7 +359,12 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
         {
           if (error == null) {
             offlineClicked = true;
-            getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putBoolean(OFFLINE_MODE, true).apply();
+            SharedPreferences pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean(OFFLINE_MODE, true);
+            editor.putBoolean(OFFLINE_INIT, true);
+            editor.apply();
+            editor.commit();
           }
           LoginActivity.this.merchantReady(error, merchant);
         }
