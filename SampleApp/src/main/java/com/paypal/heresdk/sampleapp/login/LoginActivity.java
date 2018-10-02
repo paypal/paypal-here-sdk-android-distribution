@@ -36,6 +36,8 @@ import com.paypal.heresdk.sampleapp.ui.StepView;
 import com.paypal.heresdk.sampleapp.ui.ToolbarActivity;
 import com.paypal.paypalretailsdk.AppInfo;
 import com.paypal.paypalretailsdk.Merchant;
+import com.paypal.paypalretailsdk.NetworkRequest;
+import com.paypal.paypalretailsdk.NetworkResponse;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.SdkCredential;
@@ -486,6 +488,29 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
           return false;
         }
       }, info);
+      /**
+       * Add this observer to handle insecure network errors from the sdk
+       */
+      RetailSDK.addUntrustedNetworkObserver(new RetailSDK.UntrusterNetworkObserver() {
+        @Override
+        public void untrustedNetwork(RetailSDKException error) {
+          runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+              AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+              builder.setMessage("Insecure network. Please join a secure network and open the app again")
+                  .setCancelable(true)
+                  .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                      finish();
+                    }
+                  });
+              AlertDialog alert = builder.create();
+              alert.show();
+            }
+          });
+        }
+      });
     }
     catch (RetailSDKException e)
     {
