@@ -2,10 +2,13 @@ package com.paypal.heresdk.sampleapp.ui;
 
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -24,7 +27,9 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
 
   public static final String PREF_NAME = "SampleAppPrefs";
   public static final String OFFLINE_MODE ="offlineMode";
+  public static final String OFFLINE_INIT ="offlineInit";
   private static final String REPLAY_IN_PROGRESS = "replayInProgress";
+  private static final String LOG_TAG = OfflinePayActivity.class.getSimpleName();
 
   private Switch offlineModeSwitch;
   private TextView statusText;
@@ -55,6 +60,7 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
     stopReplayStep = (StepView) findViewById(R.id.stop_replay);
     stopReplayStep.setOnButtonClickListener(this);
     getOfflineStatus();
+    replayStep.setStepEnabled();
     offlineModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
     {
       @Override
@@ -72,13 +78,6 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
               public void offlinePaymentStatus(RetailSDKException error, List<OfflinePaymentStatus> statusList) {
                 if (error != null) {
                   Toast.makeText(getApplicationContext(), error.getDeveloperMessage(), Toast.LENGTH_LONG).show();
-                } else {
-                  runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                      replayStep.setStepDisabled();
-                    }
-                  });
                 }
               }
             });
@@ -86,9 +85,16 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
             Toast.makeText(getApplicationContext(), "Merchant not whitelisted for offline payments", Toast.LENGTH_LONG).show();
           }
         }else{
-          RetailSDK.getTransactionManager().stopOfflinePayment();
-          replayStep.setStepEnabled();
-
+          RetailSDK.getTransactionManager().stopOfflinePayment(new TransactionManager.OfflinePaymentStatusCallback()
+          {
+            @Override
+            public void offlinePaymentStatus(RetailSDKException error, List<OfflinePaymentStatus> list)
+            {
+              if (error != null) {
+                Toast.makeText(getApplicationContext(), error.getDeveloperMessage(), Toast.LENGTH_LONG).show();
+              }
+            }
+          });
         }
       }
     });
@@ -100,7 +106,7 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
   {
     if (sharedPrefs.getBoolean(OFFLINE_MODE,false)){
       offlineModeSwitch.setChecked(true);
-      replayStep.setStepDisabled();
+      replayStep.setStepEnabled();
       stopReplayStep.setStepDisabled();
     }else{
       offlineModeSwitch.setChecked(false);
@@ -116,7 +122,32 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
     }
   }
 
+  private void showSwitchingToOnlineDialog(String title, String message, final Boolean setChecked){
+    Log.d(LOG_TAG, "showSwitchingToOnlineDialog");
+    AlertDialog.Builder builder = new AlertDialog.Builder(OfflinePayActivity.this);
+    builder.setTitle(title);
+    builder.setMessage(message);
+    builder.setCancelable(false);
+    builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        Log.d(LOG_TAG, "replaying while in offline mode alert dialog onClick");
+        offlineModeSwitch.setChecked(setChecked);
+        dialog.dismiss();
+      }
+    });
+    builder.create().show();
+  }
+
   private void replayOfflineTxns(){
+    if (sharedPrefs.getBoolean(OFFLINE_INIT, false))
+    {
+      showSwitchingToOnlineDialog(getString(R.string.replay_dialog_offline_init_title), getString(R.string.replay_dialog_offline_init_message), true);
+      return;
+    } else if (sharedPrefs.getBoolean(OFFLINE_MODE, false)) {
+      showSwitchingToOnlineDialog(getString(R.string.replay_dialog_offline_mode_title), getString(R.string.replay_dialog_offline_mode_message), false);
+    }
+
     replayStep.showProgressBar();
     stopReplayStep.setStepEnabled();
     offlineModeSwitch.setEnabled(false);

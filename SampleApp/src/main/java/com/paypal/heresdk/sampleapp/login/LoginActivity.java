@@ -7,6 +7,7 @@ import java.util.Set;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,9 +36,15 @@ import com.paypal.heresdk.sampleapp.ui.StepView;
 import com.paypal.heresdk.sampleapp.ui.ToolbarActivity;
 import com.paypal.paypalretailsdk.AppInfo;
 import com.paypal.paypalretailsdk.Merchant;
+import com.paypal.paypalretailsdk.NetworkRequest;
+import com.paypal.paypalretailsdk.NetworkResponse;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.SdkCredential;
+
+import static com.paypal.heresdk.sampleapp.ui.OfflinePayActivity.OFFLINE_MODE;
+import static com.paypal.heresdk.sampleapp.ui.OfflinePayActivity.OFFLINE_INIT;
+import static com.paypal.heresdk.sampleapp.ui.OfflinePayActivity.PREF_NAME;
 
 public class LoginActivity extends ToolbarActivity implements View.OnClickListener
 {
@@ -57,6 +64,7 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
 
   private StepView step1;
   private StepView step2;
+  private Boolean offlineClicked;
 
   private Button connectButton;
 
@@ -83,6 +91,7 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
     step2 = (StepView)findViewById(R.id.step2);
     step2.setOnButtonClickListener(this);
 
+    offlineClicked = false;
   }
 
 
@@ -100,6 +109,7 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
   {
     RadioButton sandboxButton = (RadioButton) findViewById(R.id.radioSandbox);
     RadioButton liveButton = (RadioButton) findViewById(R.id.radioLive);
+    RadioButton offlineButton = (RadioButton) findViewById(R.id.radioOffline);
 
     if (sandboxButton.isChecked())
     {
@@ -124,6 +134,10 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
         initializeMerchant(credential);
 
       }
+    }
+    else if (offlineButton.isChecked())
+    {
+      initializeMerchantOffline();
     }
     else
     {
@@ -312,6 +326,11 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
         @Override
         public void merchantInitialized(RetailSDKException error, Merchant merchant)
         {
+          SharedPreferences pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+          SharedPreferences.Editor editor = pref.edit();
+          editor.putBoolean(OFFLINE_INIT, false);
+          editor.apply();
+          editor.commit();
           LoginActivity.this.merchantReady(error, merchant);
         }
       });
@@ -327,6 +346,35 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
       {
         ignore.printStackTrace();
       }
+      x.printStackTrace();
+    }
+  }
+
+  private void initializeMerchantOffline()
+  {
+    try {
+      showProcessingProgressbar();
+      RetailSDK.initializeMerchantOffline(new RetailSDK.MerchantInitializedCallback()
+      {
+        @Override
+        public void merchantInitialized(RetailSDKException error, Merchant merchant)
+        {
+          if (error == null) {
+            offlineClicked = true;
+            SharedPreferences pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean(OFFLINE_MODE, true);
+            editor.putBoolean(OFFLINE_INIT, true);
+            editor.apply();
+            editor.commit();
+          }
+          LoginActivity.this.merchantReady(error, merchant);
+        }
+      });
+    }
+    catch (Exception x)
+    {
+      Log.e(LOG_TAG, "Exception: " + x.toString());
       x.printStackTrace();
     }
   }
@@ -351,7 +399,13 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
 
           step2.setStepCompleted();
           final TextView txtMerchantEmail = (TextView) findViewById(R.id.merchant_email);
-          txtMerchantEmail.setText(merchant.getEmailAddress());
+          if (offlineClicked) {
+            txtMerchantEmail.setText("Offline Merchant loaded");
+          }
+          else
+          {
+            txtMerchantEmail.setText(merchant.getEmailAddress());
+          }
           final RelativeLayout logoutContainer = (RelativeLayout) findViewById(R.id.logout);
           logoutContainer.setVisibility(View.VISIBLE);
           connectButton.setVisibility(View.VISIBLE);
@@ -434,6 +488,29 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
           return false;
         }
       }, info);
+      /**
+       * Add this observer to handle insecure network errors from the sdk
+       */
+      RetailSDK.addUntrustedNetworkObserver(new RetailSDK.UntrusterNetworkObserver() {
+        @Override
+        public void untrustedNetwork(RetailSDKException error) {
+          runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+              AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+              builder.setMessage("Insecure network. Please join a secure network and open the app again")
+                  .setCancelable(true)
+                  .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                      finish();
+                    }
+                  });
+              AlertDialog alert = builder.create();
+              alert.show();
+            }
+          });
+        }
+      });
     }
     catch (RetailSDKException e)
     {
