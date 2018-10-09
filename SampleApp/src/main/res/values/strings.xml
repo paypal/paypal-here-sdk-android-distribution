@@ -165,6 +165,7 @@
     <string name="replay_dialog_offline_init_message">Replay is not allowed while the SDK is initialized in offline Mode.</string>
     <string name="replay_dialog_offline_mode_title">Replaying while in Offline Mode</string>
     <string name="replay_dialog_offline_mode_message">Replaying transaction in offlineMode will bring the SDK back into Online Mode.</string>
-
+    <string name="dialog_transaction_created_title">Replaying while in Offline Mode</string>
+    <string name="dialog_transaction_created_message">Replaying transaction in offlineMode will bring the SDK back into Online Mode.</string>
 
 </resources>
