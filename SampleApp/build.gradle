@@ -54,6 +54,7 @@ android {
 
 dependencies {
     repositories {
+        jcenter()
         mavenCentral()
         jcenter()
     }
