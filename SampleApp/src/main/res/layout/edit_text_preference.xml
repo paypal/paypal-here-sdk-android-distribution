@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditText xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/edit_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Enter tags"
+    android:imeOptions="actionDone"
+    android:singleLine="true"
+    android:maxLines="1"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginTop="8dp"
+    >
+
+</EditText>

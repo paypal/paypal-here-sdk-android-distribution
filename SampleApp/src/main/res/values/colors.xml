@@ -20,4 +20,6 @@
     <color name="sdk_default_text_color">#3D5266</color>
     <color name="sdk_default_tab_bg">#94B8B8</color>
     <color name="sdk_transparent">#00000000</color>
+    <color name="btn_pressed_dark_blue">#006591</color>
+
 </resources>

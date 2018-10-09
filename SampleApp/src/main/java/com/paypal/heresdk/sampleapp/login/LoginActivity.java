@@ -7,32 +7,46 @@ import java.util.Set;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.heresdk.sampleapp.ui.ReaderConnectionActivity;
+import com.paypal.heresdk.sampleapp.ui.StepView;
+import com.paypal.heresdk.sampleapp.ui.ToolbarActivity;
 import com.paypal.paypalretailsdk.AppInfo;
 import com.paypal.paypalretailsdk.Merchant;
+import com.paypal.paypalretailsdk.NetworkRequest;
+import com.paypal.paypalretailsdk.NetworkResponse;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.SdkCredential;
 
-public class LoginActivity extends Activity
+import static com.paypal.heresdk.sampleapp.ui.OfflinePayActivity.OFFLINE_MODE;
+import static com.paypal.heresdk.sampleapp.ui.OfflinePayActivity.OFFLINE_INIT;
+import static com.paypal.heresdk.sampleapp.ui.OfflinePayActivity.PREF_NAME;
+
+public class LoginActivity extends ToolbarActivity implements View.OnClickListener
 {
   private static final String LOG_TAG = LoginActivity.class.getSimpleName();
   public static final String PREFS_NAME = "SDKSampleAppPreferences";
@@ -48,98 +62,38 @@ public class LoginActivity extends Activity
   private ProgressDialog mProgressDialog = null;
   private RadioGroup radioGroup1;
 
+  private StepView step1;
+  private StepView step2;
+  private Boolean offlineClicked;
+
+  private Button connectButton;
+
+
+  // abstract method from ToolbarActivity
+  @Override
+  public int getLayoutResId()
+  {
+    return R.layout.login_activity;
+  }
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     Log.d(LOG_TAG, "onCreate");
-    setContentView(R.layout.login_activity);
+
 
     radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
+    connectButton = (Button) findViewById(R.id.connect_reader_button);
+    step1 = (StepView)findViewById(R.id.step1);
+    step1.setOnButtonClickListener(this);
+    step2 = (StepView)findViewById(R.id.step2);
+    step2.setOnButtonClickListener(this);
 
-    // Checked change Listener for RadioGroup 1
-    radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-    {
-      @Override
-      public void onCheckedChanged(RadioGroup group, int checkedId)
-      {
-        switch (checkedId)
-        {
-          case R.id.radioSandbox:
-            Toast.makeText(getApplicationContext(), "Sandbox checked", Toast.LENGTH_SHORT).show();
-            break;
-          case R.id.radioLive:
-            Toast.makeText(getApplicationContext(), "Live checked", Toast.LENGTH_SHORT).show();
-            break;
-          default:
-            break;
-        }
-      }
-    });
-
-    final TextView txtInitSDKView = (TextView) findViewById(R.id.txtInitSDK);
-    final TextView initSDKCodeView = (TextView) findViewById(R.id.ViewCodeInitSDK);
-    final TextView txtInitSDKCodeView = (TextView) findViewById(R.id.txtInitSDKCode);
-    final ImageView imgView = (ImageView) findViewById(R.id.imageBlueButton);
-    final TextView txtInitMerchantView = (TextView) findViewById(R.id.txtInitMerchant);
-
-    initSDKCodeView.setOnClickListener(new View.OnClickListener()
-    {
-      @Override
-      public void onClick(View v)
-      {
-        if (txtInitSDKCodeView.getVisibility() == View.GONE)
-        {
-          txtInitSDKCodeView.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-          txtInitSDKCodeView.setVisibility(View.GONE);
-        }
-      }
-    });
-
-    txtInitSDKView.setOnClickListener(new View.OnClickListener()
-    {
-      @Override
-      public void onClick(View v)
-      {
-        try
-        {
-          AppInfo info = new AppInfo("SampleApp", "1.0", "01");
-          RetailSDK.initialize(getApplicationContext(), new RetailSDK.AppState()
-          {
-            @Override
-            public Activity getCurrentActivity()
-            {
-              return LoginActivity.this;
-            }
-
-
-            @Override
-            public boolean getIsTabletMode()
-            {
-              return false;
-            }
-          }, info);
-        }
-        catch (RetailSDKException e)
-        {
-          e.printStackTrace();
-        }
-
-        imgView.setImageResource(R.drawable.small_greenarrow);
-        imgView.setClickable(false);
-        txtInitSDKView.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
-        txtInitSDKView.setClickable(false);
-
-        txtInitMerchantView.setClickable(true);
-        txtInitMerchantView.setTextColor(getResources().getColor(R.color.sdk_blue));
-
-      }
-    });
+    offlineClicked = false;
   }
+
 
 
   @Override
@@ -150,24 +104,12 @@ public class LoginActivity extends Activity
   }
 
 
-  public void onViewCodeInitMerchantClicked(View view)
-  {
-    final TextView txtInitMerchantCodeView = (TextView) findViewById(R.id.txtInitMerchantCode);
 
-    if (txtInitMerchantCodeView.getVisibility() == View.GONE)
-    {
-      txtInitMerchantCodeView.setVisibility(View.VISIBLE);
-    }
-    else
-    {
-      txtInitMerchantCodeView.setVisibility(View.GONE);
-    }
-  }
-
-  public void onInitMerchantClicked(View view)
+  public void onInitMerchantClicked()
   {
     RadioButton sandboxButton = (RadioButton) findViewById(R.id.radioSandbox);
     RadioButton liveButton = (RadioButton) findViewById(R.id.radioLive);
+    RadioButton offlineButton = (RadioButton) findViewById(R.id.radioOffline);
 
     if (sandboxButton.isChecked())
     {
@@ -192,6 +134,10 @@ public class LoginActivity extends Activity
         initializeMerchant(credential);
 
       }
+    }
+    else if (offlineButton.isChecked())
+    {
+      initializeMerchantOffline();
     }
     else
     {
@@ -260,8 +206,6 @@ public class LoginActivity extends Activity
   {
     Log.d(LOG_TAG, "startWebView url: " + url + " isSandbox: " + isSandBox + " isLive: " + isLive);
 
-    final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.main_layout);
-    mainLayout.setVisibility(View.GONE);
 
     final WebView webView = (WebView) findViewById(R.id.id_webView);
     webView.setVisibility(View.VISIBLE);
@@ -314,7 +258,6 @@ public class LoginActivity extends Activity
               initializeMerchant(credential);
             }
             webView.setVisibility(View.GONE);
-            mainLayout.setVisibility(View.VISIBLE);
             return true;
           }
         }
@@ -354,6 +297,12 @@ public class LoginActivity extends Activity
         public void merchantInitialized(RetailSDKException error, Merchant merchant)
         {
           saveToken(token);
+          SharedPreferences pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+          SharedPreferences.Editor editor = pref.edit();
+          editor.putBoolean(OFFLINE_MODE, false);
+          editor.putBoolean(OFFLINE_INIT, false);
+          editor.apply();
+          editor.commit();
           LoginActivity.this.merchantReady(error, merchant);
         }
       });
@@ -383,6 +332,12 @@ public class LoginActivity extends Activity
         @Override
         public void merchantInitialized(RetailSDKException error, Merchant merchant)
         {
+          SharedPreferences pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+          SharedPreferences.Editor editor = pref.edit();
+          editor.putBoolean(OFFLINE_MODE, false);
+          editor.putBoolean(OFFLINE_INIT, false);
+          editor.apply();
+          editor.commit();
           LoginActivity.this.merchantReady(error, merchant);
         }
       });
@@ -402,8 +357,37 @@ public class LoginActivity extends Activity
     }
   }
 
+  private void initializeMerchantOffline()
+  {
+    try {
+      showProcessingProgressbar();
+      RetailSDK.initializeMerchantOffline(new RetailSDK.MerchantInitializedCallback()
+      {
+        @Override
+        public void merchantInitialized(RetailSDKException error, Merchant merchant)
+        {
+          offlineClicked = true;
+          if (error == null) {
+            SharedPreferences pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean(OFFLINE_MODE, true);
+            editor.putBoolean(OFFLINE_INIT, true);
+            editor.apply();
+            editor.commit();
+          }
+          LoginActivity.this.merchantReady(error, merchant);
+        }
+      });
+    }
+    catch (Exception x)
+    {
+      Log.e(LOG_TAG, "Exception: " + x.toString());
+      x.printStackTrace();
+    }
+  }
 
-  void merchantReady(RetailSDKException error, final Merchant merchant)
+
+  void merchantReady(final RetailSDKException error, final Merchant merchant)
   {
     if (error == null)
     {
@@ -420,44 +404,53 @@ public class LoginActivity extends Activity
           Log.d(LOG_TAG, "merchantReady without any error");
           cancelProgressbar();
 
+          step2.setStepCompleted();
           final TextView txtMerchantEmail = (TextView) findViewById(R.id.merchant_email);
-          txtMerchantEmail.setText(merchant.getEmailAddress());
+          if (offlineClicked) {
+            txtMerchantEmail.setText("Offline Merchant loaded");
+          }
+          else
+          {
+            txtMerchantEmail.setText(merchant.getEmailAddress());
+          }
+          final RelativeLayout logoutContainer = (RelativeLayout) findViewById(R.id.logout);
+          logoutContainer.setVisibility(View.VISIBLE);
+          connectButton.setVisibility(View.VISIBLE);
 
-          final TextView txtInitMerchantView = (TextView) findViewById(R.id.txtInitMerchant);
-          txtInitMerchantView.setClickable(false);
-          txtInitMerchantView.setTextColor(getResources().getColor(R.color.sdk_dark_gray));
-
-          final ImageView imgView = (ImageView) findViewById(R.id.imageBlueButton2);
-          imgView.setImageResource(R.drawable.small_greenarrow);
-          imgView.setClickable(false);
-
-          final LinearLayout lnLayout = (LinearLayout) findViewById(R.id.logout);
-          lnLayout.setVisibility(View.VISIBLE);
-
-          final LinearLayout btmLayout = (LinearLayout) findViewById(R.id.bottomBanner);
-          btmLayout.setVisibility(View.VISIBLE);
         }
       });
     }
     else
     {
-      Log.d(LOG_TAG, "RetailSDK initialize on Error:" + error.toString());
-      cancelProgressbar();
-      AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-      builder.setTitle(R.string.error_title);
-      builder.setMessage(R.string.error_initialize_msg);
-      builder.setCancelable(false);
-      builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener()
+      LoginActivity.this.runOnUiThread(new Runnable()
       {
         @Override
-        public void onClick(DialogInterface dialog, int which)
+        public void run()
         {
-          Log.d(LOG_TAG, "RetailSDK Initialize error AlertDialog onClick");
-          dialog.dismiss();
-          finish();
+          Log.d(LOG_TAG, "RetailSDK initialize on Error:" + error.toString());
+          cancelProgressbar();
+          AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+          builder.setTitle(R.string.error_title);
+          if (offlineClicked) {
+            builder.setMessage(error.getMessage());
+          } else
+          {
+            builder.setMessage(R.string.error_initialize_msg);
+          }
+          builder.setCancelable(false);
+          builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener()
+          {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+              Log.d(LOG_TAG, "RetailSDK Initialize error AlertDialog onClick");
+              dialog.dismiss();
+              finish();
+            }
+          });
+          builder.show();
         }
       });
-      builder.show();
     }
   }
 
@@ -473,19 +466,76 @@ public class LoginActivity extends Activity
 
   private void showProcessingProgressbar()
   {
-    mProgressDialog = new ProgressDialog(LoginActivity.this);
-    mProgressDialog.setMessage(getString(R.string.initializing_processing_msg));
-    mProgressDialog.show();
+    step2.showProgressBar();
+
   }
 
 
   private void cancelProgressbar()
   {
-    if (null != mProgressDialog && mProgressDialog.isShowing())
-    {
-      mProgressDialog.dismiss();
-      mProgressDialog = null;
+    step2.hideProgressBarShowTick();
+  }
 
+
+  @Override
+  public void onClick(View v)
+  {
+    if (v == step1.getButton()){
+      initSDK();
+    }else if(v == step2.getButton()){
+      onInitMerchantClicked();
     }
+  }
+
+  public void initSDK()
+  {
+    try
+    {
+      AppInfo info = new AppInfo("SampleApp", "1.0", "01");
+      RetailSDK.initialize(getApplicationContext(), new RetailSDK.AppState()
+      {
+        @Override
+        public Activity getCurrentActivity()
+        {
+          return LoginActivity.this;
+        }
+
+
+        @Override
+        public boolean getIsTabletMode()
+        {
+          return false;
+        }
+      }, info);
+      /**
+       * Add this observer to handle insecure network errors from the sdk
+       */
+      RetailSDK.addUntrustedNetworkObserver(new RetailSDK.UntrusterNetworkObserver() {
+        @Override
+        public void untrustedNetwork(RetailSDKException error) {
+          runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+              AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+              builder.setMessage("Insecure network. Please join a secure network and open the app again")
+                  .setCancelable(true)
+                  .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                      finish();
+                    }
+                  });
+              AlertDialog alert = builder.create();
+              alert.show();
+            }
+          });
+        }
+      });
+    }
+    catch (RetailSDKException e)
+    {
+      e.printStackTrace();
+    }
+    step1.setStepCompleted();
+    step2.setStepEnabled();
   }
 }

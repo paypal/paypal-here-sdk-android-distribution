@@ -21,8 +21,8 @@ repositories {
 
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.3'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.paypal.heresdk.sampleapp"
@@ -54,15 +54,17 @@ android {
 
 dependencies {
     repositories {
-        jcenter()
         mavenCentral()
+        jcenter()
     }
-    api('com.paypal.retail:here-sdk-debug:2.0.1.201815@aar'){transitive=true}
-
+    api('com.paypal.retail:here-sdk-debug:2.1.0.201801@aar'){transitive=true}
+    
     implementation "org.androidannotations:androidannotations-api:3.3"
 
-    implementation 'com.android.support:support-v4:26.1.0'
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:support-v4:27.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:preference-v7:27.1.0'
+    implementation 'com.android.support:design:27.1.0'
     implementation 'com.google.android.gms:play-services-location:8.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
