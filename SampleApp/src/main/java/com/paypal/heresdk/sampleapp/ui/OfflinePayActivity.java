@@ -139,6 +139,22 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
     builder.create().show();
   }
 
+  private void showReplayCompleteDialog(String title, String message){
+    Log.d(LOG_TAG, "showReplayCompleteDialog");
+    AlertDialog.Builder builder = new AlertDialog.Builder(OfflinePayActivity.this);
+    builder.setTitle(title);
+    builder.setMessage(message);
+    builder.setCancelable(false);
+    builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        Log.d(LOG_TAG, "show replay completed onClick");
+        dialog.dismiss();
+      }
+    });
+    builder.create().show();
+  }
+
   private void replayOfflineTxns(){
     if (sharedPrefs.getBoolean(OFFLINE_INIT, false))
     {
@@ -166,6 +182,7 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
             @Override
             public void run()
             {
+              showReplayCompleteDialog("Offline Replay Completed", toPrint);
               statusText.setText(toPrint);
               stopReplayStep.setStepDisabled();
               offlineModeSwitch.setEnabled(true);

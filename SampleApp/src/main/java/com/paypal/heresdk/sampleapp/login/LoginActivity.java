@@ -297,6 +297,12 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
         public void merchantInitialized(RetailSDKException error, Merchant merchant)
         {
           saveToken(token);
+          SharedPreferences pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+          SharedPreferences.Editor editor = pref.edit();
+          editor.putBoolean(OFFLINE_MODE, false);
+          editor.putBoolean(OFFLINE_INIT, false);
+          editor.apply();
+          editor.commit();
           LoginActivity.this.merchantReady(error, merchant);
         }
       });
@@ -328,6 +334,7 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
         {
           SharedPreferences pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
           SharedPreferences.Editor editor = pref.edit();
+          editor.putBoolean(OFFLINE_MODE, false);
           editor.putBoolean(OFFLINE_INIT, false);
           editor.apply();
           editor.commit();
@@ -359,8 +366,8 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
         @Override
         public void merchantInitialized(RetailSDKException error, Merchant merchant)
         {
+          offlineClicked = true;
           if (error == null) {
-            offlineClicked = true;
             SharedPreferences pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
             editor.putBoolean(OFFLINE_MODE, true);
@@ -380,7 +387,7 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
   }
 
 
-  void merchantReady(RetailSDKException error, final Merchant merchant)
+  void merchantReady(final RetailSDKException error, final Merchant merchant)
   {
     if (error == null)
     {
@@ -415,23 +422,35 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
     }
     else
     {
-      Log.d(LOG_TAG, "RetailSDK initialize on Error:" + error.toString());
-      cancelProgressbar();
-      AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-      builder.setTitle(R.string.error_title);
-      builder.setMessage(R.string.error_initialize_msg);
-      builder.setCancelable(false);
-      builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener()
+      LoginActivity.this.runOnUiThread(new Runnable()
       {
         @Override
-        public void onClick(DialogInterface dialog, int which)
+        public void run()
         {
-          Log.d(LOG_TAG, "RetailSDK Initialize error AlertDialog onClick");
-          dialog.dismiss();
-          finish();
+          Log.d(LOG_TAG, "RetailSDK initialize on Error:" + error.toString());
+          cancelProgressbar();
+          AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+          builder.setTitle(R.string.error_title);
+          if (offlineClicked) {
+            builder.setMessage(error.getMessage());
+          } else
+          {
+            builder.setMessage(R.string.error_initialize_msg);
+          }
+          builder.setCancelable(false);
+          builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener()
+          {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+              Log.d(LOG_TAG, "RetailSDK Initialize error AlertDialog onClick");
+              dialog.dismiss();
+              finish();
+            }
+          });
+          builder.show();
         }
       });
-      builder.show();
     }
   }
 

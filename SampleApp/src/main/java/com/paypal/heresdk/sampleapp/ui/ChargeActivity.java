@@ -410,6 +410,21 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         builder.create().show();
     }
 
+    private void showTransactionAlreadyCreatedDialog(){
+        Log.d(LOG_TAG, "showTransactionAlreadyCreatedDialog");
+        AlertDialog.Builder builder = new AlertDialog.Builder(ChargeActivity.this);
+        builder.setTitle(R.string.dialog_transaction_created_title);
+        builder.setMessage(R.string.dialog_transaction_created_message);
+        builder.setCancelable(false);
+        builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            Log.d(LOG_TAG, "show Transaction Already Created Dialog onClick");
+            dialog.dismiss();
+          }
+        });
+        builder.create().show();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -451,8 +466,13 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         {
             onCreateTransactionClicked();
             createTxnStep.setStepCompleted();
-            enablePaymentOptionsStep();
-
+            // Don't enable payment options step if offline mode is selected
+            if(!sharedPrefs.getBoolean(OfflinePayActivity.OFFLINE_MODE,false))
+            {
+                enablePaymentOptionsStep();
+            } else {
+                acceptTxnStep.setStepEnabled();
+            }
         }
         else if(v == acceptTxnStep.getButton())
         {
@@ -463,9 +483,13 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
             optionsActivity.putExtras(getOptionsBundle());
             startActivityForResult(optionsActivity,REQUEST_OPTIONS_ACTIVITY);
         }else if(v == offlineModeContainer){
-            Intent offlineActivity = new Intent(this,OfflinePayActivity.class);
-            offlineActivity.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(offlineActivity);
+            if (currentTransaction != null) {
+                showTransactionAlreadyCreatedDialog();
+            } else {
+                Intent offlineActivity = new Intent(this, OfflinePayActivity.class);
+                offlineActivity.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(offlineActivity);
+            }
         }
 
 
