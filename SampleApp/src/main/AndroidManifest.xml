@@ -64,6 +64,12 @@
             android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
         <activity android:name=".ui.OfflinePaySuccessActivity"></activity>
+        <activity
+            android:name=".ui.VaultActivity"
+            android:label="@string/title_activity_vault"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+
     </application>
 
 </manifest>

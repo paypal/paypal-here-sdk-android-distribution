@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:stepview="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/options_title"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/activity_vertical_margin"
-        android:text="@string/payment_options"
-        android:textColor="@color/sdk_white"
-        android:background="@color/sdk_blue"
-        android:gravity="center"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/payment_options"
+            android:textColor="@color/sdk_black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/done_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/done"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:textColor="@color/sdk_primary_dark_blue"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:onClick="onDoneClicked"
         />
 
-    <Button
-        android:id="@+id/close_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/activity_vertical_margin"
-        android:background="@color/sdk_blue"
-        android:text="@string/close"
-        android:textColor="@color/sdk_white"
-        android:layout_alignParentBottom="true"
-        />
+
+    </android.support.v7.widget.Toolbar>
+
 
     <ScrollView
-        android:layout_below="@id/options_title"
+        android:layout_below="@id/toolbar"
         android:layout_above="@id/close_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -45,6 +55,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/auth_capture"
+            android:textColor="@color/sdk_black"
+            android:textSize="20sp"
             />
 
         <Switch
@@ -56,6 +68,7 @@
 
 
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,7 +78,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/show_prompt_in_card_reader"
-            />
+            android:textColor="@color/sdk_black"
+            android:textSize="20sp"
+        />
 
         <Switch
             android:id="@+id/show_prompt_card_reader_switch"
@@ -86,7 +101,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/show_prompt_in_app"
-            />
+            android:textColor="@color/sdk_black"
+            android:textSize="20sp"
+        />
 
         <Switch
             android:id="@+id/show_prompt_app_switch"
@@ -106,7 +123,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tipping_on_reader"
-            />
+            android:textColor="@color/sdk_black"
+            android:textSize="20sp"
+        />
 
         <Switch
             android:id="@+id/tipping_reader_switch"
@@ -125,7 +144,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/amount_based_tipping"
-            />
+            android:textColor="@color/sdk_black"
+            android:textSize="20sp"
+        />
 
         <Switch
             android:id="@+id/amount_tipping_switch"
@@ -144,7 +165,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/enable_quick_chip"
-                />
+                android:textColor="@color/sdk_black"
+                android:textSize="20sp"
+            />
 
             <Switch
                 android:id="@+id/enable_quick_chip_switch"
@@ -154,6 +177,43 @@
                 android:layout_alignParentRight="true"
                 />
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_vertical_margin"
+        >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vault_only"
+                android:textColor="@color/sdk_black"
+                android:textSize="20sp"
+            />
+
+            <Switch
+                android:id="@+id/vault_switch"
+                android:layout_width="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content" />
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_vertical_margin"
+            android:layout_height="wrap_content">
+            <com.paypal.heresdk.sampleapp.ui.StepView
+                android:id="@+id/bt_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                stepview:title_text="Braintree Login"
+                stepview:button_text="Braintree Login"
+            ></com.paypal.heresdk.sampleapp.ui.StepView>
+        </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -240,6 +300,11 @@
     </LinearLayout>
     </ScrollView>
 
-
+    <WebView
+        android:id="@+id/btWebView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -31,6 +31,7 @@
     <string name="error_invalid_amount">Entered amount is invalid. Please enter the valid amount</string>
     <string name="title_activity_charge">ChargeActivity</string>
     <string name="title_activity_refund">RefundActivity</string>
+    <string name="title_activity_vault">VaultActivity</string>
 
     <string name="amount_hint">Enter the Amount</string>
     <string name="button_charge">Take Payment</string>
@@ -108,6 +109,7 @@
     <string name="manual_card">Manual Card</string>
     <string name="close">Close</string>
     <string name="auth_capture">Auth/Capture</string>
+    <string name="vault_only">VaultOnly</string>
     <string name="show_prompt_in_card_reader">Prompt in reader</string>
     <string name="show_prompt_in_app">Prompt in app</string>
     <string name="tipping_on_reader">Tipping on reader</string>
@@ -121,6 +123,7 @@
     <string name="get_offline_status">Get offline status</string>
     <string name="stop_replay">Stop Replay</string>
     <string name="replay_offline_transaction">Replay Transaction</string>
+    <string name="login_bt">Login to BT Account</string>
     <string name="offline_payment_successful">Offline Payment\nSuccessful</string>
     <string name="auto_connect_code">DeviceManager.scanAndAutoConnectToBluetoothReader(String readerName, ConnectionCallback callback)</string>
     <string name="demo_app">Demo App</string>
@@ -151,8 +154,10 @@
     <string name="done">Done</string>
     <string name="edit_text_pref">editTextPreference</string>
     <string name="success_payment">Successful Payment</string>
+    <string name="success_vault">Successful Vaulting</string>
     <string name="would_you_like_a_refund">Would you like a refund?</string>
     <string name="option_1">Option 1</string>
+    <string name="go_back">Go back</string>
     <string name="issue_refund">Issue refund</string>
     <string name="skip_refund">Skip refund</string>
     <string name="what_next">What would you like to do next?</string>

@@ -26,6 +26,7 @@ import com.paypal.paypalretailsdk.PaymentDevice;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.TransactionBeginOptions;
+import com.paypal.paypalretailsdk.TransactionBeginOptionsVaultType;
 import com.paypal.paypalretailsdk.TransactionContext;
 import com.paypal.paypalretailsdk.TransactionManager;
 import com.paypal.paypalretailsdk.TransactionRecord;
@@ -44,6 +45,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
     public static final String INTENT_TRANX_TOTAL_AMOUNT = "TOTAL_AMOUNT";
     public static final String INTENT_AUTH_ID = "AUTH_ID";
     public static final String INTENT_INVOICE_ID = "INVOICE_ID";
+    public static final String INTENT_VAULT_ID = "VAULT_ID";
     private static final int REQUEST_OPTIONS_ACTIVITY = 1;
 
     TransactionContext currentTransaction;
@@ -64,6 +66,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
 
     // payment option constants
     public static final String OPTION_AUTH_CAPTURE = "authCapture";
+    public static final String OPTION_VAULT_ONLY = "vaultOnly";
     public static final String OPTION_CARD_READER_PROMPT = "cardReader";
     public static final String OPTION_APP_PROMPT= "appPrompt";
     public static final String OPTION_TIP_ON_READER = "tipReader";
@@ -78,6 +81,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
 
     // payment option booleans
     private boolean isAuthCaptureEnabled = false;
+    private boolean isVaultOnlyEnabled = false;
     private boolean isCardReaderPromptEnabled = true;
     private boolean isAppPromptEnabled = true;
     private boolean isTippingOnReaderEnabled = false;
@@ -318,6 +322,14 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         options.setTippingOnReaderEnabled(isTippingOnReaderEnabled);
         options.setTag(tagString);
         options.setPreferredFormFactors(getPreferredFormFactors());
+        if (isVaultOnlyEnabled)
+        {
+            options.setVaultType(TransactionBeginOptionsVaultType.VaultOnly);
+        }
+        else
+        {
+            options.setVaultType(TransactionBeginOptionsVaultType.PayOnly);
+        }
         currentTransaction.beginPayment(options);
     }
 
@@ -347,6 +359,10 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
                 public void run() {
                     if (isAuthCaptureEnabled) {
                         goToAuthCaptureActivity(record);
+                    }
+                    else if (isVaultOnlyEnabled)
+                    {
+                        goToVaultActivity(record);
                     }
                     else
                     {
@@ -378,6 +394,16 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         intent.putExtra(INTENT_TRANX_TOTAL_AMOUNT, amount);
         intent.putExtra(INTENT_AUTH_ID, authId);
         intent.putExtra(INTENT_INVOICE_ID, invoiceId);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    public void goToVaultActivity(TransactionRecord record){
+        Log.d(LOG_TAG, "goToVaultActivity");
+        Intent intent = new Intent(ChargeActivity.this, VaultActivity.class);
+        String vaultId = record.getVaultId();
+        Log.d(LOG_TAG, "goToAuthCaptureActivity vaultId: " + vaultId);
+        intent.putExtra(INTENT_VAULT_ID, vaultId);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
@@ -436,6 +462,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
             {
                 Bundle optionsBundle = data.getExtras();
                 isAuthCaptureEnabled = optionsBundle.getBoolean(OPTION_AUTH_CAPTURE);
+                isVaultOnlyEnabled = optionsBundle.getBoolean(OPTION_VAULT_ONLY);
                 isAppPromptEnabled = optionsBundle.getBoolean(OPTION_APP_PROMPT);
                 isTippingOnReaderEnabled = optionsBundle.getBoolean(OPTION_TIP_ON_READER);
                 isAmountBasedTippingEnabled = optionsBundle.getBoolean(OPTION_AMOUNT_TIP);
@@ -533,6 +560,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
     {
         Bundle bundle = new Bundle();
         bundle.putBoolean(OPTION_AUTH_CAPTURE,isAuthCaptureEnabled);
+        bundle.putBoolean(OPTION_VAULT_ONLY,isVaultOnlyEnabled);
         bundle.putBoolean(OPTION_CARD_READER_PROMPT,isCardReaderPromptEnabled);
         bundle.putBoolean(OPTION_APP_PROMPT,isAppPromptEnabled);
         bundle.putBoolean(OPTION_TIP_ON_READER,isTippingOnReaderEnabled);
