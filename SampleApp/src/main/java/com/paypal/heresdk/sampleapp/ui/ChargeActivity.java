@@ -77,6 +77,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
     public static final String OPTION_CONTACTLESS = "contactless";
     public static final String OPTION_MANUAL_CARD= "manualCard";
     public static final String OPTION_SECURE_MANUAL= "secureManual";
+    public static final String OPTION_CUSTOMER_ID= "customoerId";
     public static final String OPTION_TAG= "tag";
 
     // payment option booleans
@@ -92,6 +93,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
     private boolean isContactlessEnabled = true;
     private boolean isManualCardEnabled = true;
     private boolean isSecureManualEnabled = true;
+    private String customerId = "";
     private String tagString = "";
 
 
@@ -324,6 +326,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         options.setPreferredFormFactors(getPreferredFormFactors());
         if (isVaultOnlyEnabled)
         {
+            options.setVaultCustomerId(customerId);
             options.setVaultType(TransactionBeginOptionsVaultType.VaultOnly);
         }
         else
@@ -472,6 +475,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
                 isContactlessEnabled = optionsBundle.getBoolean(OPTION_CONTACTLESS);
                 isManualCardEnabled = optionsBundle.getBoolean(OPTION_MANUAL_CARD);
                 isSecureManualEnabled = optionsBundle.getBoolean(OPTION_SECURE_MANUAL);
+                customerId = optionsBundle.getString(OPTION_CUSTOMER_ID);
                 tagString = optionsBundle.getString(OPTION_TAG);
 
                 acceptTxnStep.setStepEnabled();
@@ -571,6 +575,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         bundle.putBoolean(OPTION_CONTACTLESS,isContactlessEnabled);
         bundle.putBoolean(OPTION_MANUAL_CARD,isManualCardEnabled);
         bundle.putBoolean(OPTION_SECURE_MANUAL,isSecureManualEnabled);
+        bundle.putString(OPTION_CUSTOMER_ID,customerId);
         bundle.putString(OPTION_TAG,tagString);
         return bundle;
     }

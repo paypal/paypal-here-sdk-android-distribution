@@ -116,6 +116,7 @@
     <string name="amount_based_tipping">Amount based tipping</string>
     <string name="enable_quick_chip">Enable Quick Chip</string>
     <string name="tag">Tag</string>
+    <string name="customer_id">Customer Id</string>
     <string name="view_code">View Code</string>
     <string name="get_offline_status_code">RetailSDK.getTransactionManager().getOfflinePaymentStatus(OfflinePaymentStatusCallback callback)</string>
     <string name="replay_offline_transaction_code">RetailSDK.getTransactionManager().startReplayOfflineTxns (OfflinePaymentStatusCallback callback)</string>

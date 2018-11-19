@@ -15,6 +15,7 @@ import android.webkit.WebViewClient;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import com.paypal.heresdk.sampleapp.R;
@@ -59,6 +60,11 @@ public class PaymentOptionsActivity extends ToolbarActivity
   @ViewById
   WebView btWebView;
 
+  @ViewById
+  LinearLayout ll_customerId;
+  @ViewById
+  EditText customerId;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -85,6 +91,9 @@ public class PaymentOptionsActivity extends ToolbarActivity
     btLogin = (StepView) findViewById(R.id.bt_login);
     btWebView = (WebView) findViewById(R.id.btWebView);
 
+    ll_customerId = (LinearLayout) findViewById(R.id.ll_customer_id);
+    customerId = (EditText) findViewById(R.id.customer_id);
+
     Bundle options = getIntent().getExtras();
     if (options!=null)
     {
@@ -100,13 +109,16 @@ public class PaymentOptionsActivity extends ToolbarActivity
       contactlessBox.setChecked(options.getBoolean(ChargeActivity.OPTION_CONTACTLESS));
       secureManualBox.setChecked(options.getBoolean(ChargeActivity.OPTION_SECURE_MANUAL));
       manualCardBox.setChecked(options.getBoolean(ChargeActivity.OPTION_MANUAL_CARD));
+      customerId.setText(options.getString(ChargeActivity.OPTION_CUSTOMER_ID));
       tagTxt.setText(options.getString(ChargeActivity.OPTION_TAG));
     }
 
     if (vaultSwitch.isChecked()) {
       btLogin.setVisibility(View.VISIBLE);
+      ll_customerId.setVisibility(View.VISIBLE);
     } else {
       btLogin.setVisibility(View.GONE);
+      ll_customerId.setVisibility(View.GONE);
     }
 
     vaultSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
@@ -116,8 +128,10 @@ public class PaymentOptionsActivity extends ToolbarActivity
       {
         if (isChecked) {
           btLogin.setVisibility(View.VISIBLE);
+          ll_customerId.setVisibility(View.VISIBLE);
         } else {
           btLogin.setVisibility(View.GONE);
+          ll_customerId.setVisibility(View.GONE);
         }
       }
     });
@@ -200,6 +214,7 @@ public class PaymentOptionsActivity extends ToolbarActivity
     bundle.putBoolean(ChargeActivity.OPTION_CONTACTLESS,contactlessBox.isChecked());
     bundle.putBoolean(ChargeActivity.OPTION_MANUAL_CARD,manualCardBox.isChecked());
     bundle.putBoolean(ChargeActivity.OPTION_SECURE_MANUAL,secureManualBox.isChecked());
+    bundle.putString(ChargeActivity.OPTION_CUSTOMER_ID,customerId.getText().toString());
     bundle.putString(ChargeActivity.OPTION_TAG,tagTxt.getText().toString());
     return bundle;
   }

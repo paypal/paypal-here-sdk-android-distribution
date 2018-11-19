@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:stepview="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/success_vault"
+            android:textColor="@color/sdk_black"
+            android:textSize="16sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/big_greenarrow"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/activity_vertical_margin"
+    />
+
+    <TextView
+        android:id="@+id/vault_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:text="Your vault of id: id1234 was successful"
+        android:textColor="@color/sdk_black"
+        android:textSize="20sp"/>
+
+
+
+
+    <com.paypal.heresdk.sampleapp.ui.StepView
+        android:id="@+id/go_back_step"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin"
+        stepview:title_text="@string/go_back"
+        stepview:button_text="@string/done"
+    >
+
+    </com.paypal.heresdk.sampleapp.ui.StepView>
+
+</LinearLayout>
+
