@@ -7,6 +7,7 @@ Developers should use the PayPal Here SDK to get world-class payment processing 
 * **Safety & Security:** PayPal's solution uses encrypted swipers, such that card data is never made available to merchants or anyone else.
 * **Live customer support:** Whenever you need support, we’re available to help with our customer support team.
 [Visit our website](https://www.paypal.com/webapps/mpp/credit-card-reader) for more information about PayPal Here.
+* **Partner program:** Please [contact us](https://www.paypal-business.com/SDKdeveloperinterestregistration) for any partnership program questions or opportunities.
 
 
 Supporting Materials
