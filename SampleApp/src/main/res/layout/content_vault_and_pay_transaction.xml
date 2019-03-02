@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:stepview="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activities.vaultAndPayTransaction.VaultAndPayTransaction"
+    tools:showIn="@layout/activity_vault_and_pay_transaction">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/braintree_merchant_login_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/create_invoice_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread" >
+
+            <com.paypal.heresdk.sampleapp.ui.StepView
+                android:id="@+id/braintree_merchant_login_step"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                stepview:title_text="@string/step_1"
+                stepview:code_text="@string/vault_and_pay_transaction_braintree_merchant_login"
+                stepview:button_text="@string/login"
+                stepview:enabled="false"
+                />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/create_invoice_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/braintree_merchant_login_view"
+            app:layout_constraintBottom_toTopOf="@id/transaction_amount"
+            app:layout_constraintVertical_chainStyle="spread">
+            <com.paypal.heresdk.sampleapp.ui.StepView
+                android:id="@+id/create_invoice_step"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                stepview:title_text="@string/step_2"
+                stepview:code_text="@string/create_invoice_title"
+                stepview:button_text="@string/create"
+                stepview:enabled="false"
+                />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/transaction_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/create_invoice_view"
+            app:layout_constraintBottom_toTopOf="@id/add_invoice_item_step_view"
+            app:layout_constraintVertical_chainStyle="spread" >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/payment_amount_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/payment_amount"
+                android:textColor="@color/sdk_black"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="2.00"
+                android:id="@+id/amount"
+                android:inputType="number"
+                android:imeOptions="actionDone"
+                />
+            </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/add_invoice_item_step_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/transaction_amount"
+            app:layout_constraintBottom_toTopOf="@id/begin_vault_and_pay_view"
+            app:layout_constraintVertical_chainStyle="spread">
+            <com.paypal.heresdk.sampleapp.ui.StepView
+                android:id="@+id/add_invoice_item_step"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                stepview:title_text="@string/step_3"
+                stepview:code_text="@string/add_invoice_item_title"
+                stepview:button_text="@string/add"
+                stepview:enabled="false"
+                />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/begin_vault_and_pay_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/add_invoice_item_step_view"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_chainStyle="spread">
+
+            <com.paypal.heresdk.sampleapp.ui.StepView
+                android:id="@+id/begin_vault_and_pay_step"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                stepview:button_text="@string/vault_and_pay_transaction_pay"
+                stepview:code_text="@string/create_transaction_title"
+                stepview:enabled="false"
+                stepview:title_text="@string/step_4" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

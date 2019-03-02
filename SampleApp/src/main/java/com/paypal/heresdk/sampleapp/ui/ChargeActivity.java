@@ -30,14 +30,11 @@ import com.paypal.paypalretailsdk.TransactionContext;
 import com.paypal.paypalretailsdk.TransactionManager;
 import com.paypal.paypalretailsdk.TransactionRecord;
 
-import org.androidannotations.annotations.EActivity;
-
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-@EActivity
 public class ChargeActivity extends ToolbarActivity implements View.OnClickListener
 {
     private static final String LOG_TAG = ChargeActivity.class.getSimpleName();
