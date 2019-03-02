@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.paypal.heresdk.sampleapp"
-    android:versionCode="5"
-    android:versionName="1.0">
+<manifest package="com.paypal.heresdk.sampleapp"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,12 +8,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.SDK.Base" >
-
+        android:theme="@style/Theme.SDK.Base">
         <activity
-            android:name=".ui.MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/app_name"
-            android:configChanges="orientation|screenSize|keyboardHidden">
+            android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,47 +20,69 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.LoginActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden">
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:name=".login.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:scheme="http" />
+                <data android:host="www.pph-bt-integration.com" />
+            </intent-filter>
         </activity>
         <activity
-            android:name=".ui.ReaderConnectionActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_reader_connection"
-            android:configChanges="orientation|screenSize|keyboardHidden">
-        </activity>
+            android:name=".ui.ReaderConnectionActivity" />
         <activity
-            android:name=".ui.ChargeActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_charge"
-            android:configChanges="orientation|screenSize|keyboardHidden">
-        </activity>
+            android:name=".ui.ChargeActivity" />
         <activity
-            android:name=".ui.RefundActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_charge"
-            android:configChanges="orientation|screenSize|keyboardHidden">
-        </activity>
+            android:name=".ui.RefundActivity" />
         <activity
-            android:name=".ui.AuthCaptureActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="AuthCaptureActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden">
-        </activity>
+            android:name=".ui.AuthCaptureActivity" />
         <activity
-            android:name=".ui.CaptureActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="CaptureActivity"
-            android:windowSoftInputMode="stateVisible"
-            android:configChanges="orientation|screenSize|keyboardHidden">
+            android:name=".ui.CaptureActivity"
+            android:windowSoftInputMode="stateVisible" />
+        <activity
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="WebViewActivity"
+            android:name=".ui.WebViewActivity" />
+        <activity
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:name=".ui.PaymentOptionsActivity" />
+        <activity
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:name=".ui.OfflinePayActivity" />
+        <activity android:name=".ui.OfflinePaySuccessActivity" />
+        <activity
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/title_activity_transaction_selection"
+            android:name=".activities.transactionSelection.TransactionSelection"
+            android:theme="@style/Theme.SDK.Base" />
+        <activity
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/title_activity_vault_transaction"
+            android:name=".activities.vaultTransaction.VaultTransaction"
+            android:parentActivityName=".ui.ChargeActivity"
+            android:theme="@style/Theme.SDK.Base">
         </activity>
         <activity
-            android:name=".ui.WebViewActivity"
-            android:label="WebViewActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden">
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/title_activity_vault_and_pay_transaction"
+            android:name=".activities.vaultAndPayTransaction.VaultAndPayTransaction"
+            android:parentActivityName=".ui.ChargeActivity"
+            android:theme="@style/Theme.SDK.Base">
         </activity>
-        <activity android:name=".ui.PaymentOptionsActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden">
-        </activity>
-        <activity android:name=".ui.OfflinePayActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden">
-        </activity>
-        <activity android:name=".ui.OfflinePaySuccessActivity"></activity>
     </application>
 
 </manifest>

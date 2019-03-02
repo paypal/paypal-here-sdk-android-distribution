@@ -12,8 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/run_txn_btn_container"
-        >
+        android:layout_above="@+id/run_txn_btn_container" >
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -54,8 +53,7 @@
                 stepview:title_text="@string/find_connect"
                 stepview:code_text="@string/device_find_connect"
                 stepview:button_text="@string/connect"
-                android:padding="@dimen/activity_vertical_margin"
-                ></com.paypal.heresdk.sampleapp.ui.StepView>
+                android:padding="@dimen/activity_vertical_margin" />
             <com.paypal.heresdk.sampleapp.ui.StepView
                 android:id="@+id/connect_last_step"
                 android:layout_width="match_parent"
@@ -63,8 +61,7 @@
                 stepview:title_text="@string/connect_to_last_title"
                 stepview:code_text="@string/device_connect_last"
                 stepview:button_text="@string/connect"
-                android:padding="@dimen/activity_vertical_margin"
-                ></com.paypal.heresdk.sampleapp.ui.StepView>
+                android:padding="@dimen/activity_vertical_margin" />
             <com.paypal.heresdk.sampleapp.ui.StepView
                 android:id="@+id/auto_connect_step"
                 android:layout_width="match_parent"
@@ -72,8 +69,7 @@
                 stepview:title_text="@string/auto_connect"
                 stepview:code_text="@string/auto_connect_code"
                 stepview:button_text="@string/connect"
-                android:padding="@dimen/activity_vertical_margin"
-                ></com.paypal.heresdk.sampleapp.ui.StepView>
+                android:padding="@dimen/activity_vertical_margin" />
         </LinearLayout>
         </ScrollView>
 
@@ -95,8 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:text="ReaderId"
-            android:textSize="@dimen/large"
-            />
+            android:textSize="@dimen/large" />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,13 +100,8 @@
             android:layout_margin="@dimen/activity_vertical_margin"
             android:background="@drawable/blue_btn_selector"
             android:text="@string/run_transactions"
-            android:layout_alignParentBottom="true"
             android:textAllCaps="false"
-            android:textColor="@color/sdk_white"
-
-            />
+            android:textColor="@color/sdk_white" />
     </LinearLayout>
 
-
 </RelativeLayout>
-

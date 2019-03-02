@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/transaction_selection_view"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/xxxxlarge"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activities.transactionSelection.TransactionSelection"
+    tools:showIn="@layout/activity_transaction_selection"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/transaction_selection_text_view"
+        android:layout_height="@dimen/weighted"
+        android:layout_width="match_parent"
+        android:layout_weight="0.9875"
+        android:gravity="center"
+        android:background="@color/sdk_light_grey"
+        android:textColor="@color/sdk_black"
+        android:textSize="@dimen/text_body"
+        android:textStyle="normal" />
+
+        <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/weighted"
+        android:layout_weight="0.0125"
+        android:layout_marginLeft="@dimen/large"
+        android:layout_marginRight="@dimen/large"
+        android:background="@color/sdk_dark_grey" />
+
+</LinearLayout>

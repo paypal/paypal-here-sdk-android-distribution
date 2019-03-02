@@ -125,7 +125,7 @@ public class AuthCaptureActivity extends ToolbarActivity implements View.OnClick
   {
     Log.d(LOG_TAG, "goToCaptureActivity");
     // CaptureActivity.invoiceForRefund = invoiceForRefund;
-
+    CaptureActivity.paymentMethod = invoiceForRefund.getPayments().get(0).getMethod();
     Intent intent = new Intent(AuthCaptureActivity.this, CaptureActivity.class);
     intent.putExtra(INTENT_AUTH_TOTAL_AMOUNT, authAmount);
     intent.putExtra(INTENT_AUTH_ID, authId);
