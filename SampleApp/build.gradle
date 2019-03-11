@@ -56,7 +56,7 @@ dependencies {
         mavenCentral()
         jcenter()
     }
-    api('com.paypal.retail:here-sdk-debug:2.1.02.19051000@aar') { transitive = true }
+    api('com.paypal.retail:here-sdk-debug:2.1.02.19063010@aar') { transitive = true }
 
     // Dagger core
     annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
