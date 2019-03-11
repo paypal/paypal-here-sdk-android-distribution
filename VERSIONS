@@ -1,10 +1,15 @@
+PayPalHere SDK v2 Releases
+These are the version numbers of the PayPalHere SDK and
+what is new in this release.
+
 2.1.0219063010
   What's new:
   - Braintree Completed Handler for Vault Flow
   - Braintree live login URL fix
   - Invoice free Vault API
   - Offline Payment Improvements
-  - Offline payment addition handler with OfflinePaymentRecord linkable to OfflinePaymentStatus  - iOS: Stability improvements for v9.3.5 
+  - Offline payment addition handler with OfflinePaymentRecord linkable to OfflinePaymentStatus
+  - iOS: Stability improvements for v9.3.5 
   - Monitoring Improvements
   - iOS: Refactor receipt option callback
   - Chin and Tap, Chip and Swipe readers multi-app card issue fixed
