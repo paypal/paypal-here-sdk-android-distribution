@@ -45,6 +45,35 @@ public class ReaderConnectionActivity extends ToolbarActivity implements View.On
     connectLastStep.setOnButtonClickListener(this);
     autoConnectStep = (StepView) findViewById(R.id.auto_connect_step);
     autoConnectStep.setOnButtonClickListener(this);
+    RetailSDK.addDeviceDiscoveredObserver(
+        new RetailSDK.DeviceDiscoveredObserver()
+        {
+          @Override
+          public void deviceDiscovered(final PaymentDevice discoveredDevice)
+          {
+            discoveredDevice.addConnectedObserver(
+                new PaymentDevice.ConnectedObserver()
+                {
+                  @Override
+                  public void connected()
+                  {
+                    Log.i(LOG_TAG, "Connected to: " + discoveredDevice.getId());
+                  }
+                }
+            );
+            discoveredDevice.addDisconnectedObserver(
+                new PaymentDevice.DisconnectedObserver()
+                {
+                  @Override
+                  public void disconnected(RetailSDKException e)
+                  {
+                    Log.i(LOG_TAG, "Disconnected from: " + discoveredDevice.getId());
+                  }
+                }
+            );
+          }
+        }
+    );
   }
 
 
