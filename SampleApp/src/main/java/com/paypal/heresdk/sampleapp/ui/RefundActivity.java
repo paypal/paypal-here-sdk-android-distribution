@@ -29,6 +29,7 @@ public class RefundActivity extends ToolbarActivity
   private static final String LOG_TAG = RefundActivity.class.getSimpleName();
   public static final String INTENT_TRANX_TOTAL_AMOUNT = "TOTAL_AMOUNT";
   public static final String INTENT_CAPTURE_TOTAL_AMOUNT = "CAPTURE_AMOUNT";
+  public static final String INTENT_VAULT_ID = "VAULT_ID";
 
 
   public static Invoice invoiceForRefund = null;
@@ -66,7 +67,12 @@ public class RefundActivity extends ToolbarActivity
       currentAmount = (BigDecimal) intent.getSerializableExtra(INTENT_TRANX_TOTAL_AMOUNT);
       Log.d(LOG_TAG, "onCreate amount:" + currentAmount);
       final TextView txtAmount = (TextView) findViewById(R.id.amount);
-      txtAmount.setText("Your payment of " + currencyFormat(currentAmount) +" was successful");
+      if (intent.hasExtra(INTENT_VAULT_ID)) {
+        String vaultId = (String) intent.getSerializableExtra(INTENT_VAULT_ID);
+        txtAmount.setText("Your payment of " + currencyFormat(currentAmount) +" was successful with Vault " + vaultId);
+      } else {
+        txtAmount.setText("Your payment of " + currencyFormat(currentAmount) +" was successful");
+      }
     }
     else if (intent.hasExtra(INTENT_CAPTURE_TOTAL_AMOUNT))
     {

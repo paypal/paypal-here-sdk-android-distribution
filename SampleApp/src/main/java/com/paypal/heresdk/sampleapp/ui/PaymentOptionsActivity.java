@@ -16,10 +16,13 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.paypalretailsdk.RetailSDK;
+import com.paypal.paypalretailsdk.TransactionBeginOptionsVaultType;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.ViewById;
 
@@ -65,6 +68,10 @@ public class PaymentOptionsActivity extends ToolbarActivity
   @ViewById
   EditText customerId;
 
+  @ViewById
+  RadioGroup radioGroupVault;
+
+  TransactionBeginOptionsVaultType vaultType;
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -78,7 +85,25 @@ public class PaymentOptionsActivity extends ToolbarActivity
     readerTipSwitch = (Switch) findViewById(R.id.tipping_reader_switch);
     amountTippingSwitch = (Switch) findViewById(R.id.amount_tipping_switch);
     enableQuickChipSwitch = (Switch) findViewById(R.id.enable_quick_chip_switch);
-    vaultSwitch = (Switch) findViewById(R.id.vault_switch);
+
+    radioGroupVault = (RadioGroup) findViewById(R.id.vaultRadioGroup);
+    vaultType = TransactionBeginOptionsVaultType.PayOnly;
+    radioGroupVault.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+    {
+      @Override
+      public void onCheckedChanged(RadioGroup group, int checkedId)
+      {
+        // find which radio button is selected
+        if(checkedId == R.id.payOnlyButton) {
+          vaultType = TransactionBeginOptionsVaultType.PayOnly;
+        } else if(checkedId == R.id.vaultOnlyButton) {
+          vaultType = TransactionBeginOptionsVaultType.VaultOnly;
+        } else {
+          vaultType = TransactionBeginOptionsVaultType.PayAndVault;
+        }
+      }
+    });
+
 
     tagTxt = (EditText) findViewById(R.id.tag);
 
@@ -98,7 +123,7 @@ public class PaymentOptionsActivity extends ToolbarActivity
     if (options!=null)
     {
       authCaptureSwitch.setChecked(options.getBoolean(ChargeActivity.OPTION_AUTH_CAPTURE));
-      vaultSwitch.setChecked(options.getBoolean(ChargeActivity.OPTION_VAULT_ONLY));
+      // vaultSwitch.setChecked(options.getBoolean(ChargeActivity.OPTION_VAULT_ONLY));
       promptReaderSwitch.setChecked(options.getBoolean(ChargeActivity.OPTION_CARD_READER_PROMPT));
       promptAppSwitch.setChecked(options.getBoolean(ChargeActivity.OPTION_APP_PROMPT));
       readerTipSwitch.setChecked(options.getBoolean(ChargeActivity.OPTION_TIP_ON_READER));
@@ -112,29 +137,6 @@ public class PaymentOptionsActivity extends ToolbarActivity
       customerId.setText(options.getString(ChargeActivity.OPTION_CUSTOMER_ID));
       tagTxt.setText(options.getString(ChargeActivity.OPTION_TAG));
     }
-
-    if (vaultSwitch.isChecked()) {
-      btLogin.setVisibility(View.VISIBLE);
-      ll_customerId.setVisibility(View.VISIBLE);
-    } else {
-      btLogin.setVisibility(View.GONE);
-      ll_customerId.setVisibility(View.GONE);
-    }
-
-    vaultSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-    {
-      @Override
-      public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked)
-      {
-        if (isChecked) {
-          btLogin.setVisibility(View.VISIBLE);
-          ll_customerId.setVisibility(View.VISIBLE);
-        } else {
-          btLogin.setVisibility(View.GONE);
-          ll_customerId.setVisibility(View.GONE);
-        }
-      }
-    });
 
     btLogin.setOnButtonClickListener(new View.OnClickListener()
     {
@@ -150,7 +152,7 @@ public class PaymentOptionsActivity extends ToolbarActivity
   @Click(R.id.bt_login)
   void btLoginClicked()
   {
-    String btLoginURL = RetailSDK.getBtLoginUrl(null);
+    String btLoginURL = RetailSDK.getBraintreeManager().getBtLoginUrl();
 
     Log.d(logComponent, "starting BT web view with URL: " + btLoginURL);
     btWebView.setVisibility(View.VISIBLE);
@@ -161,8 +163,8 @@ public class PaymentOptionsActivity extends ToolbarActivity
       public boolean shouldOverrideUrlLoading(WebView view, String url)
       {
         Log.d(logComponent, "this is the overloaded url " + url);
-        Log.d(logComponent, "does it contain auth code: " + RetailSDK.isBtReturnUrlValid(url));
-        if (RetailSDK.isBtReturnUrlValid(url))
+        Log.d(logComponent, "does it contain auth code: " + RetailSDK.getBraintreeManager().isBtReturnUrlValid(url));
+        if (RetailSDK.getBraintreeManager().isBtReturnUrlValid(url))
         {
           Log.d(logComponent, "GOOD it contains auth code! ");
           btWebView.setVisibility(View.GONE);
@@ -203,7 +205,7 @@ public class PaymentOptionsActivity extends ToolbarActivity
   {
     Bundle bundle = new Bundle();
     bundle.putBoolean(ChargeActivity.OPTION_AUTH_CAPTURE,authCaptureSwitch.isChecked());
-    bundle.putBoolean(ChargeActivity.OPTION_VAULT_ONLY,vaultSwitch.isChecked());
+    bundle.putInt(ChargeActivity.OPTION_VAULT_TYPE, vaultType.getValue());
     bundle.putBoolean(ChargeActivity.OPTION_CARD_READER_PROMPT,promptReaderSwitch.isChecked());
     bundle.putBoolean(ChargeActivity.OPTION_APP_PROMPT,promptAppSwitch.isChecked());
     bundle.putBoolean(ChargeActivity.OPTION_TIP_ON_READER,readerTipSwitch.isChecked());

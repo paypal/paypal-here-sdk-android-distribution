@@ -38,7 +38,6 @@
 
     <ScrollView
         android:layout_below="@id/toolbar"
-        android:layout_above="@id/close_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -183,21 +182,42 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/activity_vertical_margin"
         >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/vault_only"
-                android:textColor="@color/sdk_black"
-                android:textSize="20sp"
-            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/vault_text"
+            android:text="@string/vault_types"
+            android:textColor="@color/sdk_dark_gray"
+            android:textSize="20sp"
+        />
 
-            <Switch
-                android:id="@+id/vault_switch"
-                android:layout_width="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_height="wrap_content" />
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_below="@+id/vault_text"
+            android:id="@+id/vaultRadioGroup"
+            android:checkedButton="@+id/payOnlyButton" >
 
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/payOnlyButton"
+                android:text="@string/pay_only" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/vaultOnlyButton"
+                android:text="@string/vault_only" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/payAndVaultButton"
+                android:text="@string/pay_and_vault" />
+
+        </RadioGroup>
 
         </RelativeLayout>
 

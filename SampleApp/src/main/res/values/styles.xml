@@ -124,25 +124,4 @@
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
-    <style name="AppThemeDark" parent="@android:style/Theme.DeviceDefault">
-        <item name="com.paypal.heresdk.sampleapp:switchStyle">@style/switch_dark</item>
-    </style>
-
-    <style name="AppThemeLight" parent="@android:style/Theme.DeviceDefault.Light">
-        <item name="com.paypal.heresdk.sampleapp:switchStyle">@style/switch_light</item>
-    </style>
-
-    <style name="switch_dark">
-        <item name="@attr/colorChecked">#FFFFFF</item>
-        <item name="@attr/colorUnChecked">#808080</item>
-        <item name="@attr/backgroundDrawable">@color/sdk_light_grey</item>
-        <item name="@attr/switchDrawable">@color/sdk_dark_gray</item>
-    </style>
-
-    <style name="switch_light">
-        <item name="@attr/colorChecked">#FFFFFF</item>
-        <item name="@attr/colorUnChecked">#181818</item>
-        <item name="@attr/backgroundDrawable">@color/sdk_light_grey</item>
-        <item name="@attr/switchDrawable">@color/sdk_dark_gray</item>
-    </style>
 </resources>

@@ -109,7 +109,10 @@
     <string name="manual_card">Manual Card</string>
     <string name="close">Close</string>
     <string name="auth_capture">Auth/Capture</string>
+    <string name="pay_only">PayOnly</string>
     <string name="vault_only">VaultOnly</string>
+    <string name="vault_types">Choose Vault Type:</string>
+    <string name="pay_and_vault">PayAndVault</string>
     <string name="show_prompt_in_card_reader">Prompt in reader</string>
     <string name="show_prompt_in_app">Prompt in app</string>
     <string name="tipping_on_reader">Tipping on reader</string>
