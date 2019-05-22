@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:stepview="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/sdk_black"
+            android:text="@string/payments"
+            android:textSize="16sp"
+            android:layout_gravity="center" />
+    </android.support.v7.widget.Toolbar>
+
+
+    <!-- main container -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- offline mode option container -->
+            <LinearLayout
+                android:id="@+id/offline_mode_container"
+                android:layout_width="match_parent"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Offline Payments"
+                        android:layout_centerVertical="true"
+                        android:textColor="@android:color/black" />
+
+                    <ImageView
+                        android:id="@+id/arrow"
+                        android:layout_centerVertical="true"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/black_arrow" />
+
+                    <TextView
+                        android:id="@+id/offline_mode_status_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:layout_toLeftOf="@id/arrow"
+                        android:textColor="@android:color/holo_green_dark"
+                        android:layout_centerVertical="true"
+                        android:text="ENABLED" />
+
+                </RelativeLayout>
+=
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/sdk_dark_grey" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/payment_options_container"
+                android:layout_margin="@dimen/activity_vertical_margin">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp"
+                >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/payment_options"
+                        android:id="@+id/payment_options_text"
+                        android:textColor="@android:color/black"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                    />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/black_arrow"
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/payment_options_arrow"
+                        android:layout_centerVertical="true"
+
+                    />
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:background="@color/sdk_dark_grey"></View>
+
+            </LinearLayout>
+
+
+            <!-- payment amount container -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/payment_amount_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_amount"
+                    android:textColor="@color/sdk_black"
+                    />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="2.00"
+                    android:id="@+id/amount"
+                    android:inputType="number"
+                    android:imeOptions="actionDone"
+                    />
+
+            </LinearLayout>
+
+            <!-- Steps container -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <com.paypal.heresdk.sampleapp.ui.StepView
+                    android:id="@+id/create_invoice_step"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_vertical_margin"
+                    stepview:title_text="@string/step_1"
+                    stepview:code_text="@string/create_invoice"
+                    stepview:button_text="@string/create_invoice_title"
+                    stepview:enabled="false"
+                    />
+
+                <com.paypal.heresdk.sampleapp.ui.StepView
+                    android:id="@+id/create_txn_step"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_vertical_margin"
+                    stepview:title_text="@string/step_2"
+                    stepview:code_text="@string/create_transaction"
+                    stepview:button_text="@string/create_transaction_title"
+                    stepview:enabled="false"
+                    />
+
+                <com.paypal.heresdk.sampleapp.ui.StepView
+                    android:id="@+id/accept_txn_step"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_vertical_margin"
+                    stepview:title_text="@string/step_3"
+                    stepview:code_text="@string/accept_transaction"
+                    stepview:button_text="@string/accept_transaction_title"
+                    stepview:enabled="false"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</RelativeLayout>
+

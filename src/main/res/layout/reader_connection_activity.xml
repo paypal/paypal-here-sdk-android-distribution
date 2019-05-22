@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:stepview="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <!-- toolbar and steps container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/run_txn_btn_container"
+        >
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/sdk_black"
+                android:text="@string/connect_a_reader"
+                android:textSize="16sp"
+                android:layout_gravity="center" />
+        </android.support.v7.widget.Toolbar>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_one"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/sdk_black"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin"/>
+
+        <!-- steps container -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.paypal.heresdk.sampleapp.ui.StepView
+                android:id="@+id/find_connect_step"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                stepview:title_text="@string/find_connect"
+                stepview:code_text="@string/device_find_connect"
+                stepview:button_text="@string/connect"
+                android:padding="@dimen/activity_vertical_margin"
+                ></com.paypal.heresdk.sampleapp.ui.StepView>
+            <com.paypal.heresdk.sampleapp.ui.StepView
+                android:id="@+id/connect_last_step"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                stepview:title_text="@string/connect_to_last_title"
+                stepview:code_text="@string/device_connect_last"
+                stepview:button_text="@string/connect"
+                android:padding="@dimen/activity_vertical_margin"
+                ></com.paypal.heresdk.sampleapp.ui.StepView>
+            <com.paypal.heresdk.sampleapp.ui.StepView
+                android:id="@+id/auto_connect_step"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                stepview:title_text="@string/auto_connect"
+                stepview:code_text="@string/auto_connect_code"
+                stepview:button_text="@string/connect"
+                android:padding="@dimen/activity_vertical_margin"
+                ></com.paypal.heresdk.sampleapp.ui.StepView>
+        </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+    <!-- "Connected to : " and Run transaction button container -->
+    <LinearLayout
+        android:id="@id/run_txn_btn_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:visibility="gone"
+        >
+        <TextView
+            android:id="@+id/textReaderId"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:text="ReaderId"
+            android:textSize="@dimen/large"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onRunTransactionClicked"
+            android:id="@+id/run_txn_btn"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:background="@drawable/blue_btn_selector"
+            android:text="@string/run_transactions"
+            android:layout_alignParentBottom="true"
+            android:textAllCaps="false"
+            android:textColor="@color/sdk_white"
+
+            />
+    </LinearLayout>
+
+
+</RelativeLayout>
+

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/capture_auth_text"
+            android:textColor="@color/sdk_black"
+            android:textSize="16sp" />
+    </android.support.v7.widget.Toolbar>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        app:hintTextAppearance="@style/EditTextHintStyle"
+        >
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:id="@+id/amount"
+            android:focusedByDefault="true"
+            android:inputType="number"
+            android:hint="@string/authorization_amount"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_32"
+        android:id="@+id/capture_button"
+        android:layout_alignParentBottom="true"
+        android:onClick="onCaptureClicked"
+        android:background="@drawable/blue_btn_selector"
+        android:text="@string/capture_auth_text"
+        android:textColor="@color/sdk_white"
+        android:textAllCaps="false"
+        />
+
+</RelativeLayout>
+

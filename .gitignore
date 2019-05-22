@@ -1,4 +1,3 @@
-
 # Files for the Dalvik VM
 *.dex
 
@@ -22,3 +21,8 @@ proguard/
 
 # Log Files
 *.log
+
+.idea/**
+.DS_Store
+captures
+*.iml

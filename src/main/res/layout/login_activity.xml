@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:stepview="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+
+        <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/sdk_black"
+            android:text="@string/initial_setup"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+
+            />
+    </android.support.v7.widget.Toolbar>
+
+        <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_gravity="center"
+
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/radioSandbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rbtn_selector_left"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Sandbox"
+            android:textColor="@drawable/rbtn_textcolor_selector" />
+
+        <RadioButton
+            android:id="@+id/radioLive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rbtn_selector_center"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Live"
+            android:textColor="@drawable/rbtn_textcolor_selector" />
+
+        <RadioButton
+            android:id="@+id/radioOffline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rbtn_selector_right"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Offline"
+            android:textColor="@drawable/rbtn_textcolor_selector" />
+    </RadioGroup>
+
+        <!-- Steps container -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.paypal.heresdk.sampleapp.ui.StepView
+                    android:id="@+id/step1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_vertical_margin"
+                    stepview:button_text="@string/init_sdk_title"
+                    stepview:code_text="@string/init_sdk_code"
+                    stepview:title_text="@string/step_1"
+                    />
+
+                <com.paypal.heresdk.sampleapp.ui.StepView
+                    android:id="@+id/step2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_vertical_margin"
+                    stepview:button_text="@string/init_merchant_title"
+                    stepview:code_text="@string/init_merchant_code"
+                    stepview:title_text="@string/step_2"
+                    stepview:enabled="false"
+
+
+                    />
+            </LinearLayout>
+        </ScrollView>
+
+
+        <!-- Logout container -->
+        <RelativeLayout
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:padding="@dimen/activity_vertical_margin"
+            >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/merchant_account"
+                    android:textColor="@color/sdk_black"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:id="@+id/merchant_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small"
+                    android:text="@string/merchant_account_email"
+                    android:textSize="12sp"
+                    />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Logout"
+                android:textStyle="bold"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:onClick="onLogoutClicked"
+                android:textColor="@color/sdk_primary_dark_blue"
+
+
+
+                />
+
+
+        </RelativeLayout>
+
+
+   </LinearLayout>
+
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_32"
+        android:background="@drawable/blue_btn_selector"
+        android:onClick="onConnectCardReaderClicked"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/connect_reader_button"
+        android:visibility="gone"
+        android:text="@string/connect_card_reader"
+        android:textAllCaps="false"
+        android:textColor="@color/sdk_white"
+        />
+
+
+    <WebView
+
+        android:id="@+id/id_webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:visibility="gone" />
+
+
+</RelativeLayout>
+

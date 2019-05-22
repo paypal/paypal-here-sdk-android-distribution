@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Sale Options">
+        <SwitchPreferenceCompat android:key="@string/auth_capture" android:title="@string/auth_capture"></SwitchPreferenceCompat>
+        <SwitchPreferenceCompat android:key="@string/show_prompt_in_app" android:title="@string/show_prompt_in_app"></SwitchPreferenceCompat>
+        <SwitchPreferenceCompat android:key="@string/show_prompt_in_card_reader" android:title="@string/show_prompt_in_card_reader"></SwitchPreferenceCompat>
+        <SwitchPreferenceCompat android:key="@string/amount_based_tipping" android:title="@string/amount_based_tipping"></SwitchPreferenceCompat>
+        <SwitchPreferenceCompat android:key="@string/enable_quick_chip" android:title="@string/enable_quick_chip"></SwitchPreferenceCompat>
+        <SwitchPreferenceCompat android:key="@string/tipping_on_reader" android:title="@string/tipping_on_reader"></SwitchPreferenceCompat>
+        <SwitchPreferenceCompat android:key="@string/vault_only" android:title="@string/vault_only"></SwitchPreferenceCompat>
+        <SwitchPreferenceCompat
+            android:title="Braintree Login"
+            android:key="@string/login_bt" >
+        </SwitchPreferenceCompat>
+    </PreferenceCategory>
+
+
+
+    <PreferenceCategory
+        android:title="Tags">
+        <com.paypal.heresdk.sampleapp.ui.EditTextPreference android:key="@string/edit_text_pref" android:title="@string/edit_text_pref"></com.paypal.heresdk.sampleapp.ui.EditTextPreference>
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:title="Allowed Card Readers">
+        <SwitchPreferenceCompat android:key="@string/chip" android:title="@string/chip"></SwitchPreferenceCompat>
+        <SwitchPreferenceCompat android:key="@string/contactless" android:title="@string/contactless"></SwitchPreferenceCompat>
+        <SwitchPreferenceCompat android:key="@string/magnetic_swipe" android:title="@string/magnetic_swipe"></SwitchPreferenceCompat>
+        <SwitchPreferenceCompat android:key="@string/manual_card" android:title="@string/manual_card"></SwitchPreferenceCompat>
+        <SwitchPreferenceCompat android:key="@string/secure_manual" android:title="@string/secure_manual"></SwitchPreferenceCompat>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
