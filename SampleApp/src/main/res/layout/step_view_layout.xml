@@ -49,6 +49,13 @@
                 android:visibility="gone"
                 android:src="@drawable/small_blue_tick"
                 />
+            <ImageView
+                android:id="@+id/done_cross"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                android:src="@drawable/cancel_x" />
             <ProgressBar
                 android:id="@+id/progress"
                 android:layout_width="wrap_content"

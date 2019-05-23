@@ -65,6 +65,7 @@
     <string name="title_activity_main">Switch Button Demo</string>
     <string name="dark">Change to Dark Theme</string>
     <string name="light">Change to Light Theme</string>
+    <string name="add">Add</string>
     <string name="cheer">Cheer:</string>
     <string name="left">left</string>
     <string name="right">right</string>
@@ -72,6 +73,7 @@
     <string name="yeah">yeah</string>
     <string name="on">on</string>
     <string name="off">off</string>
+    <string name="create">create</string>
     <string name="default_checked">Checked by default:</string>
     <string name="checked">checked</string>
     <string name="unchecked">unchecked</string>
@@ -147,10 +149,12 @@
     <string name="payments">Payments</string>
     <string name="payment_amount">Payment Amount</string>
     <string name="create_invoice_title">Create Invoice</string>
+    <string name="add_invoice_item_title">Add Invoice Item</string>
     <string name="create_transaction_title">Create transaction</string>
     <string name="step_3">Step 3</string>
     <string name="accept_transaction_title">Accept transaction</string>
     <string name="step_4">Step 4</string>
+    <string name="step_5">Step 5</string>
     <string name="offline_payments">Offline Payments</string>
     <string name="offline_status">Offline status</string>
     <string name="start_replay">Start replay</string>
@@ -169,6 +173,29 @@
     <string name="option_2">Option 2</string>
     <string name="capture_auth_text">Capture Authorization</string>
     <string name="authorization_amount">Authorization amount</string>
+
+    <string name="title_activity_transaction_selection">TransactionSelection</string>
+    <string name="transaction_selection_toolbar">Select a transaction</string>
+    <string name="transaction_selection_vault">Vault</string>
+    <string name="transaction_selection_vault_and_pay">Vault &amp; Pay</string>
+    <string name="transaction_selection_pay">Pay</string>
+    <string name="transaction_selection_offline">Offline</string>
+    <string name="transaction_selection_auth">Authorization</string>
+    <string name="transaction_selection_auth_capture">Auth Capture</string>
+
+    <string name="title_activity_vault_and_pay_transaction">Vault &amp; Pay Transaction</string>
+    <string name="vault_and_pay_transaction_chrome_connection_failed">Failed to spin up the browser</string>
+    <string name="vault_and_pay_braintree_merchant_login_bad_url">Braintree Merchant Login returned bad Url</string>
+    <string name="vault_and_pay_transaction_braintree_merchant_login">Braintree Merchant Login</string>
+    <string name="vault_and_pay_transaction_pay">Vault &amp; Pay</string>
+
+    <string name="title_activity_vault_transaction">Vault Transaction</string>
+    <string name="vault_transaction_chrome_connection_failed">Failed to spin up the browser</string>
+    <string name="vault_transaction_braintree_merchant_login">Braintree Merchant Login</string>
+    <string name="vault_transaction">Vault</string>
+
+    <string name="braintree_merchant_login_bad_url">Braintree Merchant Login returned bad Url</string>
+    <string name="braintree_merchant_login">Braintree Merchant Login For Vault Transactions</string>
 
     <string name="replay_dialog_offline_init_title">Cannot Replay in Offline Init</string>
     <string name="replay_dialog_offline_init_message">Replay is not allowed while the SDK is initialized in offline Mode.</string>

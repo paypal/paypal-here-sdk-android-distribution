@@ -15,6 +15,7 @@ public class StepView extends LinearLayout
 {
 
   private ImageView tick;
+  private ImageView cross;
   private Button button;
   private TextView titleTextView;
   private TextView codeTextView;
@@ -51,6 +52,7 @@ public class StepView extends LinearLayout
     codeTextView = (TextView)container.findViewById(R.id.code_text);
     button = (Button)container.findViewById(R.id.button);
     tick = (ImageView)container.findViewById(R.id.done_tick);
+    cross = (ImageView) container.findViewById(R.id.done_cross);
     progress = (ProgressBar)container.findViewById(R.id.progress);
 
     titleTextView.setText(title);
@@ -91,6 +93,15 @@ public class StepView extends LinearLayout
     codeTextView.setTextColor(getResources().getColor(R.color.sdk_black));
   }
 
+  public void setStepCrossed()
+  {
+    button.setVisibility(GONE);
+    tick.setVisibility(GONE);
+    cross.setVisibility(VISIBLE);
+    cross.setImageResource(R.drawable.cancel_x);
+    titleTextView.setTextColor(getResources().getColor(R.color.sdk_black));
+    codeTextView.setTextColor(getResources().getColor(R.color.sdk_black));
+  }
   public Button getButton(){
     return button;
   }

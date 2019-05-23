@@ -29,46 +29,25 @@ import org.androidannotations.annotations.ViewById;
 public class PaymentOptionsActivity extends ToolbarActivity
 {
   final private String logComponent = "PaymentOptionsActivity";
-  @ViewById
   Switch authCaptureSwitch;
-  @ViewById
-  Switch vaultSwitch;
-  @ViewById
   Switch promptAppSwitch;
-  @ViewById
   Switch promptReaderSwitch;
-  @ViewById
   Switch amountTippingSwitch;
-  @ViewById
   Switch enableQuickChipSwitch;
-  @ViewById
   Switch readerTipSwitch;
-
-  @ViewById
   EditText tagTxt;
-
-  @ViewById
   CheckBox chipBox;
-  @ViewById
   CheckBox contactlessBox;
-  @ViewById
   CheckBox magneticSwipeBox;
-  @ViewById
   CheckBox manualCardBox;
-  @ViewById
   CheckBox secureManualBox;
 
-  @ViewById
   StepView btLogin;
-  @ViewById
   WebView btWebView;
 
-  @ViewById
   LinearLayout ll_customerId;
-  @ViewById
   EditText customerId;
 
-  @ViewById
   RadioGroup radioGroupVault;
 
   TransactionBeginOptionsVaultType vaultType;
@@ -149,7 +128,7 @@ public class PaymentOptionsActivity extends ToolbarActivity
   }
 
 
-  @Click(R.id.bt_login)
+
   void btLoginClicked()
   {
     String btLoginURL = RetailSDK.getBraintreeManager().getBtLoginUrl();
