@@ -58,6 +58,7 @@ public class RefundActivity extends ToolbarActivity
   {
     super.onCreate(savedInstanceState);
     Log.d(LOG_TAG, "onCreate");
+    setContentView(R.layout.refund_activity);
 
     Intent intent = getIntent();
     currentAmount = new BigDecimal(0.0);

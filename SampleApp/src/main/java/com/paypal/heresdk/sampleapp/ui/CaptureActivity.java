@@ -69,6 +69,7 @@ public class CaptureActivity extends ToolbarActivity
   {
     super.onCreate(savedInstanceState);
     Log.d(LOG_TAG, "onCreate");
+    setContentView(R.layout.capture_activity);
 
     Intent intent = getIntent();
     authAmount = new BigDecimal(0.0);
@@ -89,6 +90,7 @@ public class CaptureActivity extends ToolbarActivity
   public void onCaptureClicked(View view)
   {
     showProcessingProgressbar();
+    EditText amountEditText = (EditText) findViewById(R.id.amount);
     String amountText = amountEditText.getText().toString();
     captureAmount = BigDecimal.ZERO;
     if (null != amountText && amountText.length() > 0) {

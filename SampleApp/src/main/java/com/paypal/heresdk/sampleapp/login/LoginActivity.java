@@ -206,6 +206,8 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
   {
     Log.d(LOG_TAG, "startWebView url: " + url + " isSandbox: " + isSandBox + " isLive: " + isLive);
 
+    final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.main_layout);
+    mainLayout.setVisibility(View.GONE);
 
     final WebView webView = (WebView) findViewById(R.id.id_webView);
     webView.setVisibility(View.VISIBLE);
@@ -258,6 +260,7 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
               initializeMerchant(credential);
             }
             webView.setVisibility(View.GONE);
+            mainLayout.setVisibility(View.VISIBLE);
             return true;
           }
         }

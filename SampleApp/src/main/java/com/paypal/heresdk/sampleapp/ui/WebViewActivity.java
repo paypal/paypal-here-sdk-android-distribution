@@ -28,6 +28,7 @@ public class WebViewActivity extends Activity
   public static final String INTENT_ISLIVE_WEBVIEW = "ISLIVE_FOR_WEBVIEW";
 
   String mUrl;
+  boolean mIsLive;
 
   @Override
   protected void onCreate(Bundle savedInstanceState)

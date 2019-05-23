@@ -132,6 +132,7 @@ public class ReaderConnectionActivity extends ToolbarActivity implements View.On
   public void onRunTransactionClicked(View view)
   {
     Intent transactionIntent = new Intent(ReaderConnectionActivity.this, ChargeActivity.class);
+    transactionIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     startActivity(transactionIntent);
   }
 

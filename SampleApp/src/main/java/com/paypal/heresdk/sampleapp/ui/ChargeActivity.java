@@ -1,5 +1,6 @@
 package com.paypal.heresdk.sampleapp.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -255,7 +256,6 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         // if(gratuityAmt.intValue() > 0){
         //    invoice.setGratuityAmount(gratuityAmt);
         // }
-
     }
 
 
@@ -504,7 +504,6 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         refundIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(refundIntent);
     }
-
 
     private void showInvalidAmountAlertDialog(){
         Log.d(LOG_TAG, "showInvalidAmountAlertDialog");
