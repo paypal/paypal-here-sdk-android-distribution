@@ -2,7 +2,6 @@ package com.paypal.heresdk.sampleapp.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.media.Image;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.Button;
@@ -16,25 +15,20 @@ public class StepView extends LinearLayout
 {
 
   private ImageView tick;
-  private ImageView cross;
   private Button button;
   private TextView titleTextView;
   private TextView codeTextView;
   private Context context;
   private LinearLayout container;
   private ProgressBar progress;
-
-
   public StepView(Context context)
   {
     super(context);
     this.context = context;
   }
 
-
-  public StepView(Context context, AttributeSet attrs)
-  {
-    super(context, attrs);
+  public StepView(Context context, AttributeSet attrs){
+    super(context,attrs);
 
     this.context = context;
     TypedArray attrArray = context.obtainStyledAttributes(attrs, R.styleable.step_view_styleable);
@@ -42,102 +36,70 @@ public class StepView extends LinearLayout
     String title = attrArray.getString(R.styleable.step_view_styleable_title_text);
     String code = attrArray.getString(R.styleable.step_view_styleable_code_text);
     String buttonText = attrArray.getString(R.styleable.step_view_styleable_button_text);
-    boolean enabled = attrArray.getBoolean(R.styleable.step_view_styleable_enabled, true);
+    boolean enabled = attrArray.getBoolean(R.styleable.step_view_styleable_enabled,true);
 
 
-    title = title == null
-            ? ""
-            : title;
-    code = code == null
-           ? ""
-           : code;
-    buttonText = buttonText == null
-                 ? ""
-                 : buttonText;
+    title = title == null ? "" : title;
+    code = code == null ? "" : code;
+    buttonText = buttonText == null ? "" : buttonText;
 
     LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-    container = (LinearLayout) layoutInflater.inflate(R.layout.step_view_layout, this, true);
+    container = (LinearLayout) layoutInflater.inflate(R.layout.step_view_layout,this,true);
 
-    titleTextView = (TextView) container.findViewById(R.id.title);
-    codeTextView = (TextView) container.findViewById(R.id.code_text);
-    button = (Button) container.findViewById(R.id.button);
-    tick = (ImageView) container.findViewById(R.id.done_tick);
-    cross = (ImageView) container.findViewById(R.id.done_cross);
-    progress = (ProgressBar) container.findViewById(R.id.progress);
+    titleTextView = (TextView)container.findViewById(R.id.title);
+    codeTextView = (TextView)container.findViewById(R.id.code_text);
+    button = (Button)container.findViewById(R.id.button);
+    tick = (ImageView)container.findViewById(R.id.done_tick);
+    progress = (ProgressBar)container.findViewById(R.id.progress);
 
     titleTextView.setText(title);
     codeTextView.setText(code);
     button.setText(buttonText);
-    if (enabled)
-    {
+    if (enabled){
       setStepEnabled();
-    }
-    else
-    {
+    }else{
       setStepDisabled();
     }
 
     attrArray.recycle();
+
+
   }
 
 
-  public void setStepDisabled()
-  {
+  public void setStepDisabled(){
     button.setVisibility(GONE);
     tick.setVisibility(GONE);
-    cross.setVisibility(GONE);
     titleTextView.setTextColor(getResources().getColor(R.color.sdk_gray));
     codeTextView.setTextColor(getResources().getColor(R.color.sdk_gray));
+
   }
 
-
-  public void setStepEnabled()
-  {
+  public void setStepEnabled(){
     button.setVisibility(VISIBLE);
     tick.setVisibility(GONE);
-    cross.setVisibility(GONE);
     titleTextView.setTextColor(getResources().getColor(R.color.sdk_black));
     codeTextView.setTextColor(getResources().getColor(R.color.sdk_black));
   }
 
-
-  public void setStepCompleted()
-  {
+  public void setStepCompleted(){
     button.setVisibility(GONE);
     tick.setVisibility(VISIBLE);
-    cross.setVisibility(GONE);
     tick.setImageResource(R.drawable.small_blue_tick);
     titleTextView.setTextColor(getResources().getColor(R.color.sdk_black));
     codeTextView.setTextColor(getResources().getColor(R.color.sdk_black));
   }
 
-
-  public void setStepCrossed()
-  {
-    button.setVisibility(GONE);
-    tick.setVisibility(GONE);
-    cross.setVisibility(VISIBLE);
-    cross.setImageResource(R.drawable.cancel_x);
-    titleTextView.setTextColor(getResources().getColor(R.color.sdk_black));
-    codeTextView.setTextColor(getResources().getColor(R.color.sdk_black));
-  }
-
-
-  public Button getButton()
-  {
+  public Button getButton(){
     return button;
   }
 
-
-  public void setOnButtonClickListener(OnClickListener clickListener)
-  {
+  public void setOnButtonClickListener(OnClickListener clickListener){
     button.setOnClickListener(clickListener);
   }
 
-
-  public void setOnStepClickListener(OnClickListener clickListener)
-  {
+  public void setOnStepClickListener(OnClickListener clickListener){
     container.setOnClickListener(clickListener);
   }
 
@@ -146,33 +108,18 @@ public class StepView extends LinearLayout
   {
     button.setVisibility(GONE);
     tick.setVisibility(GONE);
-    cross.setVisibility(GONE);
     progress.setVisibility(VISIBLE);
   }
 
-
-  public void hideProgressBarShowButton()
-  {
+  public void hideProgressBarShowButton(){
     progress.setVisibility(GONE);
     tick.setVisibility(GONE);
-    cross.setVisibility(GONE);
     button.setVisibility(VISIBLE);
   }
 
-
-  public void hideProgressBarShowTick()
-  {
+  public void hideProgressBarShowTick(){
     progress.setVisibility(GONE);
     button.setVisibility(GONE);
-    cross.setVisibility(GONE);
     tick.setVisibility(VISIBLE);
-  }
-
-  public void hideProgressBarShowCross()
-  {
-    progress.setVisibility(GONE);
-    button.setVisibility(GONE);
-    tick.setVisibility(GONE);
-    cross.setVisibility(VISIBLE);
   }
 }

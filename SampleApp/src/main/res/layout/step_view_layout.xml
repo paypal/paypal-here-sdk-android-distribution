@@ -49,13 +49,6 @@
                 android:visibility="gone"
                 android:src="@drawable/small_blue_tick"
                 />
-            <ImageView
-                android:id="@+id/done_cross"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="gone"
-                android:src="@drawable/cancel_x" />
             <ProgressBar
                 android:id="@+id/progress"
                 android:layout_width="wrap_content"
@@ -81,6 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/sdk_dark_grey"
-        android:layout_marginTop="@dimen/activity_vertical_margin" />
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        ></View>
 
 </LinearLayout>

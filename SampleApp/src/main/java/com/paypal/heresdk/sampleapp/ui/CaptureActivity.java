@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.paypalretailsdk.Invoice;
 import com.paypal.paypalretailsdk.InvoicePayment;
-import com.paypal.paypalretailsdk.InvoicePaymentMethod;
 import com.paypal.paypalretailsdk.InvoiceStatus;
 import com.paypal.paypalretailsdk.RetailInvoice;
 import com.paypal.paypalretailsdk.RetailInvoicePayment;
@@ -46,7 +45,6 @@ public class CaptureActivity extends ToolbarActivity
   public static final String INTENT_INVOICE_ID = "INVOICE_ID";
 
   public static RetailInvoice invoiceForRefundCaptured = null;
-  public static InvoicePaymentMethod paymentMethod = null;
   private ProgressDialog mProgressDialog = null;
 
   BigDecimal authAmount;
@@ -71,6 +69,7 @@ public class CaptureActivity extends ToolbarActivity
   {
     super.onCreate(savedInstanceState);
     Log.d(LOG_TAG, "onCreate");
+    setContentView(R.layout.capture_activity);
 
     Intent intent = getIntent();
     authAmount = new BigDecimal(0.0);
@@ -91,6 +90,7 @@ public class CaptureActivity extends ToolbarActivity
   public void onCaptureClicked(View view)
   {
     showProcessingProgressbar();
+    EditText amountEditText = (EditText) findViewById(R.id.amount);
     String amountText = amountEditText.getText().toString();
     captureAmount = BigDecimal.ZERO;
     if (null != amountText && amountText.length() > 0) {
@@ -160,11 +160,9 @@ public class CaptureActivity extends ToolbarActivity
     //Get the refund data
     invoiceForRefundCaptured = new RetailInvoice(null);
     invoiceForRefundCaptured.setStatus(InvoiceStatus.PAID);
-    invoiceForRefundCaptured.setPayPalId(invoiceId);
 
     RetailInvoicePayment invoicePayment = new RetailInvoicePayment();
     invoicePayment.setTransactionID(captureId);
-    invoicePayment.setMethod(paymentMethod);
 
     List<InvoicePayment> list = new ArrayList<>();
     list.add(invoicePayment);

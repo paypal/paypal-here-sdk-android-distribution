@@ -1,15 +1,21 @@
 package com.paypal.heresdk.sampleapp.ui;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.LoginFilter;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 import com.paypal.heresdk.sampleapp.R;
-import com.paypal.heresdk.sampleapp.activities.transactionSelection.TransactionSelection;
+import com.paypal.heresdk.sampleapp.login.LoginActivity;
 import com.paypal.paypalretailsdk.DeviceManager;
 import com.paypal.paypalretailsdk.PaymentDevice;
 import com.paypal.paypalretailsdk.RetailSDK;
@@ -26,7 +32,6 @@ public class ReaderConnectionActivity extends ToolbarActivity implements View.On
   private StepView connectLastStep;
   private StepView autoConnectStep;
 
-
   @Override
   public int getLayoutResId()
   {
@@ -39,42 +44,15 @@ public class ReaderConnectionActivity extends ToolbarActivity implements View.On
   {
     super.onCreate(savedInstanceState);
     Log.d(LOG_TAG, "onCreate");
-    findConnectStep = (StepView) findViewById(R.id.find_connect_step);
+    findConnectStep = (StepView)findViewById(R.id.find_connect_step);
     findConnectStep.setOnButtonClickListener(this);
-    connectLastStep = (StepView) findViewById(R.id.connect_last_step);
+    connectLastStep = (StepView)findViewById(R.id.connect_last_step);
     connectLastStep.setOnButtonClickListener(this);
-    autoConnectStep = (StepView) findViewById(R.id.auto_connect_step);
+    autoConnectStep = (StepView)findViewById(R.id.auto_connect_step);
     autoConnectStep.setOnButtonClickListener(this);
-    RetailSDK.addDeviceDiscoveredObserver(
-        new RetailSDK.DeviceDiscoveredObserver()
-        {
-          @Override
-          public void deviceDiscovered(final PaymentDevice discoveredDevice)
-          {
-            discoveredDevice.addConnectedObserver(
-                new PaymentDevice.ConnectedObserver()
-                {
-                  @Override
-                  public void connected()
-                  {
-                    Log.i(LOG_TAG, "Connected to: " + discoveredDevice.getId());
-                  }
-                }
-            );
-            discoveredDevice.addDisconnectedObserver(
-                new PaymentDevice.DisconnectedObserver()
-                {
-                  @Override
-                  public void disconnected(RetailSDKException e)
-                  {
-                    Log.i(LOG_TAG, "Disconnected from: " + discoveredDevice.getId());
-                  }
-                }
-            );
-          }
-        }
-    );
   }
+
+
 
 
   public void onFindAndConnectClicked()
@@ -141,7 +119,6 @@ public class ReaderConnectionActivity extends ToolbarActivity implements View.On
     });
   }
 
-
   private void onReaderConnected(PaymentDevice cardReader)
   {
     Log.d(LOG_TAG, "Connected to device " + cardReader.getId());
@@ -152,66 +129,51 @@ public class ReaderConnectionActivity extends ToolbarActivity implements View.On
     runTxnButtonContainer.setVisibility(View.VISIBLE);
   }
 
-
   public void onRunTransactionClicked(View view)
   {
-    Intent transactionIntent = new Intent(ReaderConnectionActivity.this, TransactionSelection.class);
+    Intent transactionIntent = new Intent(ReaderConnectionActivity.this, ChargeActivity.class);
+    transactionIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     startActivity(transactionIntent);
   }
 
 
-  public void onAutoConnectClicked()
-  {
+  public void onAutoConnectClicked() {
 
     autoConnectStep.showProgressBar();
     String lastKnowReader = RetailSDK.getDeviceManager().getLastActiveBluetoothReader();
-    RetailSDK.getDeviceManager().scanAndAutoConnectToBluetoothReader(lastKnowReader, new DeviceManager.ConnectionCallback()
-    {
-      @Override
-      public void connection(final RetailSDKException error, final PaymentDevice cardReader)
-      {
-        ReaderConnectionActivity.this.runOnUiThread(new Runnable()
-        {
-          @Override
-          public void run()
-          {
-            autoConnectStep.hideProgressBarShowButton();
-            if (error == null && cardReader != null)
-            {
-              //Toast.makeText(getApplicationContext(), "Connected to last active device " + cardReader.getId(), Toast.LENGTH_SHORT).show();
-              onReaderConnected(cardReader);
+    RetailSDK.getDeviceManager().scanAndAutoConnectToBluetoothReader(lastKnowReader, new DeviceManager.ConnectionCallback() {
+        @Override
+        public void connection(final RetailSDKException error, final PaymentDevice cardReader) {
+          ReaderConnectionActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+              autoConnectStep.hideProgressBarShowButton();
+              if (error == null && cardReader != null) {
+                //Toast.makeText(getApplicationContext(), "Connected to last active device " + cardReader.getId(), Toast.LENGTH_SHORT).show();
+                onReaderConnected(cardReader);
+              } else if (error != null) {
+                Toast.makeText(getApplicationContext(), "Connection to a reader failed with error: " + error, Toast.LENGTH_SHORT).show();
+                Log.e(LOG_TAG, "Connection to a reader failed with error: " + error);
+              } else {
+                Toast.makeText(getApplicationContext(), "Could not find the last card reader to connect to", Toast.LENGTH_SHORT).show();
+                Log.d(LOG_TAG, "Could not find the last card reader to connect to");
+              }
             }
-            else if (error != null)
-            {
-              Toast.makeText(getApplicationContext(), "Connection to a reader failed with error: " + error, Toast.LENGTH_SHORT).show();
-              Log.e(LOG_TAG, "Connection to a reader failed with error: " + error);
-            }
-            else
-            {
-              Toast.makeText(getApplicationContext(), "Could not find the last card reader to connect to", Toast.LENGTH_SHORT).show();
-              Log.d(LOG_TAG, "Could not find the last card reader to connect to");
-            }
-          }
-        });
+          });
 
-      }
-    });
+        }
+      });
   }
 
 
   @Override
   public void onClick(View v)
   {
-    if (v == findConnectStep.getButton())
-    {
+    if (v == findConnectStep.getButton()){
       onFindAndConnectClicked();
-    }
-    else if (v == connectLastStep.getButton())
-    {
+    }else if(v == connectLastStep.getButton()){
       onConnectToLastClicked();
-    }
-    else if (v == autoConnectStep.getButton())
-    {
+    }else if(v == autoConnectStep.getButton()){
       onAutoConnectClicked();
     }
   }
