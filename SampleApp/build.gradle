@@ -4,11 +4,12 @@ buildscript {
     repositories {
         jcenter()
         maven { url 'https://maven.google.com' }
+        google()
     }
 
     dependencies {
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.4.1'
     }
 }
 apply plugin: 'com.android.application'
@@ -89,14 +90,16 @@ dependencies {
     implementation 'com.eclipsesource.j2v8:j2v8:4.6.0@aar'
 }
 
-task incrementVersionCode << {
-    def manifestFile = file("src/main/AndroidManifest.xml")
-    def patternVersionCode = Pattern.compile("versionCode=\"(\\d+)\"")
-    def manifestText = manifestFile.getText()
-    def matcherVersionCode = patternVersionCode.matcher(manifestText)
-    matcherVersionCode.find()
-    def mVersionCode = Integer.parseInt(matcherVersionCode.group(1))
-    def mNextVersionCode = mVersionCode + 1
-    def manifestContent = matcherVersionCode.replaceAll("versionCode=\"" + mNextVersionCode + "\"")
-    manifestFile.write(manifestContent)
+task incrementVersionCode {
+    doLast {
+        def manifestFile = file("src/main/AndroidManifest.xml")
+        def patternVersionCode = Pattern.compile("versionCode=\"(\\d+)\"")
+        def manifestText = manifestFile.getText()
+        def matcherVersionCode = patternVersionCode.matcher(manifestText)
+        matcherVersionCode.find()
+        def mVersionCode = Integer.parseInt(matcherVersionCode.group(1))
+        def mNextVersionCode = mVersionCode + 1
+        def manifestContent = matcherVersionCode.replaceAll("versionCode=\"" + mNextVersionCode + "\"")
+        manifestFile.write(manifestContent)
+    }
 }
