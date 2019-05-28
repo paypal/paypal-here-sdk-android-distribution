@@ -1,5 +1,6 @@
 package com.paypal.heresdk.sampleapp.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,9 +27,14 @@ import com.paypal.paypalretailsdk.PaymentDevice;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.TransactionBeginOptions;
+import com.paypal.paypalretailsdk.TransactionBeginOptionsVaultProvider;
+import com.paypal.paypalretailsdk.TransactionBeginOptionsVaultType;
 import com.paypal.paypalretailsdk.TransactionContext;
 import com.paypal.paypalretailsdk.TransactionManager;
 import com.paypal.paypalretailsdk.TransactionRecord;
+
+import com.paypal.paypalretailsdk.VaultRecord;
+import org.androidannotations.annotations.EActivity;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -41,6 +47,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
     public static final String INTENT_TRANX_TOTAL_AMOUNT = "TOTAL_AMOUNT";
     public static final String INTENT_AUTH_ID = "AUTH_ID";
     public static final String INTENT_INVOICE_ID = "INVOICE_ID";
+    public static final String INTENT_VAULT_ID = "VAULT_ID";
     private static final int REQUEST_OPTIONS_ACTIVITY = 1;
 
     TransactionContext currentTransaction;
@@ -61,6 +68,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
 
     // payment option constants
     public static final String OPTION_AUTH_CAPTURE = "authCapture";
+    public static final String OPTION_VAULT_TYPE = "vaultType";
     public static final String OPTION_CARD_READER_PROMPT = "cardReader";
     public static final String OPTION_APP_PROMPT= "appPrompt";
     public static final String OPTION_TIP_ON_READER = "tipReader";
@@ -71,10 +79,12 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
     public static final String OPTION_CONTACTLESS = "contactless";
     public static final String OPTION_MANUAL_CARD= "manualCard";
     public static final String OPTION_SECURE_MANUAL= "secureManual";
+    public static final String OPTION_CUSTOMER_ID= "customoerId";
     public static final String OPTION_TAG= "tag";
 
     // payment option booleans
     private boolean isAuthCaptureEnabled = false;
+    private TransactionBeginOptionsVaultType vaultType = TransactionBeginOptionsVaultType.PayOnly;
     private boolean isCardReaderPromptEnabled = true;
     private boolean isAppPromptEnabled = true;
     private boolean isTippingOnReaderEnabled = false;
@@ -85,7 +95,9 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
     private boolean isContactlessEnabled = true;
     private boolean isManualCardEnabled = true;
     private boolean isSecureManualEnabled = true;
+    private String customerId = "";
     private String tagString = "";
+    private String mVaultId = "";
 
 
 
@@ -113,9 +125,9 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         paymentOptionsStep = (LinearLayout) findViewById(R.id.payment_options_container);
         paymentOptionsStep.setOnClickListener(this);
         paymentOptionsText = (TextView) findViewById(R.id.payment_options_text);
-        step3Text = (TextView) findViewById(R.id.step3_text);
+        // step3Text = (TextView) findViewById(R.id.step3_text);
         paymentOptionsArrow = (ImageView) findViewById(R.id.payment_options_arrow);
-        disablePaymentOptionsStep();
+        // disablePaymentOptionsStep();
 
         offlineModeContainer = (LinearLayout) findViewById(R.id.offline_mode_container);
         offlineModeContainer.setOnClickListener(this);
@@ -140,7 +152,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
                 {
                     createInvoiceStep.setStepEnabled();
                     createTxnStep.setStepDisabled();
-                    disablePaymentOptionsStep();
+                    // disablePaymentOptionsStep();
                     paymentOptionsStep.setOnClickListener(null);
                     acceptTxnStep.setStepDisabled();
                     return false;
@@ -195,14 +207,14 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
     public void enablePaymentOptionsStep(){
         paymentOptionsArrow.setAlpha(1f);
         paymentOptionsText.setTextColor(getResources().getColor(R.color.sdk_black));
-        step3Text.setTextColor(getResources().getColor(R.color.sdk_black));
+        // step3Text.setTextColor(getResources().getColor(R.color.sdk_black));
         paymentOptionsStep.setOnClickListener(this);
 
     }
     public void disablePaymentOptionsStep(){
         paymentOptionsArrow.setAlpha(0.5f);
         paymentOptionsText.setTextColor(getResources().getColor(R.color.sdk_gray));
-        step3Text.setTextColor(getResources().getColor(R.color.sdk_gray));
+        // step3Text.setTextColor(getResources().getColor(R.color.sdk_gray));
         paymentOptionsStep.setOnClickListener(null);
 
     }
@@ -212,7 +224,10 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
     public void onCreateInvoiceClicked()
     {
         Log.d(LOG_TAG, "onCreateInvoiceClicked");
-
+        if (vaultType == TransactionBeginOptionsVaultType.VaultOnly)
+        {
+            return;
+        }
 
         amountEditText = (EditText) findViewById(R.id.amount);
         String amountText = amountEditText.getText().toString();
@@ -240,7 +255,6 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         // if(gratuityAmt.intValue() > 0){
         //    invoice.setGratuityAmount(gratuityAmt);
         // }
-
     }
 
 
@@ -248,26 +262,46 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
     public void onCreateTransactionClicked()
     {
         Log.d(LOG_TAG, "onCreateTransactionClicked");
-
-
-        RetailSDK.getTransactionManager().createTransaction(currentInvoice, new TransactionManager.TransactionCallback()
-        {
-            @Override
-            public void transaction(RetailSDKException e, final TransactionContext context)
+        if (vaultType == TransactionBeginOptionsVaultType.VaultOnly) {
+            RetailSDK.getTransactionManager().createVaultTransaction(new TransactionManager.TransactionCallback()
             {
-                if (e != null) {
-                    final String errorTxt = e.toString();
-                    ChargeActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), "create transaction error: " + errorTxt, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }else{
-                    currentTransaction = context;
+                @Override
+                public void transaction(RetailSDKException e, TransactionContext context)
+                {
+                    if (e != null) {
+                        final String errorTxt = e.toString();
+                        ChargeActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "create transaction error: " + errorTxt, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }else{
+                        currentTransaction = context;
+                    }
                 }
-            }
-        });
+            });
+        }
+        else {
+            RetailSDK.getTransactionManager().createTransaction(currentInvoice, new TransactionManager.TransactionCallback()
+            {
+                @Override
+                public void transaction(RetailSDKException e, final TransactionContext context)
+                {
+                    if (e != null) {
+                        final String errorTxt = e.toString();
+                        ChargeActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "create transaction error: " + errorTxt, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }else{
+                        currentTransaction = context;
+                    }
+                }
+            });
+        }
     }
 
     public void onAcceptTransactionClicked()
@@ -305,6 +339,14 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
                 ChargeActivity.this.transactionCompleted(error, record);
             }
         });
+        currentTransaction.setVaultCompletedHandler(new TransactionContext.VaultCompletedCallback()
+        {
+            @Override
+            public void vaultCompleted(RetailSDKException error, VaultRecord record)
+            {
+                ChargeActivity.this.vaultCompleted(error, record);
+            }
+        });
 
         TransactionBeginOptions options = new TransactionBeginOptions();
         options.setShowPromptInCardReader(isCardReaderPromptEnabled);
@@ -315,6 +357,25 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         options.setTippingOnReaderEnabled(isTippingOnReaderEnabled);
         options.setTag(tagString);
         options.setPreferredFormFactors(getPreferredFormFactors());
+        if (vaultType == TransactionBeginOptionsVaultType.VaultOnly)
+        {
+            options.setVaultCustomerId(customerId);
+            options.setVaultType(TransactionBeginOptionsVaultType.VaultOnly);
+            options.setVaultProvider(TransactionBeginOptionsVaultProvider.Braintree);
+        } else if (vaultType == TransactionBeginOptionsVaultType.PayAndVault) {
+            options.setVaultCustomerId(customerId);
+            options.setVaultType(TransactionBeginOptionsVaultType.PayAndVault);
+            options.setVaultProvider(TransactionBeginOptionsVaultProvider.Braintree);
+        }
+        else
+        {
+            options.setVaultType(TransactionBeginOptionsVaultType.PayOnly);
+            // we want to send customerId even for pay only txs.
+            // BT merchants can make payments and add customer id with it.
+            if (!customerId.isEmpty()) {
+                options.setVaultCustomerId(customerId);
+            }
+        }
         currentTransaction.beginPayment(options);
     }
 
@@ -332,7 +393,9 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
                     public void run()
                     {
                         Toast.makeText(getApplicationContext(), "transaction error: " + errorTxt, Toast.LENGTH_SHORT).show();
-                        //refundButton.setEnabled(false);
+                        // refundButton.setEnabled(false);
+                        finish();
+                        startActivity(getIntent());
                     }
                 });
             }
@@ -350,6 +413,43 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
                         goToRefundActivity();
                     }
                     Toast.makeText(getApplicationContext(), String.format("Completed Transaction %s", recordTxt), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    void vaultCompleted(RetailSDKException error, final VaultRecord record) {
+        if (error != null)
+        {
+            final String errorTxt = error.toString();
+            this.runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    Toast.makeText(getApplicationContext(), "vault error: " + errorTxt, Toast.LENGTH_SHORT).show();
+                    //refundButton.setEnabled(false);
+                }
+            });
+        }
+        else
+        {
+            invoiceForRefund = currentTransaction.getInvoice();
+            final String recordTxt = record.getVaultId();
+            this.runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    if (vaultType == TransactionBeginOptionsVaultType.VaultOnly)
+                    {
+                        goToVaultActivity(record);
+                    }
+                    else // payAndVault
+                    {
+                        mVaultId = record.getVaultId();
+                    }
+                    Toast.makeText(getApplicationContext(), String.format("Completed Vault %s", recordTxt), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -379,6 +479,16 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         startActivity(intent);
     }
 
+    public void goToVaultActivity(VaultRecord record){
+        Log.d(LOG_TAG, "goToVaultActivity");
+        Intent intent = new Intent(ChargeActivity.this, VaultActivity.class);
+        String vaultId = record.getVaultId();
+        Log.d(LOG_TAG, "goToAuthCaptureActivity vaultId: " + vaultId);
+        intent.putExtra(INTENT_VAULT_ID, vaultId);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
     public void goToRefundActivity(){
         Log.d(LOG_TAG, "goToRefundActivity");
         RefundActivity.invoiceForRefund = invoiceForRefund;
@@ -386,10 +496,13 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         BigDecimal amount = currentInvoice.getTotal();
         Log.d(LOG_TAG, "goToRefundActivity total: " + amount);
         refundIntent.putExtra(INTENT_TRANX_TOTAL_AMOUNT, amount);
+        if (vaultType == TransactionBeginOptionsVaultType.PayAndVault) {
+            refundIntent.putExtra(INTENT_VAULT_ID, mVaultId);
+        }
+        refundIntent.putExtra(INTENT_VAULT_ID, mVaultId);
         refundIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(refundIntent);
     }
-
 
     private void showInvalidAmountAlertDialog(){
         Log.d(LOG_TAG, "showInvalidAmountAlertDialog");
@@ -433,6 +546,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
             {
                 Bundle optionsBundle = data.getExtras();
                 isAuthCaptureEnabled = optionsBundle.getBoolean(OPTION_AUTH_CAPTURE);
+                vaultType = TransactionBeginOptionsVaultType.fromInt(optionsBundle.getInt(OPTION_VAULT_TYPE));
                 isAppPromptEnabled = optionsBundle.getBoolean(OPTION_APP_PROMPT);
                 isTippingOnReaderEnabled = optionsBundle.getBoolean(OPTION_TIP_ON_READER);
                 isAmountBasedTippingEnabled = optionsBundle.getBoolean(OPTION_AMOUNT_TIP);
@@ -442,9 +556,8 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
                 isContactlessEnabled = optionsBundle.getBoolean(OPTION_CONTACTLESS);
                 isManualCardEnabled = optionsBundle.getBoolean(OPTION_MANUAL_CARD);
                 isSecureManualEnabled = optionsBundle.getBoolean(OPTION_SECURE_MANUAL);
+                customerId = optionsBundle.getString(OPTION_CUSTOMER_ID);
                 tagString = optionsBundle.getString(OPTION_TAG);
-
-                acceptTxnStep.setStepEnabled();
             }
         }
     }
@@ -466,7 +579,8 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
             // Don't enable payment options step if offline mode is selected
             if(!sharedPrefs.getBoolean(OfflinePayActivity.OFFLINE_MODE,false))
             {
-                enablePaymentOptionsStep();
+                // enablePaymentOptionsStep();
+                acceptTxnStep.setStepEnabled();
             } else {
                 acceptTxnStep.setStepEnabled();
             }
@@ -530,6 +644,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
     {
         Bundle bundle = new Bundle();
         bundle.putBoolean(OPTION_AUTH_CAPTURE,isAuthCaptureEnabled);
+        bundle.putInt(OPTION_VAULT_TYPE,vaultType.getValue());
         bundle.putBoolean(OPTION_CARD_READER_PROMPT,isCardReaderPromptEnabled);
         bundle.putBoolean(OPTION_APP_PROMPT,isAppPromptEnabled);
         bundle.putBoolean(OPTION_TIP_ON_READER,isTippingOnReaderEnabled);
@@ -540,6 +655,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         bundle.putBoolean(OPTION_CONTACTLESS,isContactlessEnabled);
         bundle.putBoolean(OPTION_MANUAL_CARD,isManualCardEnabled);
         bundle.putBoolean(OPTION_SECURE_MANUAL,isSecureManualEnabled);
+        bundle.putString(OPTION_CUSTOMER_ID,customerId);
         bundle.putString(OPTION_TAG,tagString);
         return bundle;
     }

@@ -45,6 +45,7 @@
                     >
 
                     <TextView
+                        android:id="@+id/txtCreateInvoice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Offline Payments"
@@ -70,6 +71,7 @@
                         android:text="ENABLED" />
 
                 </RelativeLayout>
+=
 
                 <View
                     android:layout_width="match_parent"
@@ -78,6 +80,48 @@
                     android:background="@color/sdk_dark_grey" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/payment_options_container"
+                android:layout_margin="@dimen/activity_vertical_margin">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp"
+                >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/payment_options"
+                        android:id="@+id/payment_options_text"
+                        android:textColor="@android:color/black"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                    />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/black_arrow"
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/payment_options_arrow"
+                        android:layout_centerVertical="true"
+
+                    />
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:background="@color/sdk_dark_grey"></View>
+
+            </LinearLayout>
+
 
             <!-- payment amount container -->
             <LinearLayout
@@ -130,68 +174,12 @@
                     stepview:enabled="false"
                     />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:id="@+id/payment_options_container"
-                    android:layout_margin="@dimen/activity_vertical_margin">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:textSize="20sp"
-                        android:text="@string/step_3"
-                        android:id="@+id/step3_text"
-
-                        android:textColor="@color/sdk_black"
-                        android:layout_alignParentLeft="true"
-
-                        />
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="4dp"
-                        >
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/sdk_black"
-                            android:text="@string/payment_options"
-                            android:id="@+id/payment_options_text"
-                            android:layout_marginTop="@dimen/activity_vertical_margin"
-                            android:fontFamily="sans-serif-thin"
-                            />
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/black_arrow"
-                            android:layout_alignParentRight="true"
-                            android:id="@+id/payment_options_arrow"
-                            android:layout_centerVertical="true"
-
-                            />
-
-
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="@dimen/activity_vertical_margin"
-                        android:background="@color/sdk_dark_grey" />
-
-                </LinearLayout>
-
-
                 <com.paypal.heresdk.sampleapp.ui.StepView
                     android:id="@+id/accept_txn_step"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/activity_vertical_margin"
-                    stepview:title_text="@string/step_4"
+                    stepview:title_text="@string/step_3"
                     stepview:code_text="@string/accept_transaction"
                     stepview:button_text="@string/accept_transaction_title"
                     stepview:enabled="false"

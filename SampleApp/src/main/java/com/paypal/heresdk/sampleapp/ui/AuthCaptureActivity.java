@@ -17,7 +17,9 @@ import com.paypal.heresdk.sampleapp.R;
 import com.paypal.paypalretailsdk.Invoice;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
+import com.paypal.paypalretailsdk.TransactionContext;
 import com.paypal.paypalretailsdk.TransactionManager;
+import com.paypal.paypalretailsdk.TransactionRecord;
 
 /**
  * Created by muozdemir on 1/8/18.
@@ -69,9 +71,7 @@ public class AuthCaptureActivity extends ToolbarActivity implements View.OnClick
       txtAmount.setText("Your authorization of " + currencyFormat(authAmount) + " was successful");
     }
 
-
   }
-
 
 
 
@@ -125,11 +125,12 @@ public class AuthCaptureActivity extends ToolbarActivity implements View.OnClick
   {
     Log.d(LOG_TAG, "goToCaptureActivity");
     // CaptureActivity.invoiceForRefund = invoiceForRefund;
-    CaptureActivity.paymentMethod = invoiceForRefund.getPayments().get(0).getMethod();
+
     Intent intent = new Intent(AuthCaptureActivity.this, CaptureActivity.class);
     intent.putExtra(INTENT_AUTH_TOTAL_AMOUNT, authAmount);
     intent.putExtra(INTENT_AUTH_ID, authId);
     intent.putExtra(INTENT_INVOICE_ID, invoiceId);
+    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     startActivity(intent);
   }
 

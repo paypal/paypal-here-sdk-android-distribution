@@ -115,6 +115,7 @@
     <dimen name="sdk_sw_update_height_minimum">80dp</dimen>
     <dimen name="blue_btn_radius">32dp</dimen>
     <dimen name="dp_32">32dp</dimen>
+
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>

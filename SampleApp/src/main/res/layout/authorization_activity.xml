@@ -72,7 +72,7 @@
                 android:padding="@dimen/activity_vertical_margin"
                 stepview:button_text="@string/void_auth_text"
                 stepview:code_text="@string/void_auth"
-                stepview:title_text="@string/option_1" />
+                stepview:title_text="@string/option_1"></com.paypal.heresdk.sampleapp.ui.StepView>
 
             <com.paypal.heresdk.sampleapp.ui.StepView
                 android:id="@+id/capture_auth_step"
@@ -81,7 +81,7 @@
                 android:padding="@dimen/activity_vertical_margin"
                 stepview:button_text="@string/capture_auth_text"
                 stepview:code_text="@string/capture_auth"
-                stepview:title_text="@string/option_2" />
+                stepview:title_text="@string/option_2"></com.paypal.heresdk.sampleapp.ui.StepView>
 
 
         </LinearLayout>

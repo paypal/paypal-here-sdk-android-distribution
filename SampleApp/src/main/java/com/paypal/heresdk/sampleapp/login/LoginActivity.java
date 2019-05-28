@@ -7,20 +7,13 @@ import java.util.Set;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.customtabs.CustomTabsClient;
-import android.support.customtabs.CustomTabsIntent;
-import android.support.customtabs.CustomTabsServiceConnection;
-import android.support.customtabs.CustomTabsSession;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -38,7 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 import com.paypal.heresdk.sampleapp.R;
-import com.paypal.heresdk.sampleapp.activities.vaultAndPayTransaction.VaultAndPayTransaction;
 import com.paypal.heresdk.sampleapp.ui.ReaderConnectionActivity;
 import com.paypal.heresdk.sampleapp.ui.StepView;
 import com.paypal.heresdk.sampleapp.ui.ToolbarActivity;
@@ -67,19 +59,11 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
   public static final String INTENT_URL_WEBVIEW = "URL_FOR_WEBVIEW";
   public static final String INTENT_ISLIVE_WEBVIEW = "ISLIVE_FOR_WEBVIEW";
 
-  private CustomTabsClient _customTabsClient;
-  private CustomTabsSession _customTabsSession;
-  private CustomTabsIntent.Builder _builder;
-  private CustomTabsServiceConnection _customTabsServiceConnection;
-  private boolean _shouldBindToCustomTabsService = true;
-  private final String BRAINTREE_RETURN_URL_HOST = "www.pph-bt-integration.com";
-
   private ProgressDialog mProgressDialog = null;
   private RadioGroup radioGroup1;
 
   private StepView step1;
   private StepView step2;
-  private StepView step3;
   private Boolean offlineClicked;
 
   private Button connectButton;
@@ -102,71 +86,14 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
 
     radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
     connectButton = (Button) findViewById(R.id.connect_reader_button);
-    step1 = (StepView) findViewById(R.id.step1);
+    step1 = (StepView)findViewById(R.id.step1);
     step1.setOnButtonClickListener(this);
-    step2 = (StepView) findViewById(R.id.step2);
+    step2 = (StepView)findViewById(R.id.step2);
     step2.setOnButtonClickListener(this);
-    step3 = (StepView) findViewById(R.id.step3);
-    step3.setOnButtonClickListener(this);
 
     offlineClicked = false;
-
-    String intentAction = getIntent().getAction();
-    String intentData = getIntent().getDataString();
-    if (
-        intentAction != null && intentAction.equals(Intent.ACTION_VIEW)
-            && intentData != null && intentData.contains(BRAINTREE_RETURN_URL_HOST)
-        )
-    {
-      if (RetailSDK.getBraintreeManager().isBtReturnUrlValid(getIntent().getDataString()))
-      {
-        _shouldBindToCustomTabsService = false;
-        step1.setStepCompleted();
-        step2.setStepCompleted();
-        step3.setStepCompleted();
-        RelativeLayout logoutContainer = (RelativeLayout) findViewById(R.id.logout);
-        logoutContainer.setVisibility(View.VISIBLE);
-        connectButton.setVisibility(View.VISIBLE);
-      }
-      else
-      {
-        Log.e(LOG_TAG, getString(R.string.braintree_merchant_login_bad_url));
-      }
-    }
   }
 
-
-  @Override
-  protected void onStart()
-  {
-    super.onStart();
-    if (_shouldBindToCustomTabsService)
-    {
-      _customTabsServiceConnection = new CustomTabsServiceConnection()
-      {
-        @Override
-        public void onCustomTabsServiceConnected(ComponentName componentName, CustomTabsClient customTabsClient)
-        {
-          _shouldBindToCustomTabsService = false;
-          _customTabsClient = customTabsClient;
-          _customTabsClient.warmup(1);
-          _customTabsSession = _customTabsClient.newSession(null);
-        }
-
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName)
-        {
-
-        }
-      };
-      CustomTabsClient.bindCustomTabsService(
-          LoginActivity.this,
-          CustomTabsClient.getPackageName(LoginActivity.this, null),
-          _customTabsServiceConnection
-      );
-    }
-  }
 
 
   @Override
@@ -175,6 +102,7 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
     super.onConfigurationChanged(newConfig);
     Log.d(LOG_TAG, "onConfigurationChanged");
   }
+
 
 
   public void onInitMerchantClicked()
@@ -237,7 +165,6 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
     }
   }
 
-
   private void hardCodingInitMerchant()//use this method when using stage rather than live
   {
     Log.d(LOG_TAG, "hard-coding for initializeMerchant()");
@@ -250,7 +177,6 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
     // credential.setTokenRefreshCredentials(refresh_url);
     initializeMerchant(credential);
   }
-
 
   public void onLogoutClicked(View view)
   {
@@ -280,7 +206,6 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
   {
     Log.d(LOG_TAG, "startWebView url: " + url + " isSandbox: " + isSandBox + " isLive: " + isLive);
 
-
     final WebView webView = (WebView) findViewById(R.id.id_webView);
     webView.setVisibility(View.VISIBLE);
 
@@ -297,8 +222,7 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
         // List<NameValuePair> parameters = URLEncodedUtils.parse(new URI(url));
         Uri uri = Uri.parse(url);
         Set<String> paramNames = uri.getQueryParameterNames();
-        for (String key : paramNames)
-        {
+        for (String key: paramNames) {
           String value = uri.getQueryParameter(key);
           Log.d(LOG_TAG, "shouldOverrideURLLoading: name: " + key + " value: " + value);
         }
@@ -343,26 +267,20 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
     webView.loadUrl(url);
   }
 
-
   @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data)
-  {
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-    if (requestCode == 1)
-    {
-      if (resultCode == Activity.RESULT_OK)
-      {
+    if (requestCode == 1) {
+      if(resultCode == Activity.RESULT_OK){
         String result = data.getStringExtra("result");
         Log.d(LOG_TAG, "onActivityResult result: " + result);
       }
-      if (resultCode == Activity.RESULT_CANCELED)
-      {
+      if (resultCode == Activity.RESULT_CANCELED) {
         Log.d(LOG_TAG, "onActivityResult RESULT_CANCELED! ");
         //Write your code if there's no result
       }
     }
   }
-
 
   private void initializeMerchant(final String token, String repository)
   {
@@ -403,7 +321,6 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
     }
   }
 
-
   private void initializeMerchant(final SdkCredential credential)
   {
     try
@@ -439,11 +356,9 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
     }
   }
 
-
   private void initializeMerchantOffline()
   {
-    try
-    {
+    try {
       showProcessingProgressbar();
       RetailSDK.initializeMerchantOffline(new RetailSDK.MerchantInitializedCallback()
       {
@@ -451,8 +366,7 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
         public void merchantInitialized(RetailSDKException error, Merchant merchant)
         {
           offlineClicked = true;
-          if (error == null)
-          {
+          if (error == null) {
             SharedPreferences pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
             editor.putBoolean(OFFLINE_MODE, true);
@@ -491,8 +405,7 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
 
           step2.setStepCompleted();
           final TextView txtMerchantEmail = (TextView) findViewById(R.id.merchant_email);
-          if (offlineClicked)
-          {
+          if (offlineClicked) {
             txtMerchantEmail.setText("Offline Merchant loaded");
           }
           else
@@ -503,14 +416,6 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
           logoutContainer.setVisibility(View.VISIBLE);
           connectButton.setVisibility(View.VISIBLE);
 
-          _customTabsSession.mayLaunchUrl(
-              Uri.parse(RetailSDK.getBraintreeManager().getBtLoginUrl()),
-              null,
-              null
-          );
-          _builder = new CustomTabsIntent.Builder(_customTabsSession);
-          _builder.setToolbarColor(Color.BLUE);
-          step3.setStepEnabled();
         }
       });
     }
@@ -525,11 +430,9 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
           cancelProgressbar();
           AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
           builder.setTitle(R.string.error_title);
-          if (offlineClicked)
-          {
+          if (offlineClicked) {
             builder.setMessage(error.getMessage());
-          }
-          else
+          } else
           {
             builder.setMessage(R.string.error_initialize_msg);
           }
@@ -576,31 +479,12 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
   @Override
   public void onClick(View v)
   {
-    if (v == step1.getButton())
-    {
+    if (v == step1.getButton()){
       initSDK();
-    }
-    if (v == step2.getButton())
-    {
+    }else if(v == step2.getButton()){
       onInitMerchantClicked();
     }
-    if (v == step3.getButton())
-    {
-      braintreeMerchantLoginClicked();
-    }
   }
-
-
-  public void braintreeMerchantLoginClicked()
-  {
-    if (_builder != null)
-    {
-      Log.d(LOG_TAG, "_builder is not null");
-      CustomTabsIntent customTabsIntent = _builder.build();
-      customTabsIntent.launchUrl(LoginActivity.this, Uri.parse(RetailSDK.getBraintreeManager().getBtLoginUrl()));
-    }
-  }
-
 
   public void initSDK()
   {
@@ -625,23 +509,17 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
       /**
        * Add this observer to handle insecure network errors from the sdk
        */
-      RetailSDK.addUntrustedNetworkObserver(new RetailSDK.UntrusterNetworkObserver()
-      {
+      RetailSDK.addUntrustedNetworkObserver(new RetailSDK.UntrusterNetworkObserver() {
         @Override
-        public void untrustedNetwork(RetailSDKException error)
-        {
-          runOnUiThread(new Runnable()
-          {
+        public void untrustedNetwork(RetailSDKException error) {
+          runOnUiThread(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
               AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
               builder.setMessage("Insecure network. Please join a secure network and open the app again")
                   .setCancelable(true)
-                  .setPositiveButton("OK", new DialogInterface.OnClickListener()
-                  {
-                    public void onClick(DialogInterface dialog, int id)
-                    {
+                  .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
                       finish();
                     }
                   });
@@ -658,16 +536,5 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
     }
     step1.setStepCompleted();
     step2.setStepEnabled();
-  }
-
-
-  @Override
-  protected void onDestroy()
-  {
-    super.onDestroy();
-    if (_customTabsServiceConnection != null)
-    {
-      this.unbindService(_customTabsServiceConnection);
-    }
   }
 }
