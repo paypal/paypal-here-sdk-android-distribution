@@ -15,6 +15,21 @@ what is new in this release.
   - Fixed Connection issues with Chip and * devices on iOS9
   - Added support for vaulting in WebSDK
   - Remove OS AD ID from Android 
+  
+2.1.0219114000
+  What's new:
+  - Soft Descriptor support added
+  - UI dismissal on TokenExpirationHandler invocation
+  - Reliability Improvements
+  - Dismiss receipt options screen after sending iOS
+  - Vault only flow contactless issue fixed
+  - Vaulting with BrainTree fix
+  - Dismissing fast moving UIs fix
+  - Failed auth void scenario fix
+  - Stop iPhone rotation in receipt flow
+  - Receipt options nav controller back button image for iOS fix
+  - Receipt Screen messaging on SSL Error fix
+  - Invoice Voiding fix
 
 2.1.0219063010
   What's new:
