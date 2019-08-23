@@ -347,6 +347,13 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
                 ChargeActivity.this.vaultCompleted(error, record);
             }
         });
+        currentTransaction.setOfflineTransactionAdditionHandler(new TransactionContext.OfflineTransactionAddedCallback() {
+            @Override
+            public void offlineTransactionAdded(RetailSDKException error, OfflineTransactionRecord offlineTransactionRecord)
+            {
+                ChargeActivity.this.offlineTransactionAdded(error, offlineTransactionRecord);
+            }
+        });
 
         TransactionBeginOptions options = new TransactionBeginOptions();
         options.setShowPromptInCardReader(isCardReaderPromptEnabled);
@@ -383,22 +390,17 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         if (error != null) {
             final String errorTxt = error.toString();
 
-            if (errorTxt.toLowerCase().contains("offline payment enabled")){
-                goToOfflinePayCompleteActivity();
-            }else
+            this.runOnUiThread(new Runnable()
             {
-                this.runOnUiThread(new Runnable()
+                @Override
+                public void run()
                 {
-                    @Override
-                    public void run()
-                    {
-                        Toast.makeText(getApplicationContext(), "transaction error: " + errorTxt, Toast.LENGTH_SHORT).show();
-                        // refundButton.setEnabled(false);
-                        finish();
-                        startActivity(getIntent());
-                    }
-                });
-            }
+                    Toast.makeText(getApplicationContext(), "transaction error: " + errorTxt, Toast.LENGTH_SHORT).show();
+                    // refundButton.setEnabled(false);
+                    finish();
+                    startActivity(getIntent());
+                }
+            });
         } else {
             invoiceForRefund = currentTransaction.getInvoice();
             final String recordTxt =  record.getTransactionNumber();
@@ -454,7 +456,35 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
             });
         }
     }
-
+    
+    void offlineTransactionAdded(RetailSDKException error, final OfflineTransactionRecord record) {
+        if (error != null)
+        {
+            final String errorTxt = error.toString();
+            this.runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    Toast.makeText(getApplicationContext(), "offline error: " + errorTxt, Toast.LENGTH_SHORT).show();
+                    //refundButton.setEnabled(false);
+                }
+            });
+        }
+        else
+        {
+            this.runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    Toast.makeText(getApplicationContext(), "offline success: " + record.getId(), Toast.LENGTH_SHORT).show();
+                    //refundButton.setEnabled(false);
+                }
+            });
+            goToOfflinePayCompleteActivity();
+        }
+    }
 
     private void goToOfflinePayCompleteActivity()
     {
