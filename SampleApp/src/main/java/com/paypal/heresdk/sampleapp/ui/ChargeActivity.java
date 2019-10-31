@@ -23,6 +23,7 @@ import com.paypal.paypalretailsdk.DeviceUpdate;
 import com.paypal.paypalretailsdk.FormFactor;
 import com.paypal.paypalretailsdk.Invoice;
 import com.paypal.paypalretailsdk.OfflinePaymentStatus;
+import com.paypal.paypalretailsdk.OfflineTransactionRecord;
 import com.paypal.paypalretailsdk.PaymentDevice;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
@@ -251,6 +252,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         currentInvoice = new Invoice(RetailSDK.getMerchant().getCurrency());
         BigDecimal quantity = new BigDecimal(1);
         currentInvoice.addItem("Item", quantity, amount, 1, null);
+
         // BigDecimal gratuityAmt = new BigDecimal(gratuityField.getText().toString());
         // if(gratuityAmt.intValue() > 0){
         //    invoice.setGratuityAmount(gratuityAmt);

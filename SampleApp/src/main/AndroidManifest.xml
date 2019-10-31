@@ -51,11 +51,11 @@
             android:windowSoftInputMode="stateVisible"
             android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
-        <activity
-            android:name=".ui.WebViewActivity"
-            android:label="WebViewActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden">
-        </activity>
+        <!--<activity-->
+            <!--android:name=".ui.WebViewActivity"-->
+            <!--android:label="WebViewActivity"-->
+            <!--android:configChanges="orientation|screenSize|keyboardHidden">-->
+        <!--</activity>-->
         <activity android:name=".ui.PaymentOptionsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>

@@ -36,7 +36,7 @@ public class PaymentOptionsFragment extends PreferenceFragmentCompat
   SwitchPreferenceCompat magneticSwipePreference;
   SwitchPreferenceCompat manualCardPreference;
   SwitchPreferenceCompat secureManualPreference;
-  SwitchPreferenceCompat BTloginPref;
+//  SwitchPreferenceCompat BTloginPref;
 
   EditTextPreference tag;
 
@@ -59,48 +59,48 @@ public class PaymentOptionsFragment extends PreferenceFragmentCompat
     secureManualPreference = (SwitchPreferenceCompat) findPreference(getString(R.string.secure_manual));
     tag = (EditTextPreference)findPreference(getString(R.string.edit_text_pref));
 
-    BTloginPref = (SwitchPreferenceCompat) findPreference(getString(R.string.login_bt));
-    BTloginPref.setChecked(false);
-
-    //WidgetContainer v = (WidgetContainer) BTloginPref.getWidgetLayoutResource();
-
-
-    BTloginPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-      @Override
-      public boolean onPreferenceClick(Preference preference) {
-        int Rid = preference.getLayoutResource();
-
-        String btLoginURL = RetailSDK.getBraintreeManager().getBtLoginUrl();
-
-        Intent intent = new Intent(getActivity(), WebViewActivity.class);
-        intent.putExtra(WebViewActivity.INTENT_URL_WEBVIEW, btLoginURL);
-        startActivityForResult(intent, 1);
-
-        return true;
-      }
-    });
+//    BTloginPref = (SwitchPreferenceCompat) findPreference(getString(R.string.login_bt));
+//    BTloginPref.setChecked(false);
+//
+//    //WidgetContainer v = (WidgetContainer) BTloginPref.getWidgetLayoutResource();
+//
+//
+//    BTloginPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//      @Override
+//      public boolean onPreferenceClick(Preference preference) {
+//        int Rid = preference.getLayoutResource();
+//
+//        String btLoginURL = RetailSDK.getBraintreeManager().getBtLoginUrl();
+//
+//        Intent intent = new Intent(getActivity(), WebViewActivity.class);
+//        intent.putExtra(WebViewActivity.INTENT_URL_WEBVIEW, btLoginURL);
+//        startActivityForResult(intent, 1);
+//
+//        return true;
+//      }
+//    });
   }
 
-  @Override
-  public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    getActivity();
-
-    if(requestCode == 1 && resultCode == Activity.RESULT_OK) {
-      //some code
-      if (data.hasExtra(WebViewActivity.INTENT_URL_RESULT))
-      {
-        String url = (String) data.getSerializableExtra(WebViewActivity.INTENT_URL_RESULT);
-        Log.d(logComponent, "this is the overloaded url " + url);
-        if (RetailSDK.getBraintreeManager().isBtReturnUrlValid(url)) {
-          Log.d(logComponent, "YES, it does contain auth code! ");
-        } else {
-          Log.d(logComponent, "NO, it does not contain auth code! ");
-        }
-      }
-    }
-
-  }
+//  @Override
+//  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//    super.onActivityResult(requestCode, resultCode, data);
+//    getActivity();
+//
+//    if(requestCode == 1 && resultCode == Activity.RESULT_OK) {
+//      //some code
+//      if (data.hasExtra(WebViewActivity.INTENT_URL_RESULT))
+//      {
+//        String url = (String) data.getSerializableExtra(WebViewActivity.INTENT_URL_RESULT);
+//        Log.d(logComponent, "this is the overloaded url " + url);
+//        if (RetailSDK.getBraintreeManager().isBtReturnUrlValid(url)) {
+//          Log.d(logComponent, "YES, it does contain auth code! ");
+//        } else {
+//          Log.d(logComponent, "NO, it does not contain auth code! ");
+//        }
+//      }
+//    }
+//
+//  }
 
 
   // getters
