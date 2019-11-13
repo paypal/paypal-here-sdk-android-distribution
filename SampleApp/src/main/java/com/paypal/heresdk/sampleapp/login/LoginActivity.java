@@ -38,6 +38,7 @@ import com.paypal.paypalretailsdk.AppInfo;
 import com.paypal.paypalretailsdk.Merchant;
 import com.paypal.paypalretailsdk.NetworkRequest;
 import com.paypal.paypalretailsdk.NetworkResponse;
+import com.paypal.paypalretailsdk.ReceiptScreenOrientation;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.SdkCredential;
