@@ -14,7 +14,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +30,6 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.heresdk.sampleapp.ui.ReaderConnectionActivity;
 import com.paypal.heresdk.sampleapp.ui.StepView;
@@ -269,7 +269,6 @@ public class LoginActivity extends ToolbarActivity implements View.OnClickListen
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
     if (requestCode == 1) {
       if(resultCode == Activity.RESULT_OK){
         String result = data.getStringExtra("result");

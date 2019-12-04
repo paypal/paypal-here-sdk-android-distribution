@@ -1,6 +1,5 @@
 package com.paypal.heresdk.sampleapp.ui;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,6 +22,7 @@ import com.paypal.paypalretailsdk.DeviceUpdate;
 import com.paypal.paypalretailsdk.FormFactor;
 import com.paypal.paypalretailsdk.Invoice;
 import com.paypal.paypalretailsdk.OfflinePaymentStatus;
+import com.paypal.paypalretailsdk.OfflineTransactionRecord;
 import com.paypal.paypalretailsdk.PaymentDevice;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
@@ -34,7 +34,6 @@ import com.paypal.paypalretailsdk.TransactionManager;
 import com.paypal.paypalretailsdk.TransactionRecord;
 
 import com.paypal.paypalretailsdk.VaultRecord;
-import org.androidannotations.annotations.EActivity;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;

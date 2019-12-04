@@ -9,11 +9,11 @@
     tools:context=".activities.vaultTransaction.VaultTransaction"
     tools:showIn="@layout/activity_vault_transaction">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/braintree_merchant_login_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,9 +31,9 @@
                 stepview:code_text="@string/vault_transaction_braintree_merchant_login"
                 stepview:enabled="false"
                 />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/begin_vault_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,6 +50,6 @@
                 stepview:code_text="@string/create_transaction_title"
                 stepview:enabled="false"
                 stepview:title_text="@string/step_2" />
-        </android.support.constraint.ConstraintLayout>
-    </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
