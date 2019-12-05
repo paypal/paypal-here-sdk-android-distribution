@@ -141,7 +141,7 @@ public class ReaderConnectionActivity extends ToolbarActivity implements View.On
 
     autoConnectStep.showProgressBar();
     String lastKnowReader = RetailSDK.getDeviceManager().getLastActiveBluetoothReader();
-    RetailSDK.getDeviceManager().scanAndAutoConnectToBluetoothReader(null, new DeviceManager.ConnectionCallback() {
+    RetailSDK.getDeviceManager().scanAndAutoConnectToBluetoothReader(lastKnowReader, new DeviceManager.ConnectionCallback() {
         @Override
         public void connection(final RetailSDKException error, final PaymentDevice cardReader) {
           ReaderConnectionActivity.this.runOnUiThread(new Runnable() {
