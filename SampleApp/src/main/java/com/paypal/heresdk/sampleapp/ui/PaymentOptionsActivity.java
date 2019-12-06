@@ -1,11 +1,7 @@
 package com.paypal.heresdk.sampleapp.ui;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
-import android.preference.PreferenceActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,18 +9,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
-import android.widget.TextView;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.TransactionBeginOptionsVaultType;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.ViewById;
 
 public class PaymentOptionsActivity extends ToolbarActivity
 {

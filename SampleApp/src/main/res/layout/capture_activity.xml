@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -18,10 +18,10 @@
             android:text="@string/capture_auth_text"
             android:textColor="@color/sdk_black"
             android:textSize="16sp" />
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_below="@id/toolbar"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         app:hintTextAppearance="@style/EditTextHintStyle"
         >
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
@@ -39,7 +39,7 @@
             android:inputType="number"
             android:hint="@string/authorization_amount"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:layout_width="match_parent"

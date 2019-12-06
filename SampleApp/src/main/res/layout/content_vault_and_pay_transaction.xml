@@ -9,11 +9,11 @@
     tools:context=".activities.vaultAndPayTransaction.VaultAndPayTransaction"
     tools:showIn="@layout/activity_vault_and_pay_transaction">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/braintree_merchant_login_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,9 +31,9 @@
                 stepview:button_text="@string/login"
                 stepview:enabled="false"
                 />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/create_invoice_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,9 +50,9 @@
                 stepview:button_text="@string/create"
                 stepview:enabled="false"
                 />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/transaction_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,9 +80,9 @@
                 android:imeOptions="actionDone"
                 />
             </LinearLayout>
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/add_invoice_item_step_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -99,9 +99,9 @@
                 stepview:button_text="@string/add"
                 stepview:enabled="false"
                 />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/begin_vault_and_pay_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -118,6 +118,6 @@
                 stepview:code_text="@string/create_transaction_title"
                 stepview:enabled="false"
                 stepview:title_text="@string/step_4" />
-        </android.support.constraint.ConstraintLayout>
-    </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

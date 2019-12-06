@@ -3,21 +3,12 @@ package com.paypal.heresdk.sampleapp.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.solver.widgets.WidgetContainer;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.PreferenceScreen;
-import android.support.v7.preference.SwitchPreferenceCompat;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 import android.util.Log;
-import android.view.View;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.Switch;
 import com.paypal.heresdk.sampleapp.R;
 import com.paypal.paypalretailsdk.RetailSDK;
-import org.androidannotations.annotations.ViewById;
-
 
 public class PaymentOptionsFragment extends PreferenceFragmentCompat
 {

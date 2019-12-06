@@ -1,7 +1,7 @@
 package com.paypal.heresdk.sampleapp.activities.vaultTransaction;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.MutableLiveData;
 import android.os.Handler;
 import android.os.Looper;
 import com.paypal.paypalretailsdk.RetailSDKException;
