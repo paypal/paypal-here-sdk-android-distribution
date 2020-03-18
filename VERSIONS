@@ -2,6 +2,88 @@ PayPalHere SDK v2 Releases
 These are the version numbers of the PayPalHere SDK and
 what is new in this release.
 
+2.1.0320052002
+  What's new:
+  - Fix: Connection failure on M10 which leads to crash
+  - Fix: Audio Jack & Bluetooth Connection Issue
+
+2.1.0320052001
+  What's new:
+  - Fix: set cal level in cachedLog
+  - Fix: Handle only one card presented event: Card Data or Error
+  - Fix: miura and retail-payment-device version update
+  - Fix: updating some UI alert msgs
+  - Fix: handling the inconsistent UI/reader msgs for payment flow
+  - Feat: Logging improvements
+  - Fix: Text colors not visible on iPad iOS 13 and higher
+  - Fix: Prompt for device selection on device disconnection
+  - Fix: default select 'no thanks' when recept options backgrounded iOS
+
+2.1.0320029000
+  What's new:
+  - Fix: Cancel on reader tipping and disconnect issues during payment flow
+  - Fix: setRepository
+  - Fix: SDKTestApp Offline Bug
+  - Feat: Add storeId to merchant
+  - Fix: Skip receipt page on session timeout
+  - Revert: PR1771 and bump version number
+
+2.1.0319351000
+  What's new:
+  - Fix: offline receipt screen not showing
+  - Fix: amount values in invoice synchronizer
+  - Feat: merging latest offline release branch with Jose encryption
+  - Fix: iOS 13 version catch
+  - Fix: SDK hang on reader disconnection during transaction
+  - Fix: Check Simulator Enum instead of text for Swipe case
+  - Fix: Faster connection with Moby readers
+  - Feat: Custom environment on Debug builds
+  - Fix: `amount` and `errMessage` was not handled properly for offline tx status
+  - Feat: Signature and Receipt in Offline Payments
+
+2.1.0319315000
+  What's new:
+  - Fix: update ingenico sdk with only .class files.
+  - Fix: do not count first permissions attempt when listener is null
+  - Fix: reader display for invoice validation
+
+2.1.0319295000
+  What's new:
+  - Fix: add merchant initialized check for offline getStatus
+  - Fix: offline payment error supposed to be Integer
+  - Fix: Display the ready image on no new form factor activation
+  - Docs: readme file changes
+  - Fix: adding missing update Invoice step to the offline replay flow
+  - Fix: Copy options in beginPayment
+  - Fix: Settlement error on negative item amount and positive tax rate, OfflinePaymentStatus createTime
+  - Fix: Offline payment retry issues and return amount too high and low errors
+  - Fix: Include the missing imports
+
+2.1.0319276000
+  What's new:
+  - Fix: setSecurity bug
+  - Fix: Flag to skip Invoice validation
+  - Feat: benchmark times stamps
+  - Fix: Keep reader active throughout transaction
+  - Fix- Callback from merchantInitialized during initializeWithMerchant
+  - Fix- Initialize with merchant
+
+2.1.0319246003
+  What's new:
+  - Fix: initializeMerchant with data
+  
+2.1.0319246002
+  What's new:
+  - Fix: Refresh scan, Offline initialization
+
+2.1.0319246001
+  What's new:
+  - Fix: Parse mock service env in credentials
+
+2.1.0319246000
+  What's new:
+  - Remove PPH apps from Fabric release gulp task
+
 2.1.0319219000
   What's new:
   - Fix: Sandbox refunds
