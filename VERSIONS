@@ -2,6 +2,13 @@ PayPalHere SDK v2 Releases
 These are the version numbers of the PayPalHere SDK and
 what is new in this release.
 
+2.1.0320094000
+  What's new:
+  - Fix: Enforce one transaction
+  - Fix: Use background thread for Ingenico device sendData
+  - Fix: Track EMV info, Read track 1 and 3 for mag swipe, Emit error for bad swipe
+  - Feat: adding offline trigger mechanism to use in case of outage
+
 2.1.0320052002
   What's new:
   - Fix: Connection failure on M10 which leads to crash
