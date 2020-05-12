@@ -5,8 +5,6 @@ what is new in this release.
 2.1.0320122010
   What's new:
   - Fix: changing contactless limit to 45 for UK
-  - Fix: iOS dependencies
-  - Fix: Dependencies- iOS platform 10.0 TrustKit 1.6.2 Remove AFNetworking
 
 2.1.0320101000
   What's new:
