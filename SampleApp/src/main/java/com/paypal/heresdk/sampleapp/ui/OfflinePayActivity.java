@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paypal.heresdk.sampleapp.R;
+import com.paypal.paypalretailsdk.OfflinePaymentInfo;
 import com.paypal.paypalretailsdk.OfflinePaymentStatus;
 import com.paypal.paypalretailsdk.OfflineTransactionState;
 import com.paypal.paypalretailsdk.RetailSDK;
@@ -74,7 +75,7 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
           if (RetailSDK.getTransactionManager().getOfflinePaymentEligibility()){
             RetailSDK.getTransactionManager().startOfflinePayment(new TransactionManager.OfflinePaymentStatusCallback() {
               @Override
-              public void offlinePaymentStatus(RetailSDKException error, List<OfflinePaymentStatus> statusList) {
+              public void offlinePaymentStatus(RetailSDKException error, OfflinePaymentInfo offlinePaymentInfo) {
                 if (error != null) {
                   Toast.makeText(getApplicationContext(), error.getDeveloperMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -87,7 +88,7 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
           RetailSDK.getTransactionManager().stopOfflinePayment(new TransactionManager.OfflinePaymentStatusCallback()
           {
             @Override
-            public void offlinePaymentStatus(RetailSDKException error, List<OfflinePaymentStatus> list)
+            public void offlinePaymentStatus(RetailSDKException error, OfflinePaymentInfo offlinePaymentInfo)
             {
               if (error != null) {
                 Toast.makeText(getApplicationContext(), error.getDeveloperMessage(), Toast.LENGTH_LONG).show();
@@ -171,11 +172,11 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
     RetailSDK.getTransactionManager().startReplayOfflineTxns(new TransactionManager.OfflinePaymentStatusCallback()
     {
       @Override
-      public void offlinePaymentStatus(RetailSDKException e, List<OfflinePaymentStatus> list)
+      public void offlinePaymentStatus(RetailSDKException e, OfflinePaymentInfo offlinePaymentInfo)
       {
         sharedPrefs.edit().putBoolean(REPLAY_IN_PROGRESS,false).apply();
         if(activityVisible){
-          final String toPrint = getStringToPrint(list);
+          final String toPrint = getStringToPrint(offlinePaymentInfo.getStatusList());
           runOnUiThread(new Runnable()
           {
             @Override
@@ -200,7 +201,7 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
     sharedPrefs.edit().putBoolean(REPLAY_IN_PROGRESS,false).apply();
     RetailSDK.getTransactionManager().stopReplayOfflineTxns(new TransactionManager.OfflinePaymentStatusCallback() {
       @Override
-      public void offlinePaymentStatus(RetailSDKException error, List<OfflinePaymentStatus> statusList) {
+      public void offlinePaymentStatus(RetailSDKException error, OfflinePaymentInfo offlinePaymentInfo) {
         if (error != null) {
           Toast.makeText(getApplicationContext(), error.getDeveloperMessage(), Toast.LENGTH_LONG).show();
         }
@@ -219,11 +220,11 @@ public class OfflinePayActivity extends ToolbarActivity implements View.OnClickL
     RetailSDK.getTransactionManager().getOfflinePaymentStatus(new TransactionManager.OfflinePaymentStatusCallback()
     {
       @Override
-      public void offlinePaymentStatus(RetailSDKException e, List<OfflinePaymentStatus> list)
+      public void offlinePaymentStatus(RetailSDKException e, OfflinePaymentInfo offlinePaymentInfo)
       {
 
 
-        final String toPrint = getStringToPrint(list);
+        final String toPrint = getStringToPrint(offlinePaymentInfo.getStatusList());
         runOnUiThread(new Runnable()
         {
           @Override
