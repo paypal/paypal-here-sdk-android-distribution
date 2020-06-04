@@ -21,6 +21,7 @@ import com.paypal.heresdk.sampleapp.R;
 import com.paypal.paypalretailsdk.DeviceUpdate;
 import com.paypal.paypalretailsdk.FormFactor;
 import com.paypal.paypalretailsdk.Invoice;
+import com.paypal.paypalretailsdk.OfflinePaymentInfo;
 import com.paypal.paypalretailsdk.OfflinePaymentStatus;
 import com.paypal.paypalretailsdk.OfflineTransactionRecord;
 import com.paypal.paypalretailsdk.PaymentDevice;
@@ -177,7 +178,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
             if (RetailSDK.getTransactionManager().getOfflinePaymentEligibility()){
                 RetailSDK.getTransactionManager().startOfflinePayment(new TransactionManager.OfflinePaymentStatusCallback() {
                     @Override
-                    public void offlinePaymentStatus(RetailSDKException error, List<OfflinePaymentStatus> statusList) {
+                    public void offlinePaymentStatus(RetailSDKException error, OfflinePaymentInfo offlinePaymentInfo) {
                         if (error != null) {
                             Toast.makeText(getApplicationContext(), error.getDeveloperMessage(), Toast.LENGTH_LONG).show();
                         }
@@ -192,7 +193,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
             RetailSDK.getTransactionManager().stopOfflinePayment(new TransactionManager.OfflinePaymentStatusCallback()
             {
                 @Override
-                public void offlinePaymentStatus(RetailSDKException error, List<OfflinePaymentStatus> list)
+                public void offlinePaymentStatus(RetailSDKException error, OfflinePaymentInfo offlinePaymentInfo)
                 {
                     if (error != null) {
                         Toast.makeText(getApplicationContext(), error.getDeveloperMessage(), Toast.LENGTH_LONG).show();
