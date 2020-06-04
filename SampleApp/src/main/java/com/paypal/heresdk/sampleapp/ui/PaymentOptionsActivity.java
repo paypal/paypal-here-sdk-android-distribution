@@ -33,9 +33,6 @@ public class PaymentOptionsActivity extends ToolbarActivity
   CheckBox manualCardBox;
   CheckBox secureManualBox;
 
-  StepView btLogin;
-  WebView btWebView;
-
   LinearLayout ll_customerId;
   EditText customerId;
 
@@ -83,9 +80,6 @@ public class PaymentOptionsActivity extends ToolbarActivity
     secureManualBox = (CheckBox) findViewById(R.id.secure_manual);
     manualCardBox = (CheckBox) findViewById(R.id.manual_card);
 
-    btLogin = (StepView) findViewById(R.id.bt_login);
-    btWebView = (WebView) findViewById(R.id.btWebView);
-
     ll_customerId = (LinearLayout) findViewById(R.id.ll_customer_id);
     customerId = (EditText) findViewById(R.id.customer_id);
 
@@ -107,43 +101,6 @@ public class PaymentOptionsActivity extends ToolbarActivity
       customerId.setText(options.getString(ChargeActivity.OPTION_CUSTOMER_ID));
       tagTxt.setText(options.getString(ChargeActivity.OPTION_TAG));
     }
-
-    btLogin.setOnButtonClickListener(new View.OnClickListener()
-    {
-      @Override
-      public void onClick(View view)
-      {
-        PaymentOptionsActivity.this.btLoginClicked();
-      }
-    });
-  }
-
-
-
-  void btLoginClicked()
-  {
-    String btLoginURL = RetailSDK.getBraintreeManager().getBtLoginUrl();
-
-    Log.d(logComponent, "starting BT web view with URL: " + btLoginURL);
-    btWebView.setVisibility(View.VISIBLE);
-    btWebView.getSettings().setJavaScriptEnabled(true);
-    btWebView.requestFocus(View.FOCUS_DOWN);
-    btWebView.setWebViewClient(new WebViewClient()
-    {
-      public boolean shouldOverrideUrlLoading(WebView view, String url)
-      {
-        Log.d(logComponent, "this is the overloaded url " + url);
-        Log.d(logComponent, "does it contain auth code: " + RetailSDK.getBraintreeManager().isBtReturnUrlValid(url));
-        if (RetailSDK.getBraintreeManager().isBtReturnUrlValid(url))
-        {
-          Log.d(logComponent, "GOOD it contains auth code! ");
-          btWebView.setVisibility(View.GONE);
-          return true;
-        }
-        return false;
-      }
-    });
-    btWebView.loadUrl(btLoginURL);
   }
 
   @Override
