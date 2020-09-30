@@ -22,6 +22,10 @@ repositories {
 }
 
 android {
+    packagingOptions {
+        exclude("META-INF/*.kotlin_module")
+    }
+    
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
 
