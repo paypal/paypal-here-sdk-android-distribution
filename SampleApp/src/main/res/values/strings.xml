@@ -88,8 +88,8 @@
     <string name="run_transactions">Run transactions</string>
     <string name="run_more">Run more transactions</string>
     <string name="find_connect">Find &amp; Connect</string>
-    <string name="create_invoice">new Invoice(String currencyCode)</string>
-    <string name="create_transaction">RetailSDK.getTransactionManager().createTransaction(Invoice invoice TransactionManager.TransactionCallback callback)</string>
+    <string name="create_invoice">new RetailInvoice(String currencyCode)</string>
+    <string name="create_transaction">RetailSDK.getTransactionManager().createTransaction(RetailInvoice invoice TransactionManager.TransactionCallback callback)</string>
     <string name="go_back_setup">Go back to initial setup</string>
     <string name="accept_transaction">transaction.beginPayment(TransactionBeginOptions options)</string>
     <string name="provide_refund">Provide a Refund</string>

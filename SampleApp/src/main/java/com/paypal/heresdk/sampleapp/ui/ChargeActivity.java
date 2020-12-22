@@ -1,5 +1,6 @@
 package com.paypal.heresdk.sampleapp.ui;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,6 +26,7 @@ import com.paypal.paypalretailsdk.OfflinePaymentInfo;
 import com.paypal.paypalretailsdk.OfflinePaymentStatus;
 import com.paypal.paypalretailsdk.OfflineTransactionRecord;
 import com.paypal.paypalretailsdk.PaymentDevice;
+import com.paypal.paypalretailsdk.RetailInvoice;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.TransactionBeginOptions;
@@ -51,7 +53,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
     private static final int REQUEST_OPTIONS_ACTIVITY = 1;
 
     TransactionContext currentTransaction;
-    Invoice currentInvoice;
+    RetailInvoice currentInvoice;
     Invoice invoiceForRefund;
 
     private EditText amountEditText;
@@ -248,7 +250,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
         }
         Log.d(LOG_TAG, "onCreateInvoiceClicked amount:" + amount);
 
-        currentInvoice = new Invoice(RetailSDK.getMerchant().getCurrency());
+        currentInvoice = new RetailInvoice(RetailSDK.getMerchant().getCurrency());
         BigDecimal quantity = new BigDecimal(1);
         currentInvoice.addItem("Item", quantity, amount, 1, null);
         // BigDecimal gratuityAmt = new BigDecimal(gratuityField.getText().toString());
@@ -569,7 +571,6 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK)
         {
             if (requestCode == REQUEST_OPTIONS_ACTIVITY)
@@ -590,6 +591,7 @@ public class ChargeActivity extends ToolbarActivity implements View.OnClickListe
                 tagString = optionsBundle.getString(OPTION_TAG);
             }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 

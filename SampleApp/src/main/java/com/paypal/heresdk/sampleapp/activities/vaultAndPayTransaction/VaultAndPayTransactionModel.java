@@ -1,6 +1,7 @@
 package com.paypal.heresdk.sampleapp.activities.vaultAndPayTransaction;
 
 import com.paypal.paypalretailsdk.Invoice;
+import com.paypal.paypalretailsdk.RetailInvoice;
 import com.paypal.paypalretailsdk.RetailSDK;
 import com.paypal.paypalretailsdk.TransactionManager;
 
@@ -19,13 +20,13 @@ class VaultAndPayTransactionModel
   }
 
 
-  Invoice createInvoice()
+  RetailInvoice createInvoice()
   {
-    return new Invoice(RetailSDK.getMerchant().getCurrency());
+    return new RetailInvoice(RetailSDK.getMerchant().getCurrency());
   }
 
 
-  void createTransaction(Invoice invoice, TransactionManager.TransactionCallback transactionCallback)
+  void createTransaction(RetailInvoice invoice, TransactionManager.TransactionCallback transactionCallback)
   {
     RetailSDK.getTransactionManager().createTransaction(invoice, transactionCallback);
   }
