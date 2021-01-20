@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 import com.paypal.paypalretailsdk.Invoice;
 import com.paypal.paypalretailsdk.InvoiceItem;
+import com.paypal.paypalretailsdk.RetailInvoice;
 import com.paypal.paypalretailsdk.RetailSDKException;
 import com.paypal.paypalretailsdk.TransactionBeginOptions;
 import com.paypal.paypalretailsdk.TransactionBeginOptionsPaymentTypes;
@@ -21,7 +22,7 @@ import com.paypal.paypalretailsdk.VaultRecord;
 public class VaultAndPayTransactionViewModel extends ViewModel
 {
   private VaultAndPayTransactionModel _vaultAndPayTransactionModel;
-  private Invoice _invoice;
+  private RetailInvoice _invoice;
   private final String LOG_TAG = "VaultNPayTransactionVM";
   private final String BRAINTREE_CUSTOMER_ID = "4085815786";
   private MutableLiveData<TransactionRecord> _transactionRecordLiveData;

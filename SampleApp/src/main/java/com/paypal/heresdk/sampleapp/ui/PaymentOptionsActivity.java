@@ -107,20 +107,13 @@ public class PaymentOptionsActivity extends ToolbarActivity
   protected void onPause()
   {
     super.onPause();
-    hideSoftKeyboard();
   }
 
   public void onDoneClicked(View view){
     Intent data = new Intent();
     data.putExtras(getOptionsBundle());
     setResult(RESULT_OK,data);
-    onBackPressed();
-  }
-
-  public void hideSoftKeyboard() {
-
-    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    finish();
   }
 
   @Override
