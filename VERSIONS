@@ -2,6 +2,12 @@ PayPalHere SDK v2 Releases
 These are the version numbers of the PayPalHere SDK and
 what is new in this release.
 
+2.2.00.21027020
+  What's new:
+  - Fix(iOS): Prettier error message for Chip & Swipe/Tap readers
+  - Fix: Abort payment completion on errors during active request
+  - Fix(Chip & Swipe/Tap): Cancel transaction while card is inserted
+
 2.2.0021025000
   What's new:
   - Fix(chip and pin): send registerCardEvents only in transactionState
