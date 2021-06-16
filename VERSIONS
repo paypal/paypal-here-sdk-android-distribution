@@ -2,6 +2,33 @@ PayPalHere SDK v2 Releases
 These are the version numbers of the PayPalHere SDK and
 what is new in this release.
 
+2.3.0021161010
+  What's new:
+  - feat(DeviceManager): shouldStopScanning utility method to check if search and connect APIs should be invoked again if an error is returned on previous invocation
+  - Docs(iOS): PPRetailRetailInvoice documentation
+  - Fix: Audio swiper plugin behavior
+  - Fix: Stop ongoing reader search when UI search is initiated
+  - Fix: Show payment retry alerts after reader deactivation
+  - Fix: Show In-Use card readers on searchAndConnect screen
+  - Fix(Chip and Swipe): reader hanging after chip card is swiped
+  - Refactor: Reader battery poll
+  - Fix(Chip and tap/sig): Command ordering and response matching improvements
+  - Fix: Connect to last reader
+  - Fix(OfflinePayment): Failing offline payments due to bad request body
+  - Fix(DeviceManager): Connect to another reader after declining reader update
+  - Fix(Chip and pin): Error handling during firmware update
+  - Refactor: QRC prompts off by default
+  - Fix(DeviceManager): Auto connect API retries with intervals
+  - Fix: Card reader battery status and connection
+  - Fix: Logging improvements
+  - Fix: Offline payment improvements
+  - Fix: ApplePay unknown card issuer
+  - feat: unableToConnect error on connection failure
+  - fix(Chip and tap/sig): invalid card data error behaviour
+  - fix(Chip and tap/sig/pin): forceDisconnect on native initiated disconnects
+  - feat(web): Pre Check UI for mediator app
+  - refactor: method to determine GC payment type in InvoicePayment
+  
 2.2.00.21027020
   What's new:
   - Fix(iOS): Prettier error message for Chip & Swipe/Tap readers
