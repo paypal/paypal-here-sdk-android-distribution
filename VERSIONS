@@ -12,6 +12,7 @@ what is new in this release.
   - Fix: Show In-Use card readers on searchAndConnect screen
   - Fix(Chip and Swipe): reader hanging after chip card is swiped
   - Refactor: Reader battery poll
+  - Refactor(TransactionBeginOptions): qrcPromptEnabled is false by default
   - Fix(Chip and tap/sig): Command ordering and response matching improvements
   - Fix: Connect to last reader
   - Fix(OfflinePayment): Failing offline payments due to bad request body
