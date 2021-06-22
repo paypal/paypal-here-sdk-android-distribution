@@ -9,6 +9,7 @@ Developers should use the PayPal Here SDK to get world-class payment processing 
 [Visit our website](https://www.paypal.com/webapps/mpp/credit-card-reader) for more information about PayPal Here.
 * **Partner program:** Please [contact us](https://www.paypal-business.com/SDKdeveloperinterestregistration) for any partnership program questions or opportunities.
 
+From 1 July 2021 AEST, PayPal Here services (including both the credit card reader devices and the PayPal Here App) will no longer be available in Australia. This means you will not be able to accept payments through PayPal Here with the credit card reader device or via the PayPal Here App from that date. We have also ceased the sale of new PayPal Here credit card reader devices. If you are looking for a card payment solution, please see [here](https://www.paypal.com/merchantapps/appcenter/acceptpayments). If you are an existing PayPal Here customer and have any questions, please click [here](https://www.paypal.com/au/webapps/mpp/paypal-here-faq?locale.x=en_AU).
 
 Supporting Materials
 ========================
