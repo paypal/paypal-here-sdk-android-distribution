@@ -2,6 +2,20 @@ PayPalHere SDK v2 Releases
 These are the version numbers of the PayPalHere SDK and
 what is new in this release.
 
+2.4.0021224000
+  What's new:
+  - Build(iOS): Do not embed frameworks
+  - Feat: APIs on PayPal Error to extract details
+  - Fix(OfflinePayment): Process response when both error & response are present
+  - Feat: Network error handling
+  - Fix(OfflinePayments): Expect MTP response format to be json
+  - Fix: Receipt flow
+  - Feat: Signature validation
+  - Build(iOS): xcframework for the PPH SDK
+  - Feat: Order ID in transaction record
+  - Fix(Chip and tap/swipe): UI Handling of the see phone error 
+  - Docs(DeviceManager): Update scanAndAutoConnectToBluetoothReader API documentation
+
 2.3.0021161010
   What's new:
   - feat(DeviceManager): shouldStopScanning utility method to check if search and connect APIs should be invoked again if an error is returned on previous invocation
