@@ -2,6 +2,10 @@ PayPalHere SDK v2 Releases
 These are the version numbers of the PayPalHere SDK and
 what is new in this release.
 
+2.4.0021328000
+  What's new:
+  - Fix(Chip & Tap/Swipe): Get Battery status on connection
+
 2.4.00.21314000
   What's new:
   - Fix(Auth-Capture): Gratuity is added to invoice total
