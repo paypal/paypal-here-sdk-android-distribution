@@ -2,6 +2,12 @@ PayPalHere SDK v2 Releases
 These are the version numbers of the PayPalHere SDK and
 what is new in this release.
 
+2.4.0021363000
+  What's new:
+  - Fix: Battery poll
+  - Fix: Timeout reader commands, logging, battery poll optimization, cardRemovedBeforeRead error
+  - Fix(Chip & Tap): Get battery level during connection flow
+
 2.4.0021328000
   What's new:
   - Fix(Chip & Tap/Swipe): Get Battery status on connection
